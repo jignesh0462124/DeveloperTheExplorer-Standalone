@@ -1,25 +1,12 @@
 import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 export const AnimatedBackground = ({ variant = 'particles' }) => {
   const containerRef = useRef(null);
+  gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
-    const gsapScript = document.createElement('script');
-    gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
-    gsapScript.async = true;
-
-    const scrollTriggerScript = document.createElement('script');
-    scrollTriggerScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js';
-    scrollTriggerScript.async = true;
-
-     let scriptsLoaded = 0;
-    const onScriptLoad = () => {
-      scriptsLoaded++;
-      if (scriptsLoaded === 2) {
-        const { gsap, ScrollTrigger } = window;
-        if (ScrollTrigger) {
-          gsap.registerPlugin(ScrollTrigger);
-        }
 
       if (variant === 'particles') {
         gsap.to('.particle', {
@@ -229,23 +216,7 @@ export const AnimatedBackground = ({ variant = 'particles' }) => {
           yoyo: true
         });
       }
-      }
-    };
 
-    gsapScript.onload = onScriptLoad;
-    scrollTriggerScript.onload = onScriptLoad;
-
-    document.body.appendChild(gsapScript);
-    document.body.appendChild(scrollTriggerScript);
-
-    return () => {
-      if (document.body.contains(gsapScript)) {
-        document.body.removeChild(gsapScript);
-      }
-      if (document.body.contains(scrollTriggerScript)) {
-        document.body.removeChild(scrollTriggerScript);
-      }
-    };
   }, [variant]);
 
   const renderParticles = () => (
@@ -516,15 +487,32 @@ export const AnimatedBackground = ({ variant = 'particles' }) => {
     </>
   );
 
-  const renderPaperPlanes = () => (
+  const renderPaperPlanes = () => {
+  const colors = [
+    ['#60A5FA', '#A78BFA'], // blue to purple
+    ['#A78BFA', '#F472B6'], // purple to pink
+    ['#34D399', '#60A5FA'], // green to blue
+    ['#FBBF24', '#F87171'], // yellow to red
+    ['#F472B6', '#A78BFA'], // pink to purple
+    ['#10B981', '#34D399'], // emerald to green
+    ['#8B5CF6', '#EC4899'], // violet to pink
+    ['#F59E0B', '#EF4444'], // amber to red
+    ['#06B6D4', '#3B82F6'], // cyan to blue
+    ['#14B8A6', '#10B981'], // teal to emerald
+    ['#6366F1', '#8B5CF6'], // indigo to violet
+    ['#F97316', '#FB923C'], // orange shades
+  ];
+
+  return (
     <>
-      {Array.from({ length: 5 }).map((_, i) => (
+      {Array.from({ length: 12 }).map((_, i) => (
         <div
           key={`plane-${i}`}
           className="paper-plane absolute"
           style={{
             left: '-10vw',
             top: `${Math.random() * 80 + 10}%`,
+            animationDelay: `${i * 0.8}s`,
           }}
         >
           <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
@@ -535,8 +523,8 @@ export const AnimatedBackground = ({ variant = 'particles' }) => {
             />
             <defs>
               <linearGradient id={`plane-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor={['#60A5FA', '#A78BFA', '#34D399', '#FBBF24', '#F472B6'][i]} />
-                <stop offset="100%" stopColor={['#A78BFA', '#F472B6', '#60A5FA', '#F87171', '#A78BFA'][i]} />
+                <stop offset="0%" stopColor={colors[i][0]} />
+                <stop offset="100%" stopColor={colors[i][1]} />
               </linearGradient>
             </defs>
           </svg>
@@ -544,6 +532,7 @@ export const AnimatedBackground = ({ variant = 'particles' }) => {
       ))}
     </>
   );
+};
 
   const renderConstellation = () => {
     const stars = [

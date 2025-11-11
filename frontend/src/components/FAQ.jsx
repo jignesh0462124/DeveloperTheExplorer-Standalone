@@ -125,7 +125,7 @@ function FAQ() {
           <div className="text-center mt-8">
             <button
               onClick={() => setVisibleCount((prev) => prev + 5)}
-              className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition"
+              className="px-6 mt-10 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition"
             >
               Load More
             </button>
