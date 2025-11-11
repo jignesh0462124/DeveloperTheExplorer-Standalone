@@ -3,7 +3,7 @@ import { Menu, X, MapPin, Target, Calendar, Rocket, Heart, ChevronDown } from 'l
 
 
 function Sponser() {
-    return ( <section id="sponsors" className="py-20 px-4 sm:px-6 lg:px-20 bg-gray-50">
+    return ( <section id="sponsors" className="w-full ms-12 relative py-20 px-4 sm:px-6 lg:px-20 ">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-block px-5 py-2 bg-white rounded-full shadow-sm mb-6">
@@ -26,7 +26,7 @@ function Sponser() {
             </div>
 
             {/* Benefits Card */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10">
+            <div className=" rounded-3xl shadow-xl p-8 lg:p-10">
               <h3 className="text-2xl font-semibold text-gray-900 mb-8">
                 Sponsorship Benefits
               </h3>

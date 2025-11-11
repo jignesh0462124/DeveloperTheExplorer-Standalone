@@ -3,7 +3,7 @@ import { Menu, X, MapPin, Target, Calendar, Rocket, Heart, ChevronDown } from 'l
 
 function Whatsin() {
     return ( 
-        <section id="campaign" className="py-20 px-4 sm:px-6 lg:px-20 bg-white">
+        <section id="campaign" className=" w-full ms-12 relative py-20 px-4 sm:px-6 lg:px-20 ">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
             What's in Developers: The Explorers?
@@ -11,7 +11,7 @@ function Whatsin() {
 
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
             {/* Experience Card */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12">
+            <div className=" rounded-3xl shadow-xl p-8 lg:p-12">
               <h3 className="text-2xl font-semibold text-gray-900 mb-8">
                 More than an event, an experience
               </h3>
@@ -38,7 +38,7 @@ function Whatsin() {
             </div>
 
             {/* Growth Card */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12">
+            <div className=" rounded-3xl shadow-xl p-8 lg:p-12">
               <h3 className="text-2xl font-semibold text-gray-900 mb-8">
                 How participants grow
               </h3>

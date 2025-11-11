@@ -1,8 +1,10 @@
 import React from 'react';
 import { Menu, X, MapPin, Target, Calendar, Rocket, Heart, ChevronDown } from 'lucide-react';
+import { AnimatedBackground } from './AnimatedBackground';
 function Footer() {
     return ( 
-        <footer className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-20">
+        <footer className="w-full relative   py-16 px-4 sm:px-6 lg:px-20">
+          {/* <AnimatedBackground variant="waves" /> */}
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             <div className="lg:col-span-1">

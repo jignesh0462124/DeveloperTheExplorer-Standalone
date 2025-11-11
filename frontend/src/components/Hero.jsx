@@ -5,6 +5,7 @@ import gsap from "gsap";
 function Hero() {
   const heroRef = useRef(null);
 
+  // Use GSAP that's already loaded globally (in index.html)
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -24,20 +25,21 @@ function Hero() {
 
   return (
     <section
-  ref={heroRef}
-  className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-20 overflow-hidden"
->
-
-      <div className="max-w-7xl mx-auto">
+      ref={heroRef}
+      className="relative pt-35 lg:pt-10 pb-30 ms-10 lg:mt-30   "
+    >
+      {/* AnimatedBackground is now in LandingPage.jsx — removed from here */}
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="ms-4 grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <div className="inline-block px-4 py-2 bg-white rounded-full shadow-sm hero-tag">
-              <span className="text-s font-medium text-blue-500">
+            <div className="inline-block px-4 py-2  rounded-full shadow-sm hero-tag">
+              <span className="text-sm font-medium text-blue-500">
                 Flagship Tech Campaign · GDGOC GHRCE
               </span>
             </div>
 
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight hero-title lg:mb-8 lg:mt-8">
+            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight hero-title lg:mb-8 lg:mt-12">
               Developers: <span className="text-blue-600">The</span> Explorers
             </h1>
 
@@ -45,7 +47,7 @@ function Hero() {
               An immersive experience where students, developers, and innovators explore AI, Cloud, Web, and Mobile through inspiring talks, hands-on jamming sessions, and meaningful networking.
             </p>
 
-            <div className="space-y-4 pt-4 lg:mb-8">
+            <div className="space-yoggia-4 pt-4 lg:mb-8">
               {[
                 { icon: Lightbulb, text: "Inspiring talks by industry experts" },
                 { icon: Code, text: "Hands-on jamming & project-building sessions" },
@@ -60,27 +62,29 @@ function Hero() {
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-3 pt-4">
+            <div className="flex flex-wrap gap-3 mt-4 pt-4 lg:pb-20 ">
               <div className="px-4 py-2.5 bg-white rounded-lg shadow-sm flex items-center space-x-2 hero-info">
-                <Calendar className="w-4 h-4 text-blue-500" />
+                <Calendar className="w-4 h-4" />
                 <span className="text-sm text-gray-700">Coming Soon</span>
               </div>
               <div className="px-4 py-2.5 bg-white rounded-lg shadow-sm flex items-center space-x-2 hero-info">
-                <MapPin className="w-4 h-4 text-red-500" />
+                <MapPin className="w-4 h-4" />
                 <span className="text-sm text-gray-700">Coming Soon</span>
               </div>
-              <div className="px-5 py-2.5 bg-yellow-400 rounded-lg font-semibold text-sm text-gray-900 hero-info">
-                150+ Participants
-              </div>
+              {/* <div className="px-5 py-2.5 bg-yellow-400 rounded-lg font-semibold text-sm text-gray-900 hero-info">
+              </div> */}
             </div>
           </div>
 
           <div>
-            <img
-              src="images/Hero.png"
-              alt="Hero"
-              className="hero-img md:ms-48 lg:ms-10 h-80 lg:h-150 md:h-[30rem] will-change-transform"
-            />
+            <div className="hero-img relative">
+          
+              <img
+                src="images/Hero.png"
+                alt="Hero"
+                className="relative md:ms-48 lg:ms-10 lg:h-120 w-130 lg:h-120 md:h-[30rem] rounded-2xl object-cover will-change-transform"
+              />
+            </div>
           </div>
         </div>
       </div>

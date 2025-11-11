@@ -1,9 +1,33 @@
-import React, { useState } from "react";
+import React, { useState,useRef,useEffect } from "react";
 import { ChevronDown } from "lucide-react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+
 
 function FAQ() {
+  const faqRef = useRef(null);
   const [openFaq, setOpenFaq] = useState(null);
   const [visibleCount, setVisibleCount] = useState(5);
+  gsap.registerPlugin(ScrollTrigger);
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(".faq-title, .faq-item", { opacity: 1 });
+      
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: faqRef.current,
+          start: "top 90%",
+          toggleActions: "play none none reverse",
+        },
+        defaults: { ease: "power2.out", duration: 0.7 },
+      });
+
+      tl.from(".faq-title", { opacity: 0, y: 40 })
+        .from(".faq-item", { opacity: 0, y: 30, stagger: 0.1 }, "-=0.3");
+    }, faqRef);
+
+    return () => ctx.revert();
+  }, [visibleCount]);
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -11,14 +35,12 @@ function FAQ() {
 
   const faqs = [
     {
-      question: "What is “Developer: The Explorer”?",
-      answer:
-        "This is a 3-day 2-night outdoor tech track organized by GDG GHRCE — adventure and innovation combined. Participants will explore nature, attend mentor sessions, take part in quizzes, and collaborate on creative developer challenges, all while camping.",
+      question: "What is 'Developer: The Explorer'?",
+      answer: "This is a 3-day 2-night outdoor tech track organized by GDG GHRCE – adventure and innovation combined. Participants will explore nature, attend mentor sessions, take part in quizzes, and collaborate on creative developer challenges, all while camping.",
     },
     {
       question: "Who can participate?",
-      answer:
-        "Any student or developer passionate about learning, coding, and networking is welcome! You don’t need to be an expert — just bring curiosity, enthusiasm, and a willingness to explore.",
+      answer: "Any student or developer passionate about learning, coding, and networking is welcome! You don't need to be an expert – just bring curiosity, enthusiasm, and a willingness to explore.",
     },
     {
       question: "Where will the event take place?",
@@ -26,61 +48,54 @@ function FAQ() {
     },
     {
       question: "What are the event dates?",
-      answer:
-        "It’s a 3-day, 2-night event. Final dates will be announced soon",
+      answer: "It's a 3-day, 2-night event. Final dates will be announced soon",
     },
     {
       question: "What kind of activities are planned?",
       answer: `Expect a mix of:
-▪︎ Tech quizzes and coding challenges
-▪︎ Mentor-led sessions and fireside talks
-▪︎ Team-building and creative workshops
-▪︎ Camping, fun games, and nature exploration`,
+▪️ Tech quizzes and coding challenges
+▪️ Mentor-led sessions and fireside talks
+▪️ Team-building and creative workshops
+▪️ Camping, fun games, and nature exploration`,
     },
     {
       question: "Is accommodation and food included?",
-      answer:
-        "Yes. Camping tents and all meals (breakfast, lunch, dinner, and snacks) are included in the participation fee. We’ll also ensure basic hygiene and medical facilities are available.",
+      answer: "Yes. Camping tents and all meals (breakfast, lunch, dinner, and snacks) are included in the participation fee. We'll also ensure basic hygiene and medical facilities are available.",
     },
     {
       question: "What should participants bring?",
-      answer:
-        "Bring essentials like your laptop and charger (for tech sessions), comfortable clothes and shoes, personal hygiene items, and a positive, adventurous mindset. Other items will be mentioned in the registration form.",
+      answer: "Bring essentials like your laptop and charger (for tech sessions), comfortable clothes and shoes, personal hygiene items, and a positive, adventurous mindset. Other items will be mentioned in the registration form.",
     },
     {
       question: "Is it safe?",
-      answer:
-        "Yes. The campsite will have security staff, medical assistance, and mentors present throughout. Participants will be supervised and guided during all activities.",
+      answer: "Yes. The campsite will have security staff, medical assistance, and mentors present throughout. Participants will be supervised and guided during all activities.",
     },
     {
       question: "How can I register?",
-      answer:
-        "Registrations will open soon on the official GDG GHRCE website or via the provided registration link. Spots are limited, so keep an eye out!",
+      answer: "Registrations will open soon on the official GDG GHRCE website or via the provided registration link. Spots are limited, so keep an eye out!",
     },
     {
       question: "Can non-coders join?",
-      answer:
-        "Absolutely. This event is about exploring tech, teamwork, and creativity — not just coding. Designers, tech enthusiasts, and innovators are all welcome.",
+      answer: "Absolutely. This event is about exploring tech, teamwork, and creativity – not just coding. Designers, tech enthusiasts, and innovators are all welcome.",
     },
     {
       question: "Is there any participation fee?",
-      answer:
-        "Yes, a nominal fee will be charged to cover logistics, food, and accommodation. Details will be shared in the registration form.",
+      answer: "Yes, a nominal fee will be charged to cover logistics, food, and accommodation. Details will be shared in the registration form.",
     },
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-20 bg-white">
+    <section ref={faqRef} className="w-full relative py-20 px-4 sm:px-6 lg:px-20">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
-          Developer: The Explorer — FAQs
+        <h2 className="faq-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
+          Developer: The Explorer – FAQs
         </h2>
 
         <div className="space-y-4">
           {faqs.slice(0, visibleCount).map((faq, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden"
+              className="faq-item bg-white/40 rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden"
             >
               <button
                 onClick={() => toggleFaq(index)}
@@ -122,3 +137,4 @@ function FAQ() {
 }
 
 export default FAQ;
+
