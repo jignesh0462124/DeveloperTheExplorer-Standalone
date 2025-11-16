@@ -25,7 +25,6 @@ function Campaign() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Set initial state to visible first
       gsap.set(".campaign-title, .campaign-card", { opacity: 1 });
       
       const tl = gsap.timeline({
@@ -71,7 +70,7 @@ function Campaign() {
   ];
 
   return (
-    <section ref={campaignRef} className="relative w-full py-20 px-4">
+    <section ref={campaignRef} className="relative w-full  py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <h2 className="campaign-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
           Campaign Modules

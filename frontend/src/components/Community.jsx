@@ -48,7 +48,7 @@ return (
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text Section */}
           
-          <div className="space-y-6 ms-8 ">
+          <div className="space-y-6 ms-4 ">
             
 
             <div className="space-y-4 text-gray-600 leading-relaxed mb-8">
@@ -79,11 +79,11 @@ return (
           </div>
 
           {/* Image Section */}
-          <div className="mx-auto w-120 lg:w-120 lg:h-100 bg-white rounded-3xl shadow-xl community-img">
+          <div className="mx-auto w-100 lg:w-120 lg:h-100 bg-white rounded-3xl shadow-xl community-img">
             <img
               src="images/Community.png"
               alt="Community"
-              className="ms-20 lg:ms-8 lg:ms-0 h-80 lg:h-100  rounded-4xl "
+              className="ms-10 lg:ms-8 lg:ms-0 h-80  lg:h-100  rounded-4xl "
             />
           </div>
         </div>

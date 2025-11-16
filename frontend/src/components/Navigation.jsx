@@ -4,7 +4,7 @@ import { MapPin, Menu, X } from "lucide-react";
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <nav className=" fixed top-0 left-0 right-0 bg-white/50 shadow-sm z-50 ">
+    <nav className=" fixed top-0 left-0 right-0 bg-white/80 shadow-sm z-50 ">
       <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-10">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center space-x-3">

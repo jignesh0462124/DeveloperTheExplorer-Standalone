@@ -51,13 +51,13 @@ function Whatis() {
   ];
 
   return (
-    <section ref={whatisRef} className="relative w-full pb-20 px-4 z-10">
+    <section id="about" ref={whatisRef} className="w-full  relative w-full pb-20 px-4 z-10">
       <div className="max-w-7xl mx-auto">
         <h2 className="whatis-title text-4xl lg:text-5xl text-center font-bold text-gray-900 mb-16">
           What is Developers: The Explorers?
         </h2>
 
-        <div className="bg-whit/20 rounded-3xl p-8 lg:p-12 mb-12 shadow-lg">
+        <div className="bg-whit/20 w-full  rounded-3xl p-8 lg:p-12 mb-12 shadow-lg">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Left Column */}
             <div className="space-y-6">

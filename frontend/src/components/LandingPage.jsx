@@ -14,7 +14,7 @@ import { AnimatedBackground } from "../components/AnimatedBackground";
 
 const LandingPage = () => (
     <>
-    <AnimatedBackground variant="morphing" />
+    <AnimatedBackground variant="geometric" />
     <Navigation />
     <Hero />
     <Community />

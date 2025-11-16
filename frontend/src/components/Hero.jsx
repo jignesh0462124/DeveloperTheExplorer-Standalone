@@ -26,7 +26,7 @@ function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative pt-35 lg:pt-10 pb-30 ms-10 lg:mt-30   "
+      className="relative pt-35 lg:pt-10 pb-30  lg:mt-30   "
     >
       {/* AnimatedBackground is now in LandingPage.jsx — removed from here */}
       

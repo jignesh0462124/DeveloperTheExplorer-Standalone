@@ -3,7 +3,7 @@ import { Menu, X, MapPin, Target, Calendar, Rocket, Heart, ChevronDown } from 'l
 
 function Whatsin() {
     return ( 
-        <section id="campaign" className=" w-full ms-12 relative py-20 px-4 sm:px-6 lg:px-20 ">
+        <section id="campaign" className=" w-full lg:ms-12 relative py-20 px-4 sm:px-6 lg:px-20 ">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
             What's in Developers: The Explorers?

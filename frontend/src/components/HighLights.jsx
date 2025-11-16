@@ -31,7 +31,7 @@ function HighLights() {
 
 
     return ( 
-         <section ref={highlightsRef} id="relative highlights" className="w-full ms-12  py-20 px-4 sm:px-6 lg:px-20">
+         <section id="highlights" ref={highlightsRef} className="w-full lg:ms-12  py-20 px-4 sm:px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="highlights-title  text-4xl lg:text-5xl font-bold text-gray-900 mb-4">

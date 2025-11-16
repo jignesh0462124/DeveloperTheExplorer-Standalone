@@ -28,40 +28,77 @@ export const AnimatedBackground = ({ variant = 'particles' }) => {
           yoyo: true,
           stagger: 0.3,
         });
-      } else if (variant === 'morphing') {
-        gsap.to('.morph-blob', {
-          x: 'random(-150, 150)',
-          y: 'random(-150, 150)',
-          scale: 'random(0.7, 1.4)',
-          rotation: 'random(-45, 45)',
-          duration: 'random(10, 15)',
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-          stagger: { each: 2, from: 'random' },
-        });
-      }
-       else if (variant === 'geometric') {
-        // Geometric shapes animation
-        gsap.to('.geo-shape', {
-          rotation: 360,
-          duration: 'random(15, 25)',
-          ease: 'none',
-          repeat: -1,
-          stagger: 0.5
+      } else if (variant === 'geometric') {
+        
+        gsap.set('.geo-shape', {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scale: 1
         });
 
-        gsap.to('.geo-shape', {
-          y: 'random(-40, 40)',
-          x: 'random(-40, 40)',
-          scale: 'random(0.85, 1.15)',
-          duration: 'random(5, 8)',
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-          stagger: 0.3
+        const shapes = document.querySelectorAll('.geo-shape');
+        shapes.forEach((shape, index) => {
+          const rotationSpeed = gsap.utils.random(15, 30);
+          const rotationDirection = gsap.utils.random([1, -1]);
+          
+          gsap.to(shape, {
+            rotation: 360 * rotationDirection,
+            duration: rotationSpeed,
+            ease: 'none',
+            repeat: -1
+          });
+
+          // More dynamic X movement - wider range
+          gsap.to(shape, {
+            x: `+=${gsap.utils.random(-80, 80)}`,
+            duration: gsap.utils.random(5, 9),
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+            repeatDelay: 0
+          });
+
+          gsap.to(shape, {
+            y: `+=${gsap.utils.random(-80, 80)}`,
+            duration: gsap.utils.random(6, 10),
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+            repeatDelay: 0,
+            delay: gsap.utils.random(0, 2)
+          });
+
+          gsap.to(shape, {
+            scale: gsap.utils.random(0.85, 1.15),
+            duration: gsap.utils.random(3, 6),
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+            repeatDelay: 0,
+            delay: gsap.utils.random(0, 1)
+          });
+
+          if (index % 3 === 0) {
+            gsap.to(shape, {
+              rotationY: 360,
+              duration: gsap.utils.random(12, 18),
+              ease: 'none',
+              repeat: -1
+            });
+          }
+
+          if (index % 4 === 0) {
+            gsap.to(shape, {
+              rotation: `+=${gsap.utils.random(180, 360)}`,
+              duration: gsap.utils.random(2, 4),
+              ease: 'power2.inOut',
+              repeat: -1,
+              repeatDelay: gsap.utils.random(3, 6)
+            });
+          }
         });
-      } else if (variant === 'waves') {
+      }else if (variant === 'waves') {
         // Wave animation
         gsap.to('.wave-layer', {
           x: '-50%',
@@ -290,26 +327,37 @@ export const AnimatedBackground = ({ variant = 'particles' }) => {
     <>
       {/* Geometric Shapes */}
       {/* === Floating geometric shapes === */}
-<div className="absolute inset-0 overflow-visible pointer-events-none">
-  <div className="geo-shape absolute top-20 left-10 w-32 h-32 border-4 border-blue-200 opacity-45"
-       style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
-  <div className="geo-shape absolute top-40 right-20 w-40 h-40 border-4 border-green-200 rounded-full opacity-30" />
-  <div className="geo-shape absolute bottom-32 left-1/4 w-36 h-36 border-4 border-yellow-200 opacity-45"
-       style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
-  <div className="geo-shape absolute bottom-20 right-1/3 w-28 h-28 border-4 border-red-200 opacity-30 rounded-lg" />
-  <div className="geo-shape absolute top-1/2 left-1/3 w-24 h-24 border-4 border-purple-200 rounded-lg opacity-50" />
-  <div className="geo-shape absolute top-1/3 right-1/4 w-44 h-44 border-4 border-pink-200 opacity-35"
-       style={{ clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)' }} />
+      <div className="absolute inset-0 overflow-visible pointer-events-none">
+        {/* Top area shapes */}
+        <div className="geo-shape absolute top-12 left-16 w-32 h-32 border-4 border-blue-200 opacity-60"
+             style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+        <div className="geo-shape absolute top-8 left-[35%] w-28 h-28 border-4 border-cyan-200 rounded-full opacity-55 hidden md:block" />
+        <div className="geo-shape absolute top-16 left-[55%] w-26 h-26 border-4 border-violet-200 opacity-50 hidden lg:block"
+             style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }} />
+        <div className="geo-shape absolute top-24 right-32 w-40 h-40 border-4 border-green-200 rounded-full opacity-50" />
+        <div className="geo-shape absolute top-10 right-[15%] w-34 h-34 border-4 border-lime-200 rounded-2xl opacity-55 hidden md:block" />
 
-  {/* NEW extra shapes for depth */}
-  <div className="geo-shape absolute top-10 right-1/2 w-20 h-20 border-4 border-cyan-200 rounded-full opacity-25" />
-  <div className="geo-shape absolute bottom-10 left-10 w-24 h-24 border-4 border-indigo-200 opacity-20"
-       style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
-  <div className="geo-shape absolute bottom-1/4 right-10 w-32 h-32 border-4 border-emerald-200 rounded-xl opacity-40" />
-  <div className="geo-shape absolute top-1/4 left-1/2 w-36 h-36 border-4 border-rose-200 opacity-30"
-       style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)' }} />
-</div>
+        {/* Middle area shapes */}
+        <div className="geo-shape absolute top-[40%] left-8 w-36 h-36 border-4 border-amber-200 opacity-60"
+             style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)' }} />
+        <div className="geo-shape absolute top-[45%] left-[30%] w-24 h-24 border-4 border-purple-200 rounded-lg opacity-65 hidden lg:block" />
+        <div className="geo-shape absolute top-[38%] left-[52%] w-30 h-30 border-4 border-teal-200 rounded-full opacity-60 hidden md:block" />
+        <div className="geo-shape absolute top-[42%] right-[22%] w-44 h-44 border-4 border-pink-200 opacity-55 hidden lg:block"
+             style={{ clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)' }} />
+        <div className="geo-shape absolute top-[48%] right-12 w-34 h-34 border-4 border-sky-200 rounded-full opacity-50" />
 
+        {/* Bottom area shapes */}
+        <div className="geo-shape absolute bottom-28 left-[18%] w-36 h-36 border-4 border-yellow-200 opacity-60"
+             style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
+        <div className="geo-shape absolute bottom-32 left-[45%] w-25 h-25 border-4 border-fuchsia-200 opacity-65 hidden md:block"
+             style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)' }} />
+        <div className="geo-shape absolute bottom-24 left-[62%] w-22 h-22 border-4 border-indigo-200 opacity-55 hidden lg:block"
+             style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
+        <div className="geo-shape absolute bottom-20 right-[28%] w-28 h-28 border-4 border-red-200 opacity-50 rounded-lg hidden md:block" />
+        <div className="geo-shape absolute bottom-16 right-[12%] w-32 h-32 border-4 border-emerald-200 rounded-xl opacity-60" />
+        <div className="geo-shape absolute bottom-12 right-8 w-38 h-38 border-4 border-orange-200 opacity-55 hidden lg:block"
+             style={{ clipPath: 'polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)' }} />
+      </div>
     </>
   );
 
@@ -589,7 +637,6 @@ export const AnimatedBackground = ({ variant = 'particles' }) => {
   };
 
   return (
-    /*  <--  FIXED POSITIONING  -->  */
     <div
       ref={containerRef}
       className="fixed inset-0 overflow-visible pointer-events-none -z-10"
