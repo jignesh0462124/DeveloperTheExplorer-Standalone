@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.81.1",
     "@tailwindcss/vite": "^4.1.17",
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
@@ -17,6 +18,7 @@
     "razorpay": "^2.9.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router": "^7.9.6",
     "supabase": "^2.58.5",
     "tailwindcss": "^4.1.17"
   },
