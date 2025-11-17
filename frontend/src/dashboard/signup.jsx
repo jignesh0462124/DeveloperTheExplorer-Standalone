@@ -2,7 +2,10 @@ import React, { useMemo, useState } from "react";
 import { supabase } from "./supabase";
 
 export default function Signup() {
-  // form state
+  // ----- mode toggle -----
+  const [mode, setMode] = useState("signup"); // "signup" | "login"
+
+  // ----- form state -----
   const [name, setName] = useState("");
   const [cc, setCc] = useState("+91");
   const [phone, setPhone] = useState("");
@@ -12,48 +15,72 @@ export default function Signup() {
   const [agree, setAgree] = useState(false);
   const [updates, setUpdates] = useState(false);
 
-  // ui state
+  // ----- ui state -----
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // validators
+  // ----- validators -----
   const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v);
   const isPhone = (v) => /^[0-9]{7,15}$/.test(v.replace(/\s|-/g, ""));
   const pwOk = (v) => v.length >= 8;
 
-  const valid = useMemo(
+  const validSignup = useMemo(
     () => name.trim() && isPhone(phone) && isEmail(email) && pwOk(pw) && agree,
     [name, phone, email, pw, agree]
   );
 
-  async function handleSignup(e) {
+  const validLogin = useMemo(
+    () => isEmail(email) && pw.length > 0,
+    [email, pw]
+  );
+
+  // ----- actions -----
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (!valid) return;
-    setLoading(true);
     setMessage("");
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password: pw,
-      options: {
-        // where to send users after they click the email confirmation link
-        emailRedirectTo: `${window.location.origin}/event`,
-        data: {
-          full_name: name,
-          phone: `${cc} ${phone}`,
-          country_code: cc,
-          marketing_updates: updates,
-          source: "DeveloperTheExplore",
-        },
-      },
-    });
+    if (mode === "signup") {
+      if (!validSignup) return;
+      setLoading(true);
 
-    if (error) setMessage(error.message);
-    else
-      setMessage(
-        "Signup successful! Check your email to confirm your account."
-      );
-    setLoading(false);
+      const { error } = await supabase.auth.signUp({
+        email,
+        password: pw,
+        options: {
+          emailRedirectTo: `${window.location.origin}/event`,
+          data: {
+            full_name: name,
+            phone: `${cc} ${phone}`,
+            country_code: cc,
+            marketing_updates: updates,
+            source: "DeveloperTheExplore",
+          },
+        },
+      });
+
+      setLoading(false);
+      if (error) setMessage(error.message);
+      else
+        setMessage(
+          "Signup successful! Check your email to confirm your account."
+        );
+    } else {
+      if (!validLogin) return;
+      setLoading(true);
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password: pw,
+      });
+
+      setLoading(false);
+      if (error) setMessage(error.message);
+      else {
+        setMessage("Welcome back! Redirecting…");
+        // go straight to the event hub
+        window.location.href = "/event";
+      }
+    }
   }
 
   async function handleGoogle() {
@@ -64,11 +91,29 @@ export default function Signup() {
     });
   }
 
+  async function handleForgot(e) {
+    e.preventDefault();
+    if (!isEmail(email)) {
+      setMessage("Enter your email above to receive a reset link.");
+      return;
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/update-password`,
+    });
+    setMessage(
+      error ? error.message : "Password reset link sent. Check your inbox."
+    );
+  }
+
+  // ----- right-card meta -----
   const meta = {
     dates: "Nov 27 · 10:00 AM – 5:00 PM IST",
     venue: "Auditorium, GHRCE Campus",
     community: "500+ Developers",
   };
+
+  const isSignup = mode === "signup";
+  const formValid = isSignup ? validSignup : validLogin;
 
   return (
     <div className="min-h-screen bg-[#F6F7FB] text-gray-900 antialiased">
@@ -76,20 +121,55 @@ export default function Signup() {
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8">
-          {/* LEFT: Sign-up card */}
+          {/* LEFT: Auth card */}
           <div className="relative">
             <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-6 sm:p-8">
-              <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-[12px] font-medium text-gray-700">
-                <span className="block h-2 w-2 rounded-full bg-[#4285F4]" />
-                Create your event account
+              {/* Mode switcher */}
+              <div className="flex items-center justify-between">
+                <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-[12px] font-medium text-gray-700">
+                  <span className="block h-2 w-2 rounded-full bg-[#4285F4]" />
+                  {isSignup ? "Create your event account" : "Welcome back"}
+                </div>
+
+                <div className="inline-flex rounded-full bg-gray-100 p-1 text-sm">
+                  <button
+                    onClick={() => setMode("signup")}
+                    className={`px-4 py-1.5 rounded-full transition ${
+                      isSignup
+                        ? "bg-white shadow text-gray-900"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    Sign up
+                  </button>
+                  <button
+                    onClick={() => setMode("login")}
+                    className={`px-4 py-1.5 rounded-full transition ${
+                      !isSignup
+                        ? "bg-white shadow text-gray-900"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    Log in
+                  </button>
+                </div>
               </div>
 
               <h1 className="mt-4 text-3xl sm:text-[34px] font-semibold leading-tight">
-                Sign up for{" "}
-                <span className="font-bold">DeveloperTheExplore</span>
+                {isSignup ? (
+                  <>
+                    Sign up for{" "}
+                    <span className="font-bold">DeveloperTheExplore</span>
+                  </>
+                ) : (
+                  "Log in to your account"
+                )}
               </h1>
+
               <p className="mt-2 text-[15px] text-gray-600">
-                Register once to manage your ticket and updates.
+                {isSignup
+                  ? "Register once to manage your ticket and updates."
+                  : "Access your ticket, manage your booking, and see updates."}
               </p>
 
               {/* Google OAuth */}
@@ -100,7 +180,7 @@ export default function Signup() {
                   className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   <GoogleIcon className="h-5 w-5" />
-                  Continue with Google
+                  {isSignup ? "Continue with Google" : "Log in with Google"}
                 </button>
 
                 <div className="mt-4 flex items-center gap-3">
@@ -113,60 +193,65 @@ export default function Signup() {
               {/* FORM */}
               <form
                 className="mt-4 space-y-4"
-                onSubmit={handleSignup}
+                onSubmit={handleSubmit}
                 noValidate
               >
-                <Field
-                  label="Full name"
-                  htmlFor="name"
-                  helper="As on your ID/certificate."
-                >
-                  <input
-                    id="name"
-                    type="text"
-                    placeholder="Your full name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className={inputCls()}
-                    required
-                  />
-                </Field>
-
-                <Field
-                  label="Phone number"
-                  htmlFor="phone"
-                  helper="We’ll send important SMS updates."
-                  error={phone ? !isPhone(phone) : false}
-                  errorText="Enter a valid phone number."
-                >
-                  <div className="flex">
-                    <select
-                      value={cc}
-                      onChange={(e) => setCc(e.target.value)}
-                      className="me-2 inline-flex h-11 items-center rounded-md border border-gray-300 bg-white px-2.5 text-[15px] text-gray-800"
+                {isSignup && (
+                  <>
+                    <Field
+                      label="Full name"
+                      htmlFor="name"
+                      helper="As on your ID/certificate."
                     >
-                      <option value="+91">🇮🇳 +91</option>
-                      <option value="+1">🇺🇸 +1</option>
-                      <option value="+44">🇬🇧 +44</option>
-                      <option value="+61">🇦🇺 +61</option>
-                      <option value="+81">🇯🇵 +81</option>
-                    </select>
-                    <input
-                      id="phone"
-                      inputMode="numeric"
-                      placeholder="___ ___ ____"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className={inputCls("flex-1")}
-                      required
-                    />
-                  </div>
-                </Field>
+                      <input
+                        id="name"
+                        type="text"
+                        placeholder="Your full name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className={inputCls()}
+                        required
+                      />
+                    </Field>
 
+                    <Field
+                      label="Phone number"
+                      htmlFor="phone"
+                      helper="We’ll send important SMS updates."
+                      error={phone ? !isPhone(phone) : false}
+                      errorText="Enter a valid phone number."
+                    >
+                      <div className="flex">
+                        <select
+                          value={cc}
+                          onChange={(e) => setCc(e.target.value)}
+                          className="me-2 inline-flex h-11 items-center rounded-md border border-gray-300 bg-white px-2.5 text-[15px] text-gray-800"
+                        >
+                          <option value="+91">🇮🇳 +91</option>
+                          <option value="+1">🇺🇸 +1</option>
+                          <option value="+44">🇬🇧 +44</option>
+                          <option value="+61">🇦🇺 +61</option>
+                          <option value="+81">🇯🇵 +81</option>
+                        </select>
+                        <input
+                          id="phone"
+                          inputMode="numeric"
+                          placeholder="___ ___ ____"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className={inputCls("flex-1")}
+                          required
+                        />
+                      </div>
+                    </Field>
+                  </>
+                )}
+
+                {/* Email */}
                 <Field
                   label="Email"
                   htmlFor="email"
-                  helper="For confirmation & ticket."
+                  helper={isSignup ? "For confirmation & ticket." : ""}
                   error={email ? !isEmail(email) : false}
                   errorText="Enter a valid email."
                 >
@@ -181,12 +266,15 @@ export default function Signup() {
                   />
                 </Field>
 
+                {/* Password */}
                 <Field label="Password" htmlFor="pw">
                   <div className="relative">
                     <input
                       id="pw"
                       type={showPw ? "text" : "password"}
-                      placeholder="Create a strong password"
+                      placeholder={
+                        isSignup ? "Create a strong password" : "Your password"
+                      }
                       value={pw}
                       onChange={(e) => setPw(e.target.value)}
                       className={inputCls("pr-12")}
@@ -201,65 +289,86 @@ export default function Signup() {
                       {showPw ? <EyeOffIcon /> : <EyeIcon />}
                     </button>
                   </div>
-                  <div className="mt-2 flex items-center gap-2">
-                    <StrengthBar
-                      value={Math.min(4, Math.floor(pw.length / 3))}
-                    />
-                    <span className="text-xs text-gray-500">
-                      {pw.length < 8 ? "Use 8+ characters" : "Looks good"}
-                    </span>
-                  </div>
+                  {isSignup ? (
+                    <div className="mt-2 flex items-center gap-2">
+                      <StrengthBar
+                        value={Math.min(4, Math.floor(pw.length / 3))}
+                      />
+                      <span className="text-xs text-gray-500">
+                        {pw.length < 8 ? "Use 8+ characters" : "Looks good"}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="mt-2">
+                      <button
+                        className="text-xs text-[#1A73E8] hover:underline"
+                        onClick={handleForgot}
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+                  )}
                 </Field>
 
-                <div className="space-y-2 pt-2">
-                  <label className="flex items-start gap-3 text-[14px] text-gray-700">
-                    <input
-                      type="checkbox"
-                      className="mt-0.5 h-[18px] w-[18px] accent-[#4285F4]"
-                      checked={agree}
-                      onChange={(e) => setAgree(e.target.checked)}
-                      required
-                    />
-                    <span>
-                      I agree to the{" "}
-                      <a className="text-[#1A73E8] hover:underline" href="#">
-                        Terms
-                      </a>
-                      ,{" "}
-                      <a className="text-[#1A73E8] hover:underline" href="#">
-                        Privacy Policy
-                      </a>{" "}
-                      and{" "}
-                      <a className="text-[#1A73E8] hover:underline" href="#">
-                        Code of Conduct
-                      </a>
-                      .
-                    </span>
-                  </label>
+                {/* Consents (signup only) */}
+                {isSignup && (
+                  <div className="space-y-2 pt-2">
+                    <label className="flex items-start gap-3 text-[14px] text-gray-700">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 h-[18px] w-[18px] accent-[#4285F4]"
+                        checked={agree}
+                        onChange={(e) => setAgree(e.target.checked)}
+                        required
+                      />
+                      <span>
+                        I agree to the{" "}
+                        <a className="text-[#1A73E8] hover:underline" href="#">
+                          Terms
+                        </a>
+                        ,{" "}
+                        <a className="text-[#1A73E8] hover:underline" href="#">
+                          Privacy Policy
+                        </a>{" "}
+                        and{" "}
+                        <a className="text-[#1A73E8] hover:underline" href="#">
+                          Code of Conduct
+                        </a>
+                        .
+                      </span>
+                    </label>
 
-                  <label className="flex items-start gap-3 text-[14px] text-gray-700">
-                    <input
-                      type="checkbox"
-                      className="mt-0.5 h-[18px] w-[18px] accent-[#4285F4]"
-                      checked={updates}
-                      onChange={(e) => setUpdates(e.target.checked)}
-                    />
-                    <span>Send me important event updates on email/SMS.</span>
-                  </label>
-                </div>
+                    <label className="flex items-start gap-3 text-[14px] text-gray-700">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 h-[18px] w-[18px] accent-[#4285F4]"
+                        checked={updates}
+                        onChange={(e) => setUpdates(e.target.checked)}
+                      />
+                      <span>Send me important event updates on email/SMS.</span>
+                    </label>
+                  </div>
+                )}
 
+                {/* Submit */}
                 <button
                   type="submit"
-                  disabled={!valid || loading}
+                  disabled={!formValid || loading}
                   className={`mt-2 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-[15px] font-semibold text-white transition
                     ${
-                      valid && !loading
+                      formValid && !loading
                         ? "bg-[#4285F4] hover:bg-[#3367D6]"
                         : "bg-gray-200 text-gray-500 cursor-not-allowed"
                     }
                   `}
                 >
-                  {loading ? "Creating..." : "Create account"}
+                  {loading
+                    ? isSignup
+                      ? "Creating..."
+                      : "Signing in…"
+                    : isSignup
+                    ? "Create account"
+                    : "Log in"}
                 </button>
 
                 {message && (
@@ -268,14 +377,16 @@ export default function Signup() {
                   </p>
                 )}
 
-                <div className="text-center">
-                  <a
-                    href="#"
-                    className="mt-3 inline-block text-sm text-[#1A73E8] hover:underline"
-                  >
-                    View agenda before signing up
-                  </a>
-                </div>
+                {isSignup && (
+                  <div className="text-center">
+                    <a
+                      href="#"
+                      className="mt-3 inline-block text-sm text-[#1A73E8] hover:underline"
+                    >
+                      View agenda before signing up
+                    </a>
+                  </div>
+                )}
               </form>
             </div>
           </div>
@@ -420,7 +531,7 @@ function StrengthBar({ value = 0 }) {
   );
 }
 
-/* Icons */
+/* ---------- Icons ---------- */
 function GoogleIcon({ className }) {
   return (
     <svg viewBox="0 0 24 24" className={className}>
@@ -523,7 +634,7 @@ function EyeOffIcon() {
   );
 }
 
-/* Background decoration */
+/* ---------- Background decoration ---------- */
 function Curves() {
   return (
     <svg
