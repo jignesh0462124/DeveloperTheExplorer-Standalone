@@ -1,27 +1,30 @@
-import React, { useEffect, useRef } from "react";
+import React, { useMemo } from "react";
 import { Users, Lightbulb, Code, Calendar, MapPin } from "lucide-react";
-import gsap from "gsap";
+import { useReveal } from "../hooks/useReveal";
 
 function Hero() {
-  const heroRef = useRef(null);
-
-  // Use GSAP that's already loaded globally (in index.html)
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.out", duration: 0.6 },
-      });
-
-      tl.from(".hero-tag", { opacity: 0, y: -20 })
-        .from(".hero-title", { opacity: 0, y: 30 }, "-=0.3")
-        .from(".hero-desc", { opacity: 0, y: 25 }, "-=0.4")
-        .from(".hero-feature", { opacity: 0, x: -25, stagger: 0.15 }, "-=0.3")
-        .from(".hero-info", { opacity: 0, y: 20, stagger: 0.1 }, "-=0.2")
-        .from(".hero-img", { opacity: 0, x: 40, scale: 0.95, duration: 0.7 }, "-=0.5");
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
+  const { ref: heroRef, isRevealed } = useReveal({ threshold: 0.15 });
+  const baseFade = useMemo(
+    () =>
+      `transition-all duration-700 ease-out ${
+        isRevealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`,
+    [isRevealed]
+  );
+  const baseSlide = useMemo(
+    () =>
+      `transition-all duration-700 ease-out ${
+        isRevealed ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
+      }`,
+    [isRevealed]
+  );
+  const imageSlide = useMemo(
+    () =>
+      `transition-all duration-700 ease-out ${
+        isRevealed ? "opacity-100 translate-x-0 scale-100" : "opacity-0 translate-x-8 scale-[0.97]"
+      }`,
+    [isRevealed]
+  );
 
   return (
     <section
@@ -33,17 +36,25 @@ function Hero() {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="ms-4 grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <div className="inline-block px-4 py-2  rounded-full shadow-sm hero-tag">
+            <div
+              className={`inline-block px-4 py-2 rounded-full shadow-sm hero-tag ${baseFade}`}
+            >
               <span className="text-sm font-medium text-blue-500">
                 Flagship Tech Campaign · GDGOC GHRCE
               </span>
             </div>
 
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight hero-title lg:mb-8 lg:mt-12">
+            <h1
+              className={`text-5xl lg:text-6xl font-bold text-gray-900 leading-tight hero-title lg:mb-8 lg:mt-12 ${baseFade}`}
+              style={{ transitionDelay: "120ms" }}
+            >
               Developers: <span className="text-blue-600">The</span> Explorers
             </h1>
 
-            <p className="text-xl text-gray-600 leading-relaxed hero-desc lg:mb-8">
+            <p
+              className={`text-xl text-gray-600 leading-relaxed hero-desc lg:mb-8 ${baseFade}`}
+              style={{ transitionDelay: "200ms" }}
+            >
               An immersive experience where students, developers, and innovators explore AI, Cloud, Web, and Mobile through inspiring talks, hands-on jamming sessions, and meaningful networking.
             </p>
 
@@ -53,7 +64,11 @@ function Hero() {
                 { icon: Code, text: "Hands-on jamming & project-building sessions" },
                 { icon: Users, text: "Networking with mentors, peers, and community leaders" },
               ].map((item, i) => (
-                <div key={i} className="flex items-start space-x-3 hero-feature">
+                <div
+                  key={i}
+                  className={`flex items-start space-x-3 hero-feature ${baseSlide}`}
+                  style={{ transitionDelay: `${260 + i * 120}ms` }}
+                >
                   <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <item.icon className="w-4 h-4 text-white" />
                   </div>
@@ -77,7 +92,7 @@ function Hero() {
           </div>
 
           <div>
-            <div className="hero-img relative">
+            <div className={`hero-img relative ${imageSlide}`} style={{ transitionDelay: "320ms" }}>
           
               <img
                 src="images/Hero.png"

@@ -1,33 +1,18 @@
-import React, { useState,useRef,useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-
+import { useReveal } from "../hooks/useReveal";
 
 function FAQ() {
-  const faqRef = useRef(null);
+  const { ref: faqRef, isRevealed } = useReveal({ threshold: 0.2 });
   const [openFaq, setOpenFaq] = useState(null);
   const [visibleCount, setVisibleCount] = useState(5);
-  gsap.registerPlugin(ScrollTrigger);
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set(".faq-title, .faq-item", { opacity: 1 });
-      
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: faqRef.current,
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-        defaults: { ease: "power2.out", duration: 0.7 },
-      });
-
-      tl.from(".faq-title", { opacity: 0, y: 40 })
-        .from(".faq-item", { opacity: 0, y: 30, stagger: 0.1 }, "-=0.3");
-    }, faqRef);
-
-    return () => ctx.revert();
-  }, [visibleCount]);
+  const fadeUp = useMemo(
+    () =>
+      `transition-all duration-700 ease-out ${
+        isRevealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`,
+    [isRevealed]
+  );
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -87,7 +72,7 @@ function FAQ() {
   return (
     <section ref={faqRef} className="w-full relative py-20 px-4 sm:px-6 lg:px-20">
       <div className="max-w-4xl mx-auto">
-        <h2 className="faq-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
+        <h2 className={`faq-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16 ${fadeUp}`}>
           Developer: The Explorer – FAQs
         </h2>
 
@@ -95,7 +80,8 @@ function FAQ() {
           {faqs.slice(0, visibleCount).map((faq, index) => (
             <div
               key={index}
-              className="faq-item bg-white/40 rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden"
+              className={`faq-item bg-white/40 rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden ${fadeUp}`}
+              style={{ transitionDelay: `${80 + index * 60}ms` }}
             >
               <button
                 onClick={() => toggleFaq(index)}

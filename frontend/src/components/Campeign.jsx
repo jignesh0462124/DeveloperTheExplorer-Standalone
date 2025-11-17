@@ -1,52 +1,16 @@
+import React, { useMemo } from "react";
+import { Brain, Code, HeartHandshake } from "lucide-react";
+import { useReveal } from "../hooks/useReveal";
 
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Rocket,
-  Laptop,
-  Users,
-  Brain,
-  Code,
-  HeartHandshake,
-  Menu,
-  X,
-  MapPin,
-  Target,
-  Calendar,
-  Lightbulb,
-  Heart,
-  ChevronDown,
-} from "lucide-react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 function Campaign() {
-  const campaignRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set(".campaign-title, .campaign-card", { opacity: 1 });
-      
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: campaignRef.current,
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-        defaults: { ease: "power2.out", duration: 0.7 },
-      });
-
-      tl.from(".campaign-title", { opacity: 0, y: 40 })
-        .from(".campaign-card", { 
-          opacity: 0, 
-          y: 80, 
-          scale: 0.9,
-          stagger: 0.2 
-        }, "-=0.3");
-    }, campaignRef);
-
-    return () => ctx.revert();
-  }, []);
+  const { ref: campaignRef, isRevealed } = useReveal({ threshold: 0.2 });
+  const fadeUp = useMemo(
+    () =>
+      `transition-all duration-700 ease-out ${
+        isRevealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`,
+    [isRevealed]
+  );
 
   const modules = [
     {
@@ -72,14 +36,15 @@ function Campaign() {
   return (
     <section ref={campaignRef} className="relative w-full  py-20 px-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="campaign-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
+        <h2 className={`campaign-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16 ${fadeUp}`}>
           Campaign Modules
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {modules.map((module, index) => (
             <div
               key={index}
-              className="campaign-card  rounded-3xl shadow-xl p-8 hover:shadow-2xl transition transform hover:-translate-y-1"
+              className={`campaign-card rounded-3xl shadow-xl p-8 hover:shadow-2xl transition transform hover:-translate-y-1 ${fadeUp}`}
+              style={{ transitionDelay: `${160 + index * 140}ms` }}
             >
               <div
                 className={`w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br ${module.gradient} flex items-center justify-center`}
