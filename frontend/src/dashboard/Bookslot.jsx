@@ -6,6 +6,9 @@ import {
   Bell,
   IndianRupee,
 } from "lucide-react";
+import { useAuthGuard } from "./useAuthGuard";
+
+
 
 /** Currency helper */
 const inr = (v) =>
@@ -15,6 +18,9 @@ const inr = (v) =>
 
 export default function Bookslot() {
   // Attendee state (prefill as needed)
+
+  const { isLoading } = useAuthGuard("/signup");
+
   const [name, setName] = useState("Rahul Kumar");
   const [email, setEmail] = useState("rahul@example.com");
   const [cc, setCc] = useState("+91");
@@ -38,6 +44,15 @@ export default function Bookslot() {
     // handlePay({ name, email, phone: `${cc} ${phone}`, amountPaise: total*100 })
     alert("Proceeding to payment (connect Razorpay in this handler).");
   }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased">
