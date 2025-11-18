@@ -123,12 +123,12 @@ export default function Event() {
                   Book your slot
                 </Link>
 
-                <button
-                  onClick={goAgenda}
+                <Link
+                  to="/"
                   className="rounded-full bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 font-medium px-5 py-2.5 shadow-sm"
                 >
                   View agenda
-                </button>
+                </Link>
               </div>
             </div>
           </div>
