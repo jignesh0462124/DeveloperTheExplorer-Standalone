@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { MapPin, Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -75,9 +76,11 @@ const Navigation = () => {
           </div>
 
           {/* CTA Button */}
-          <button className="hidden md:block px-4  py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition  lg:ms[10rem]">
-            Coming Soon
-          </button>
+          <Link to="/signup">
+            <button className="hidden md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
+              Registration
+            </button>
+          </Link>
 
           {/* Mobile Menu Button */}
           <button
@@ -133,9 +136,11 @@ const Navigation = () => {
             >
               Contact
             </a>
-            <button className="w-full px-6 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full">
-              Coming Soon
-            </button>
+            <Link to="/signup">
+              <button className="hidden md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
+                Registration
+              </button>
+            </Link>
           </div>
         </div>
       )}
