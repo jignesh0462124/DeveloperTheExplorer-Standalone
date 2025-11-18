@@ -1,9 +1,10 @@
-import React, { useMemo, useState ,useEffect} from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useAuthGuard } from "./useAuthGuard";
+import { Link } from "react-router-dom";
 
 export default function Event() {
   // example data (edit as needed)
-      const {isLoading}=useAuthGuard("/signup");
+  const { isLoading } = useAuthGuard("/signup");
   const event = {
     title: "DeveloperTheExplore",
     summary:
@@ -47,7 +48,6 @@ export default function Event() {
       </div>
     );
   }
-
 
   return (
     <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased">
@@ -116,12 +116,13 @@ export default function Event() {
               </span>
 
               <div className="flex gap-3">
-                <button
-                  onClick={goBook}
+                <Link
+                  to="/bookslot"
                   className="rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium px-5 py-2.5 shadow-sm"
                 >
                   Book your slot
-                </button>
+                </Link>
+
                 <button
                   onClick={goAgenda}
                   className="rounded-full bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 font-medium px-5 py-2.5 shadow-sm"
