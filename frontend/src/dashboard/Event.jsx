@@ -1,14 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState ,useEffect} from "react";
+import { useAuthGuard } from "./useAuthGuard";
 
-/**
- * DeveloperTheExplore — Event Hub (Post-login redirect)
- * - Clean Google-style visuals with Tailwind classes
- * - Fully responsive (desktop grid → mobile stacked)
- * - "Book your slot" button ready to navigate
- * - All icons are inline SVGs (no extra deps)
- */
 export default function Event() {
   // example data (edit as needed)
+      const {isLoading}=useAuthGuard("/signup");
   const event = {
     title: "DeveloperTheExplore",
     summary:
@@ -44,6 +39,15 @@ export default function Event() {
     // change to your route or scroll
     document.getElementById("agenda")?.scrollIntoView({ behavior: "smooth" });
   }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased">
