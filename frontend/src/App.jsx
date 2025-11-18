@@ -7,6 +7,7 @@ import Signup from "./dashboard/signup";
 import { Routes, Route, BrowserRouter } from "react-router";
 import Event from "./dashboard/Event";
 import Admin from "./dashboard/Admin";
+import Bookslot from "./dashboard/Bookslot";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/event" element={<Event />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/bookslot" element={<Bookslot />} />
         </Routes>
       </BrowserRouter>
     </>
