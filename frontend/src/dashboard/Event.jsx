@@ -1,8 +1,30 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useAuthGuard } from "./useAuthGuard";
 import { Link } from "react-router-dom";
+import { supabase } from "../../supabase/supabase.js";
 
 export default function Event() {
+  const [isBooked, setIsBooked] = useState(false);
+
+  useEffect(() => {
+    async function checkBooking() {
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("bookings")
+        .select("payment_status")
+        .eq("user_id", user.id)
+        .eq("payment_status", "success")
+        .maybeSingle();
+
+      if (data) setIsBooked(true);
+    }
+
+    checkBooking();
+  }, []);
+
   // example data (edit as needed)
   const { isLoading } = useAuthGuard("/signup");
   const event = {
@@ -116,12 +138,18 @@ export default function Event() {
               </span>
 
               <div className="flex gap-3">
-                <Link
-                  to="/bookslot"
-                  className="rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium px-5 py-2.5 shadow-sm"
-                >
-                  Book your slot
-                </Link>
+                {isBooked ? (
+                  <button className="rounded-full bg-emerald-600 text-white font-medium px-5 py-2.5 shadow-sm cursor-default">
+                    ✓ Slot Booked
+                  </button>
+                ) : (
+                  <Link
+                    to="/bookslot"
+                    className="rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium px-5 py-2.5 shadow-sm"
+                  >
+                    Book your slot
+                  </Link>
+                )}
 
                 <Link
                   to="/"

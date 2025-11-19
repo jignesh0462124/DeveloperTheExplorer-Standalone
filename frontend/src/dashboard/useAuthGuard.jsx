@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "./supabase";
+import { supabase } from "../../supabase/supabase.js";
 
 export function useAuthGuard(redirect = "/") {
   const [isLoading, setIsLoading] = useState(true);

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { supabase } from "./supabase";
+import { supabase } from "../../supabase/supabase.js";
 
 export default function Signup() {
   // ----- mode toggle -----

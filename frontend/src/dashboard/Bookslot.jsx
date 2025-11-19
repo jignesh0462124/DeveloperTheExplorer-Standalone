@@ -7,6 +7,9 @@ import {
   IndianRupee,
 } from "lucide-react";
 import { useAuthGuard } from "./useAuthGuard";
+import { supabase } from "../../supabase/supabase.js";
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -18,6 +21,7 @@ const inr = (v) =>
 
 export default function Bookslot() {
   // Attendee state (prefill as needed)
+  const navigate = useNavigate();
 
   const { isLoading } = useAuthGuard("/signup");
 
@@ -38,12 +42,68 @@ export default function Bookslot() {
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email) &&
     /^[0-9]{7,15}$/.test(phone.replace(/\s|-/g, ""));
 
-  function handleProceed() {
-    // TODO: Hook into your Razorpay flow here
-    // e.g., open checkout and pass name/email/phone + calculated amount (in paise)
-    // handlePay({ name, email, phone: `${cc} ${phone}`, amountPaise: total*100 })
-    alert("Proceeding to payment (connect Razorpay in this handler).");
+  async function handleProceed() {
+  if (!formValid) return;
+
+  const { data: userData } = await supabase.auth.getUser();
+  const user = userData?.user;
+  if (!user) return alert("Please log in.");
+
+  // Call Edge Function
+  const { data, error } = await supabase.functions.invoke("create-order", {
+    body: {
+      user_id: user.id,
+      full_name: name,
+      email,
+      phone: `${cc} ${phone}`,
+      college,
+      gender,
+      amount: total,
+    },
+  });
+
+  if (error) {
+    console.log(error);
+    return alert("Error creating order.");
   }
+
+  const { key, order, booking_id } = data;
+
+  const options = {
+    key,
+    amount: order.amount,
+    currency: "INR",
+    name: "DeveloperTheExplore",
+    description: "Event Slot Booking",
+    order_id: order.id,
+    prefill: { name, email, contact: phone },
+
+    handler: async function (response) {
+      await supabase
+        .from("bookings")
+        .update({
+          payment_status: "success",
+          payment_id: response.razorpay_payment_id,
+        })
+        .eq("id", booking_id);
+
+      navigate("/event"); // redirect on success
+    },
+
+    modal: {
+      ondismiss: async () => {
+        await supabase
+          .from("bookings")
+          .update({ payment_status: "cancelled" })
+          .eq("id", booking_id);
+      },
+    },
+  };
+
+  const rzp = new window.Razorpay(options);
+  rzp.open();
+}
+
 
   if (isLoading) {
     return (
