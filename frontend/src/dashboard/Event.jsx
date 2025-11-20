@@ -2,9 +2,12 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useAuthGuard } from "./useAuthGuard";
 import { Link } from "react-router-dom";
 import { supabase } from "../../supabase/supabase.js";
+import { useUserProfile } from "./useUserProfile";
 
 export default function Event() {
   const [isBooked, setIsBooked] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const { profile, loadingProfile } = useUserProfile();
 
   useEffect(() => {
     async function checkBooking() {
@@ -25,10 +28,21 @@ export default function Event() {
     checkBooking();
   }, []);
 
+  async function handleLogout() {
+    try {
+      setIsSigningOut(true);
+      await supabase.auth.signOut();
+      window.location.href = "/signup";
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+      setIsSigningOut(false);
+    }
+  }
+
   // example data (edit as needed)
   const { isLoading } = useAuthGuard("/signup");
   const event = {
-    title: "DeveloperTheExplore",
+    title: "Developer The Explorer",
     summary:
       "Hands-on Google-tech sessions, jamming labs & community networking.",
     dateLabel: "27 Nov · 10:00 AM–5:00 PM IST",
@@ -79,8 +93,8 @@ export default function Event() {
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
           <a href="/" className="font-semibold tracking-tight">
-            <span className="text-slate-900">Developer</span>
-            <span className="text-[#4285F4]">The</span>
+            <span className="text-slate-900">Developer </span>
+            <span className="text-[#4285F4]">The </span>
             <span className="text-[#FBBC05]">Explore</span>
             <span className="text-[#34A853]">r</span>
           </a>
@@ -96,11 +110,20 @@ export default function Event() {
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-2 text-sm text-slate-600">
               <span className="rounded bg-slate-100 px-2 py-0.5">
-                IMO 23:22
+                {loadingProfile ? "Syncing…" : "Member"}
               </span>
-              <span className="font-medium">Rahul Kumar</span>
+              <span className="font-medium text-slate-900">
+                {loadingProfile ? "Loading…" : profile.name || "Guest"}
+              </span>
             </div>
-            <Avatar />
+            <button
+              onClick={handleLogout}
+              disabled={isSigningOut}
+              className="text-xs sm:text-sm font-medium text-slate-600 border border-slate-200 rounded-full px-3 py-1.5 hover:bg-slate-50 transition disabled:opacity-60"
+            >
+              {isSigningOut ? "Signing out…" : "Logout"}
+            </button>
+            <Avatar initials={profile.initials} />
           </div>
         </div>
       </header>
@@ -172,7 +195,7 @@ export default function Event() {
           <InfoCard
             icon={<InfoIcon className="text-sky-500" />}
             title="About"
-            body="DeveloperTheExplore is a full-day immersive event bringing together students, developers, and tech enthusiasts. Dive into hands-on workshops, explore cutting-edge Google technologies, and connect with industry mentors in a collaborative environment."
+            body="Developer The Explorer is a full-day immersive event bringing together students, developers, and tech enthusiasts. Dive into hands-on workshops, explore cutting-edge Google technologies, and connect with industry mentors in a collaborative environment."
           />
           <InfoCard
             icon={<StarIcon className="text-emerald-500" />}
@@ -330,10 +353,10 @@ function Tile({ color, icon, label }) {
   );
 }
 
-function Avatar() {
+function Avatar({ initials }) {
   return (
     <div className="h-8 w-8 rounded-full bg-gradient-to-br from-sky-200 to-violet-200 ring-1 ring-black/10 grid place-items-center text-[11px] font-semibold text-slate-700">
-      RK
+      {initials || "DT"}
     </div>
   );
 }

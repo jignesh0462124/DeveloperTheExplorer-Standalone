@@ -12,7 +12,7 @@ export default function Header() {
 
         {/* Title */}
         <Link to="/" className="text-xl font-semibold text-gray-900">
-          DeveloperTheExplore
+          Developer The Explorer
         </Link>
       </div>
     </header>

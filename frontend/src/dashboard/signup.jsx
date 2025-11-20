@@ -53,7 +53,7 @@ export default function Signup() {
             phone: `${cc} ${phone}`,
             country_code: cc,
             marketing_updates: updates,
-            source: "DeveloperTheExplore",
+            source: "Developer The Explorer",
           },
         },
       });
@@ -159,7 +159,7 @@ export default function Signup() {
                 {isSignup ? (
                   <>
                     Sign up for{" "}
-                    <span className="font-bold">DeveloperTheExplore</span>
+                    <span className="font-bold">Developer The Explorer</span>
                   </>
                 ) : (
                   "Log in to your account"
@@ -532,29 +532,24 @@ function StrengthBar({ value = 0 }) {
 }
 
 /* ---------- Icons ---------- */
-function GoogleIcon({ className }) {
+function GoogleIcon({ className = "" }) {
   return (
-    <svg viewBox="0 0 24 24" className={className}>
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
       <path
-        fill="#EA4335"
-        d="M12 10.2v3.9h5.4c-.24 1.4-1.63 4.1-5.4 4.1A6.3 6.3 0 1 1 12 5.7c1.8 0 3 .6 3.7 1.1l2.5-2.4C16.9 3 14.7 2.2 12 2.2 6.9 2.2 2.8 6.3 2.8 11.4S6.9 20.6 12 20.6c6 0 9.2-4.2 9.2-8.1 0-.5 0-1-.1-1.3H12z"
+        fill="#4285F4"
+        d="M23.766 12.277c0-.851-.075-1.67-.213-2.456H12v4.651h6.652a5.692 5.692 0 0 1-2.466 3.73v3.102h3.982c2.332-2.149 3.598-5.312 3.598-9.027z"
       />
       <path
         fill="#34A853"
-        d="M3.6 7.4l3.2 2.3A6.4 6.4 0 0 1 12 5.7c1.8 0 3 .6 3.7 1.1l2.5-2.4C16.9 3 14.7 2.2 12 2.2 8 2.2 4.6 4.6 3.6 7.4z"
-        opacity=".1"
-      />
-      <path
-        fill="#4285F4"
-        d="M21.8 12.5c0-.5 0-1-.1-1.3H12v3.9h5.4c-.24 1.4-1.63 4.1-5.4 4.1v3.3c6 0 9.8-4.2 9.8-10z"
+        d="M12 24c3.24 0 5.956-1.075 7.941-2.917l-3.982-3.102c-1.108.747-2.526 1.183-3.959 1.183-3.041 0-5.613-2.053-6.53-4.807H1.356v3.183C3.333 21.082 7.333 24 12 24z"
       />
       <path
         fill="#FBBC05"
-        d="M6.8 13.1a5 5 0 0 1 0-3.4l-3.2-2.3a9.2 9.2 0 0 0 0 8l3.2-2.3z"
+        d="M5.47 14.357a7.213 7.213 0 0 1-.38-2.357c0-.817.14-1.614.38-2.357V6.46H1.356A11.99 11.99 0 0 0 0 12c0 1.973.492 3.82 1.356 5.541l4.114-3.184z"
       />
       <path
-        fill="#34A853"
-        d="M12 20.6c3.1 0 5.7-1 7.4-3l-3.6-2.8c-.9.6-2 1-3.8 1-2.9 0-5.3-1.9-6.2-4.6l-3.2 2.3c1 2.8 4.4 7.1 9.4 7.1z"
+        fill="#EA4335"
+        d="M12 4.782c1.764 0 3.347.606 4.596 1.794l3.44-3.44C17.951 1.263 15.235 0 12 0 7.333 0 3.333 2.918 1.356 6.459L5.47 9.643C6.391 6.835 8.959 4.782 12 4.782z"
       />
     </svg>
   );

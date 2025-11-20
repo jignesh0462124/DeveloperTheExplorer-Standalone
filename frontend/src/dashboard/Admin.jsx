@@ -20,6 +20,8 @@ import {
   CheckCircle2,
   Circle,
 } from "lucide-react";
+import { supabase } from "../../supabase/supabase.js";
+import { useUserProfile } from "./useUserProfile";
 
 /* ---------- Utils ---------- */
 const cn = (...a) => a.filter(Boolean).join(" ");
@@ -102,6 +104,19 @@ export default function Admin() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState(["Captured"]);
   const [methodFilter, setMethodFilter] = useState(["UPI"]);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const { profile, loadingProfile } = useUserProfile();
+
+  async function handleLogout() {
+    try {
+      setIsSigningOut(true);
+      await supabase.auth.signOut();
+      window.location.href = "/signup";
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+      setIsSigningOut(false);
+    }
+  }
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
@@ -129,7 +144,7 @@ export default function Admin() {
         <aside className="hidden lg:block min-h-screen border-r border-slate-200 bg-white/90 backdrop-blur-md">
           <div className="p-4 flex items-center gap-2">
             <Logo />
-            <span className="font-semibold">DeveloperTheExplore Admin</span>
+            <span className="font-semibold">Developer The Explorer Admin</span>
           </div>
           <nav className="px-2 py-3">
             <SideItem
@@ -159,7 +174,17 @@ export default function Admin() {
               </div>
               <div className="flex items-center gap-3 text-slate-600">
                 <Bell size={18} />
-                <Avatar />
+                <span className="text-sm font-medium text-slate-900 hidden sm:block">
+                  {loadingProfile ? "Loading…" : profile.name || "Guest"}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  disabled={isSigningOut}
+                  className="text-xs font-medium text-slate-600 border border-slate-200 rounded-full px-3 py-1.5 hover:bg-slate-50 transition disabled:opacity-60"
+                >
+                  {isSigningOut ? "Signing out…" : "Logout"}
+                </button>
+                <Avatar initials={profile.initials} />
               </div>
             </div>
           </div>
@@ -185,6 +210,13 @@ export default function Admin() {
                 </button>
                 <button className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-50">
                   <RefreshCcw size={16} />
+                </button>
+                <button
+                  onClick={handleLogout}
+                  disabled={isSigningOut}
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                >
+                  Logout
                 </button>
               </div>
             </div>
@@ -368,10 +400,10 @@ function Logo() {
   );
 }
 
-function Avatar() {
+function Avatar({ initials }) {
   return (
     <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-sky-200 to-violet-200 text-[11px] font-semibold text-slate-700 ring-1 ring-black/10">
-      RK
+      {initials || "DT"}
     </div>
   );
 }
