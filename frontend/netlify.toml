@@ -13,6 +13,12 @@
   [headers.values]
     Content-Type = "text/javascript; charset=UTF-8"
 
+# Redirect all routes to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [build]
   publish = "dist"
   command = "npm run build"
