@@ -4,7 +4,7 @@ import EventPoster from "./EventPoster";
 import Checkout from "./Checkout";
 import LandingPage from "./components/LandingPage";
 import Signup from "./dashboard/signup";
-import { Routes, Route, BrowserRouter } from "react-router";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Event from "./dashboard/Event";
 import Admin from "./dashboard/Admin";
 import Bookslot from "./dashboard/Bookslot";
