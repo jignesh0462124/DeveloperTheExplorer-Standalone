@@ -39,45 +39,47 @@ export default function Bookslot() {
     /^[0-9]{7,15}$/.test(phone.replace(/\s|-/g, ""));
 
   async function handleProceed() {
-    if (!formValid) return;
+  if (!formValid) return;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) return alert("Please login first");
+  if (!user) return alert("Please login first");
 
-    const amountToCharge = Number(total.toFixed(2));
+  const amountToCharge = Number(total.toFixed(2));
 
-    const { data, error } = await supabase.functions.invoke("create-order", {
-      body: {
-        user_id: user.id,
-        full_name: name,
-        email,
-        phone: `${cc} ${phone}`,
-        college,
-        gender,
-        amount: total.toFixed(2),
-      },
-    });
+  const { data, error } = await supabase.functions.invoke("create-order", {
+    body: {
+      user_id: user.id,
+      full_name: name,
+      email,
+      phone: `${cc} ${phone}`,
+      college,
+      gender,
+      amount: total.toFixed(2),
+    },
+  });
 
-    if (error) {
-      console.error(error);
-      return alert(error.message ?? "Error creating order.");
-    }
+  if (error) {
+    console.error(error);
+    return alert(error.message ?? "Error creating order.");
+  }
 
-    const { key, order, booking_id } = data;
+  const { key, order, booking_id } = data;
 
-    const options = {
-      key,
-      amount: order.amount,
-      currency: "INR",
-      name: "Developer The Explorer",
-      description: "Event Slot Booking",
-      order_id: order.id,
-      prefill: { name, email, contact: phone },
+  const options = {
+    key,
+    amount: order.amount,
+    currency: "INR",
+    name: "Developer The Explorer",
+    description: "Event Slot Booking",
+    order_id: order.id,
+    prefill: { name, email, contact: phone },
 
-      handler: async function (response) {
+    handler: async function (response) {
+      try {
+        // Update booking status
         await supabase
           .from("bookings")
           .update({
@@ -86,23 +88,48 @@ export default function Bookslot() {
           })
           .eq("id", booking_id);
 
+        // Send confirmation email
+        const emailResponse = await supabase.functions.invoke("send-booking-confirmation", {
+          body: {
+            email,
+            full_name: name,
+            booking_id,
+            amount: total.toFixed(2),
+            phone: `${cc} ${phone}`,
+            college,
+            gender,
+          },
+        });
+
+        if (emailResponse.error) {
+          console.error("Failed to send confirmation email:", emailResponse.error);
+          // Don't block navigation even if email fails
+        } else {
+          console.log("Confirmation email sent successfully");
+        }
+
+        // Navigate to event page
         navigate("/event");
+      } catch (error) {
+        console.error("Error in payment handler:", error);
+        // Still navigate even if there's an error
+        navigate("/event");
+      }
+    },
+
+    modal: {
+      ondismiss: async () => {
+        await supabase
+          .from("bookings")
+          .update({ payment_status: "cancelled" })
+          .eq("id", booking_id);
       },
+    },
+  };
 
-      modal: {
-        ondismiss: async () => {
-          await supabase
-            .from("bookings")
-            .update({ payment_status: "cancelled" })
-            .eq("id", booking_id);
-        },
-      },
-    };
-
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-  }
-
+  const rzp = new window.Razorpay(options);
+  rzp.open();
+}
   async function handleLogout() {
     try {
       setIsSigningOut(true);
