@@ -137,7 +137,7 @@ const Navigation = () => {
               Contact
             </a>
             <Link to="/signup">
-              <button className="hidden md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
+              <button className="w-full block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition mt-4">
                 Registration
               </button>
             </Link>
