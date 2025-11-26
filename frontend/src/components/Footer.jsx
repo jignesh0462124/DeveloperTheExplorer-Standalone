@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, MapPin, Target, Calendar, Rocket, Heart, ChevronDown } from 'lucide-react';
 import { AnimatedBackground } from './AnimatedBackground';
 function Footer() {
@@ -28,7 +29,7 @@ function Footer() {
                 <li><a href="#highlights" className="text-sm text-gray-600 hover:text-blue-500">Highlights</a></li>
                 <li><a href="#campaign" className="text-sm text-gray-600 hover:text-blue-500">Campaign Modules</a></li>
                 <li><a href="#sponsors" className="text-sm text-gray-600 hover:text-blue-500">Sponsors</a></li>
-                <li><a href="#contact" className="text-sm text-gray-600 hover:text-blue-500">Contact</a></li>
+                <li><Link to="/contact" className="text-sm text-gray-600 hover:text-blue-500">Contact</Link></li>
               </ul>
             </div>
 
@@ -59,8 +60,9 @@ function Footer() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
               <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-gray-600 hover:text-blue-500">Privacy Policy</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-blue-500">Terms of Service</a></li>
+                <li><Link to="/privacy" className="text-sm text-gray-600 hover:text-blue-500">Privacy Policy</Link></li>
+                <li><Link to="/terms" className="text-sm text-gray-600 hover:text-blue-500">Terms of Service</Link></li>
+                <li><Link to="/cancellations" className="text-sm text-gray-600 hover:text-blue-500">Cancellations & Refund</Link></li>
                 <li><a href="#" className="text-sm text-gray-600 hover:text-blue-500">Code of Conduct</a></li>
               </ul>
             </div>

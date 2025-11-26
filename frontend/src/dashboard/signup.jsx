@@ -7,8 +7,6 @@ export default function Signup() {
 
   // ----- form state -----
   const [name, setName] = useState("");
-  const [cc, setCc] = useState("+91");
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -21,12 +19,11 @@ export default function Signup() {
 
   // ----- validators -----
   const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v);
-  const isPhone = (v) => /^[0-9]{7,15}$/.test(v.replace(/\s|-/g, ""));
   const pwOk = (v) => v.length >= 8;
 
   const validSignup = useMemo(
-    () => name.trim() && isPhone(phone) && isEmail(email) && pwOk(pw) && agree,
-    [name, phone, email, pw, agree]
+    () => name.trim() && isEmail(email) && pwOk(pw) && agree,
+    [name, email, pw, agree]
   );
 
   const validLogin = useMemo(
@@ -50,8 +47,7 @@ export default function Signup() {
           emailRedirectTo: `${window.location.origin}/event`,
           data: {
             full_name: name,
-            phone: `${cc} ${phone}`,
-            country_code: cc,
+            full_name: name,
             marketing_updates: updates,
             source: "Developer The Explorer",
           },
@@ -214,36 +210,7 @@ export default function Signup() {
                       />
                     </Field>
 
-                    <Field
-                      label="Phone number"
-                      htmlFor="phone"
-                      helper="We’ll send important SMS updates."
-                      error={phone ? !isPhone(phone) : false}
-                      errorText="Enter a valid phone number."
-                    >
-                      <div className="flex">
-                        <select
-                          value={cc}
-                          onChange={(e) => setCc(e.target.value)}
-                          className="me-2 inline-flex h-11 items-center rounded-md border border-gray-300 bg-white px-2.5 text-[15px] text-gray-800"
-                        >
-                          <option value="+91">🇮🇳 +91</option>
-                          <option value="+1">🇺🇸 +1</option>
-                          <option value="+44">🇬🇧 +44</option>
-                          <option value="+61">🇦🇺 +61</option>
-                          <option value="+81">🇯🇵 +81</option>
-                        </select>
-                        <input
-                          id="phone"
-                          inputMode="numeric"
-                          placeholder="___ ___ ____"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className={inputCls("flex-1")}
-                          required
-                        />
-                      </div>
-                    </Field>
+
                   </>
                 )}
 

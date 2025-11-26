@@ -67,12 +67,12 @@ const Navigation = () => {
             >
               Sponsors
             </a>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="text-sm text-gray-600 hover:text-gray-900"
             >
               Contact
-            </a>
+            </Link>
           </div>
 
           {/* CTA Button */}
@@ -130,14 +130,14 @@ const Navigation = () => {
             >
               Sponsors
             </a>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="block text-sm text-gray-600 hover:text-gray-900"
             >
               Contact
-            </a>
+            </Link>
             <Link to="/signup">
-              <button className="w-full block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition mt-4">
+              <button className="hidden md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
                 Registration
               </button>
             </Link>
