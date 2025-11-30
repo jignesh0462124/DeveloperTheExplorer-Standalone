@@ -30,7 +30,7 @@ export default function Bookslot() {
   const [gender, setGender] = useState("Male");
 
 
-  const subtotal = 999.0;
+  const subtotal = 2.0;
   const total = subtotal;
 
   const formValid =
