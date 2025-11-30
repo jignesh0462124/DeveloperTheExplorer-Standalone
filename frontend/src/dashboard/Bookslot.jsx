@@ -38,98 +38,115 @@ export default function Bookslot() {
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email) &&
     /^[0-9]{7,15}$/.test(phone.replace(/\s|-/g, ""));
 
+  const [isProcessing, setIsProcessing] = useState(false);
+
   async function handleProceed() {
-  if (!formValid) return;
+    if (!formValid) return;
+    setIsProcessing(true);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-  if (!user) return alert("Please login first");
-
-  const amountToCharge = Number(total.toFixed(2));
-
-  const { data, error } = await supabase.functions.invoke("create-order", {
-    body: {
-      user_id: user.id,
-      full_name: name,
-      email,
-      phone: `${cc} ${phone}`,
-      college,
-      gender,
-      amount: total.toFixed(2),
-    },
-  });
-
-  if (error) {
-    console.error(error);
-    return alert(error.message ?? "Error creating order.");
-  }
-
-  const { key, order, booking_id } = data;
-
-  const options = {
-    key,
-    amount: order.amount,
-    currency: "INR",
-    name: "Developer The Explorer",
-    description: "Event Slot Booking",
-    order_id: order.id,
-    prefill: { name, email, contact: phone },
-
-    handler: async function (response) {
-      try {
-        // Update booking status
-        await supabase
-          .from("bookings")
-          .update({
-            payment_status: "success",
-            payment_id: response.razorpay_payment_id,
-          })
-          .eq("id", booking_id);
-
-        // Send confirmation email
-        const emailResponse = await supabase.functions.invoke("send-booking-confirmation", {
-          body: {
-            email,
-            full_name: name,
-            booking_id,
-            amount: total.toFixed(2),
-            phone: `${cc} ${phone}`,
-            college,
-            gender,
-          },
-        });
-
-        if (emailResponse.error) {
-          console.error("Failed to send confirmation email:", emailResponse.error);
-          // Don't block navigation even if email fails
-        } else {
-          console.log("Confirmation email sent successfully");
-        }
-
-        // Navigate to event page
-        navigate("/event");
-      } catch (error) {
-        console.error("Error in payment handler:", error);
-        // Still navigate even if there's an error
-        navigate("/event");
+      if (!user) {
+        alert("Please login first");
+        setIsProcessing(false);
+        return;
       }
-    },
 
-    modal: {
-      ondismiss: async () => {
-        await supabase
-          .from("bookings")
-          .update({ payment_status: "cancelled" })
-          .eq("id", booking_id);
-      },
-    },
-  };
+      const amountToCharge = Number(total.toFixed(2));
 
-  const rzp = new window.Razorpay(options);
-  rzp.open();
-}
+      const { data, error } = await supabase.functions.invoke("create-order", {
+        body: {
+          user_id: user.id,
+          full_name: name,
+          email,
+          phone: `${cc} ${phone}`,
+          college,
+          gender,
+          amount: total.toFixed(2),
+        },
+      });
+
+      if (error) {
+        console.error(error);
+        alert(error.message ?? "Error creating order.");
+        setIsProcessing(false);
+        return;
+      }
+
+      const { key, order, booking_id } = data;
+
+      const options = {
+        key,
+        amount: order.amount,
+        currency: "INR",
+        name: "Developer The Explorer",
+        description: "Event Slot Booking",
+        order_id: order.id,
+        prefill: { name, email, contact: phone },
+
+        handler: async function (response) {
+          try {
+            // Update booking status
+            await supabase
+              .from("bookings")
+              .update({
+                payment_status: "success",
+                payment_id: response.razorpay_payment_id,
+              })
+              .eq("id", booking_id);
+
+            // Send confirmation email
+            const emailResponse = await supabase.functions.invoke("send-booking-confirmation", {
+              body: {
+                email,
+                full_name: name,
+                booking_id,
+                amount: total.toFixed(2),
+                phone: `${cc} ${phone}`,
+                college,
+                gender,
+              },
+            });
+
+            if (emailResponse.error) {
+              console.error("Failed to send confirmation email:", emailResponse.error);
+              // Don't block navigation even if email fails
+            } else {
+              console.log("Confirmation email sent successfully");
+            }
+
+            // Navigate to event page
+            navigate("/event");
+          } catch (error) {
+            console.error("Error in payment handler:", error);
+            // Still navigate even if there's an error
+            navigate("/event");
+          } finally {
+            setIsProcessing(false);
+          }
+        },
+
+        modal: {
+          ondismiss: async () => {
+            await supabase
+              .from("bookings")
+              .update({ payment_status: "cancelled" })
+              .eq("id", booking_id);
+            setIsProcessing(false);
+          },
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error(err);
+      setIsProcessing(false);
+    }
+  }
   async function handleLogout() {
     try {
       setIsSigningOut(true);
@@ -249,13 +266,20 @@ export default function Bookslot() {
               </div>
 
               <button
-                disabled={!formValid}
+                disabled={!formValid || isProcessing}
                 onClick={handleProceed}
-                className={`mt-5 w-full rounded-lg px-4 py-3 text-sm font-semibold text-white ${
-                  formValid ? "bg-[#3B82F6] hover:bg-[#2563EB]" : "bg-slate-300 cursor-not-allowed"
+                className={`mt-5 w-full rounded-lg px-4 py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 ${
+                  formValid && !isProcessing ? "bg-[#3B82F6] hover:bg-[#2563EB]" : "bg-slate-300 cursor-not-allowed"
                 }`}
               >
-                Proceed to payment
+                {isProcessing ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Processing...
+                  </>
+                ) : (
+                  "Proceed to payment"
+                )}
               </button>
 
               <p className="mt-3 flex items-center gap-2 text-[13px] text-emerald-700">
