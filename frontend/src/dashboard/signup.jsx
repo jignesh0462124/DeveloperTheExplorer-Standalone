@@ -47,7 +47,6 @@ export default function Signup() {
           emailRedirectTo: `${window.location.origin}/event`,
           data: {
             full_name: name,
-            full_name: name,
             marketing_updates: updates,
             source: "Developer The Explorer",
           },
