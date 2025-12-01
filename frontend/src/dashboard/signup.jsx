@@ -208,8 +208,6 @@ export default function Signup() {
                         required
                       />
                     </Field>
-
-
                   </>
                 )}
 

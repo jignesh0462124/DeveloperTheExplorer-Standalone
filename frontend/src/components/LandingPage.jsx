@@ -11,9 +11,10 @@ import FAQ from "../components/FAQ";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
 import { AnimatedBackground } from "../components/AnimatedBackground";
+import Planet from "./Planet";
 
 const LandingPage = () => (
-    <>
+  <>
     <AnimatedBackground variant="geometric" />
     <Navigation />
     <Hero />
@@ -25,8 +26,9 @@ const LandingPage = () => (
     <Campeign />
     <FAQ />
     <CTA />
+    <Planet />
     <Footer />
-    </>
+  </>
 );
 
 export default LandingPage;

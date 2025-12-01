@@ -1,9 +1,11 @@
 import React, { useMemo } from "react";
 import { Users, Lightbulb, Code, Calendar, MapPin } from "lucide-react";
 import { useReveal } from "../hooks/useReveal";
+import heroVideo from "./video/DeveloperTheExplorer.mp4";
 
 function Hero() {
   const { ref: heroRef, isRevealed } = useReveal({ threshold: 0.15 });
+
   const baseFade = useMemo(
     () =>
       `transition-all duration-700 ease-out ${
@@ -11,6 +13,7 @@ function Hero() {
       }`,
     [isRevealed]
   );
+
   const baseSlide = useMemo(
     () =>
       `transition-all duration-700 ease-out ${
@@ -18,23 +21,24 @@ function Hero() {
       }`,
     [isRevealed]
   );
+
   const imageSlide = useMemo(
     () =>
       `transition-all duration-700 ease-out ${
-        isRevealed ? "opacity-100 translate-x-0 scale-100" : "opacity-0 translate-x-8 scale-[0.97]"
+        isRevealed
+          ? "opacity-100 translate-x-0 scale-100"
+          : "opacity-0 translate-x-8 scale-[0.97]"
       }`,
     [isRevealed]
   );
 
   return (
-    <section
-      ref={heroRef}
-      className="relative pt-35 lg:pt-10 pb-30  lg:mt-30   "
-    >
+    <section ref={heroRef} className="relative pt-35 lg:pt-10 pb-30 lg:mt-30">
       {/* AnimatedBackground is now in LandingPage.jsx — removed from here */}
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="ms-4 grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left content */}
           <div className="space-y-6">
             <div
               className={`inline-block px-4 py-2 rounded-full shadow-sm hero-tag ${baseFade}`}
@@ -55,14 +59,25 @@ function Hero() {
               className={`text-xl text-gray-600 leading-relaxed hero-desc lg:mb-8 ${baseFade}`}
               style={{ transitionDelay: "200ms" }}
             >
-              An immersive experience where students, developers, and innovators explore AI, Cloud, Web, and Mobile through inspiring talks, hands-on jamming sessions, and meaningful networking.
+              An immersive experience where students, developers, and innovators
+              explore AI, Cloud, Web, and Mobile through inspiring talks,
+              hands-on jamming sessions, and meaningful networking.
             </p>
 
             <div className="space-yoggia-4 pt-4 lg:mb-8">
               {[
-                { icon: Lightbulb, text: "Inspiring talks by industry experts" },
-                { icon: Code, text: "Hands-on jamming & project-building sessions" },
-                { icon: Users, text: "Networking with mentors, peers, and community leaders" },
+                {
+                  icon: Lightbulb,
+                  text: "Inspiring talks by industry experts",
+                },
+                {
+                  icon: Code,
+                  text: "Hands-on jamming & project-building sessions",
+                },
+                {
+                  icon: Users,
+                  text: "Networking with mentors, peers, and community leaders",
+                },
               ].map((item, i) => (
                 <div
                   key={i}
@@ -77,7 +92,7 @@ function Hero() {
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-3 mt-4 pt-4 lg:pb-20 ">
+            <div className="flex flex-wrap gap-3 mt-4 pt-4 lg:pb-20">
               <div className="px-4 py-2.5 bg-white rounded-lg shadow-sm flex items-center space-x-2 hero-info">
                 <Calendar className="w-4 h-4" />
                 <span className="text-sm text-gray-700">Coming Soon</span>
@@ -86,19 +101,34 @@ function Hero() {
                 <MapPin className="w-4 h-4" />
                 <span className="text-sm text-gray-700">Coming Soon</span>
               </div>
-              {/* <div className="px-5 py-2.5 bg-yellow-400 rounded-lg font-semibold text-sm text-gray-900 hero-info">
-              </div> */}
             </div>
           </div>
 
+          {/* Right side: video as 16:9 wallpaper-style card */}
           <div>
-            <div className={`hero-img relative ${imageSlide}`} style={{ transitionDelay: "320ms" }}>
-          
-              <img
-                src="images/Hero.png"
-                alt="Hero"
-                className="relative md:ms-48 lg:ms-10 lg:h-120 w-130 lg:h-120 md:h-[30rem] rounded-2xl object-cover will-change-transform"
-              />
+            <div
+              className={`hero-img relative ${imageSlide}`}
+              style={{ transitionDelay: "320ms" }}
+            >
+              {/* 16:9 responsive container */}
+              <div
+                className="relative md:ms-48 lg:ms-10 w-full lg:w-[32rem] rounded-2xl overflow-hidden shadow-xl"
+                // 16:9 ratio => 9 / 16 * 100 = 56.25%
+                style={{ paddingTop: "56.25%" }}
+              >
+                <video
+                  src={heroVideo}
+                  poster="images/Hero.png"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  // Video fills the container like a wallpaper
+                  className="absolute inset-0 w-full h-full object-cover will-change-transform"
+                />
+                {/* Optional subtle overlay for better text contrast if you ever add text on top */}
+                {/* <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-blue-500/20 pointer-events-none" /> */}
+              </div>
             </div>
           </div>
         </div>
