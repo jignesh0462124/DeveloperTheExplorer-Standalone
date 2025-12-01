@@ -33,30 +33,34 @@ function Hero() {
   );
 
   return (
-    <section ref={heroRef} className="relative pt-35 lg:pt-10 pb-30 lg:mt-30">
-      {/* AnimatedBackground is now in LandingPage.jsx — removed from here */}
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="ms-4 grid lg:grid-cols-2 gap-12 items-center">
+    <section
+      ref={heroRef}
+      className="relative pt-20 pb-16 sm:pt-24 sm:pb-20 lg:pt-10 lg:pb-24"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left content */}
-          <div className="space-y-6">
+          <div className="space-y-6 text-center lg:text-left">
+            {/* Tag */}
             <div
               className={`inline-block px-4 py-2 rounded-full shadow-sm hero-tag ${baseFade}`}
             >
-              <span className="text-sm font-medium text-blue-500">
+              <span className="text-xs sm:text-sm font-medium text-blue-500">
                 Flagship Tech Campaign · GDGOC GHRCE
               </span>
             </div>
 
+            {/* Title */}
             <h1
-              className={`text-5xl lg:text-6xl font-bold text-gray-900 leading-tight hero-title lg:mb-8 lg:mt-12 ${baseFade}`}
+              className={`text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 leading-tight hero-title lg:mb-4 lg:mt-6 ${baseFade}`}
               style={{ transitionDelay: "120ms" }}
             >
               Developers: <span className="text-blue-600">The</span> Explorers
             </h1>
 
+            {/* Description */}
             <p
-              className={`text-xl text-gray-600 leading-relaxed hero-desc lg:mb-8 ${baseFade}`}
+              className={`text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed hero-desc lg:mb-6 ${baseFade}`}
               style={{ transitionDelay: "200ms" }}
             >
               An immersive experience where students, developers, and innovators
@@ -64,7 +68,8 @@ function Hero() {
               hands-on jamming sessions, and meaningful networking.
             </p>
 
-            <div className="space-yoggia-4 pt-4 lg:mb-8">
+            {/* Feature bullets */}
+            <div className="space-y-4 pt-2 lg:pt-4 lg:mb-6">
               {[
                 {
                   icon: Lightbulb,
@@ -81,38 +86,58 @@ function Hero() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className={`flex items-start space-x-3 hero-feature ${baseSlide}`}
+                  className={`flex items-start space-x-3 hero-feature ${baseSlide} ${
+                    // center icon + text on mobile, left on large screens
+                    "justify-center lg:justify-start"
+                  }`}
                   style={{ transitionDelay: `${260 + i * 120}ms` }}
                 >
                   <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <item.icon className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-gray-700">{item.text}</p>
+                  <p className="text-sm sm:text-base text-gray-700 max-w-xs lg:max-w-none">
+                    {item.text}
+                  </p>
                 </div>
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-3 mt-4 pt-4 lg:pb-20">
+            {/* Info pills */}
+            <div className="flex flex-wrap gap-3 mt-4 pt-2 lg:pt-4 lg:pb-10 justify-center lg:justify-start">
               <div className="px-4 py-2.5 bg-white rounded-lg shadow-sm flex items-center space-x-2 hero-info">
                 <Calendar className="w-4 h-4" />
-                <span className="text-sm text-gray-700">Coming Soon</span>
+                <span className="text-xs sm:text-sm text-gray-700">
+                  Coming Soon
+                </span>
               </div>
               <div className="px-4 py-2.5 bg-white rounded-lg shadow-sm flex items-center space-x-2 hero-info">
                 <MapPin className="w-4 h-4" />
-                <span className="text-sm text-gray-700">Coming Soon</span>
+                <span className="text-xs sm:text-sm text-gray-700">
+                  Coming Soon
+                </span>
               </div>
             </div>
           </div>
 
           {/* Right side: video as 16:9 wallpaper-style card */}
-          <div>
+          <div className="w-full">
             <div
               className={`hero-img relative ${imageSlide}`}
               style={{ transitionDelay: "320ms" }}
             >
               {/* 16:9 responsive container */}
               <div
-                className="relative md:ms-48 lg:ms-10 w-full lg:w-[32rem] rounded-2xl overflow-hidden shadow-xl"
+                className="
+                  relative
+                  w-full
+                  max-w-xl
+                  mx-auto
+                  lg:max-w-none
+                  lg:w-[32rem]
+                  rounded-2xl
+                  overflow-hidden
+                  shadow-xl
+                  "
                 // 16:9 ratio => 9 / 16 * 100 = 56.25%
                 style={{ paddingTop: "56.25%" }}
               >
@@ -123,10 +148,9 @@ function Hero() {
                   loop
                   muted
                   playsInline
-                  // Video fills the container like a wallpaper
                   className="absolute inset-0 w-full h-full object-cover will-change-transform"
                 />
-                {/* Optional subtle overlay for better text contrast if you ever add text on top */}
+                {/* Optional overlay if you add text over video later */}
                 {/* <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-blue-500/20 pointer-events-none" /> */}
               </div>
             </div>
