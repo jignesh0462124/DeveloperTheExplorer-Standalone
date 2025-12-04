@@ -29,19 +29,56 @@ export default function Bookslot() {
   const [college, setCollege] = useState("");
   const [gender, setGender] = useState("Male");
 
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    college: false,
+  });
+
+  const validate = () => {
+    const errors = {};
+    if (!name.trim()) errors.name = "Name is required";
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)) {
+      errors.email = "Invalid email address";
+    }
+    
+    const cleanPhone = phone.replace(/\s|-/g, "");
+    if (!phone.trim()) {
+      errors.phone = "Phone number is required";
+    } else if (!/^[0-9]{10}$/.test(cleanPhone)) {
+      errors.phone = "Phone number must be 10 digits";
+    }
+
+    if (!college.trim()) errors.college = "College/Organization is required";
+    
+    return errors;
+  };
+
+  const errors = validate();
+  const formValid = Object.keys(errors).length === 0;
+
+  const handleBlur = (field) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
 
   const subtotal = 2.0;
   const total = subtotal;
 
-  const formValid =
-    name.trim() &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email) &&
-    /^[0-9]{7,15}$/.test(phone.replace(/\s|-/g, ""));
-
   const [isProcessing, setIsProcessing] = useState(false);
 
   async function handleProceed() {
-    if (!formValid) return;
+    if (!formValid) {
+      setTouched({
+        name: true,
+        email: true,
+        phone: true,
+        college: true,
+      });
+      return;
+    }
     setIsProcessing(true);
 
     try {
@@ -219,26 +256,51 @@ export default function Bookslot() {
             <h2 className="text-base font-semibold">Attendee details</h2>
 
             <div className="mt-4 space-y-4">
-              <Field label="Full name">
-                <input value={name} onChange={(e) => setName(e.target.value)} className={inputCls()} placeholder="Please Enter your Name"/>
+              <Field label="Full name" error={touched.name && errors.name}>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={() => handleBlur("name")}
+                  className={inputCls(touched.name && errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                  placeholder="Please Enter your Name"
+                />
               </Field>
 
-              <Field label="Email">
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls()} placeholder="your email address" />
+              <Field label="Email" error={touched.email && errors.email}>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => handleBlur("email")}
+                  className={inputCls(touched.email && errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                  placeholder="your email address"
+                />
               </Field>
 
-              <Field label="Phone">
+              <Field label="Phone" error={touched.phone && errors.phone}>
                 <div className="flex">
                   <button type="button" className="me-2 inline-flex items-center justify-between min-w-[88px] h-11 rounded-md border border-slate-300 bg-white px-3 text-[15px]">
                     {cc}
                     <ChevronDown size={16} className="text-slate-500" />
                   </button>
-                  <input value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls("flex-1")} placeholder="xxxxxxxxxx" />
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    onBlur={() => handleBlur("phone")}
+                    className={inputCls(touched.phone && errors.phone ? "flex-1 border-red-500 focus:border-red-500 focus:ring-red-100" : "flex-1")}
+                    placeholder="xxxxxxxxxx"
+                  />
                 </div>
               </Field>
 
-              <Field label="College/Organization">
-                <input value={college} onChange={(e) => setCollege(e.target.value)} className={inputCls()} placeholder="college/organization" />
+              <Field label="College/Organization" error={touched.college && errors.college}>
+                <input
+                  value={college}
+                  onChange={(e) => setCollege(e.target.value)}
+                  onBlur={() => handleBlur("college")}
+                  className={inputCls(touched.college && errors.college ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                  placeholder="college/organization"
+                />
               </Field>
 
               <Field label="Gender">
@@ -266,10 +328,10 @@ export default function Bookslot() {
               </div>
 
               <button
-                disabled={!formValid || isProcessing}
+                disabled={isProcessing}
                 onClick={handleProceed}
                 className={`mt-5 w-full rounded-lg px-4 py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 ${
-                  formValid && !isProcessing ? "bg-[#3B82F6] hover:bg-[#2563EB]" : "bg-slate-300 cursor-not-allowed"
+                  !isProcessing ? "bg-[#3B82F6] hover:bg-[#2563EB]" : "bg-slate-300 cursor-not-allowed"
                 }`}
               >
                 {isProcessing ? (
@@ -298,13 +360,14 @@ export default function Bookslot() {
 }
 
 
-function Field({ label, children }) {
+function Field({ label, children, error }) {
   return (
     <div>
       <label className="mb-1.5 block text-[13px] font-medium text-slate-800">
-        {label}
+        {label} <span className="text-red-500">*</span>
       </label>
       {children}
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   );
 }

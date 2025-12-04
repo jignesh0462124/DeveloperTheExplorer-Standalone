@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <nav className=" fixed top-0 left-0 right-0 bg-white/80 shadow-sm z-50 ">
+    <nav className=" sticky top-0 left-0 right-0 bg-white/80 shadow-sm z-50 ">
       <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-10">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center space-x-3">
@@ -137,7 +137,7 @@ const Navigation = () => {
               Contact
             </Link>
             <Link to="/signup">
-              <button className="hidden md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
+              <button className=" md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
                 Registration
               </button>
             </Link>
