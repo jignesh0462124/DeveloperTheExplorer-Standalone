@@ -5,28 +5,69 @@ import { supabase } from "../../supabase/supabase.js";
 import { useUserProfile } from "./useUserProfile";
 
 export default function Event() {
+  // --- State ---
   const [isBooked, setIsBooked] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
+  
+  // Like Feature State
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(124); // Starting dummy count
+  const [isLiking, setIsLiking] = useState(false);
+
+  // Custom Hooks
   const { profile, loadingProfile } = useUserProfile();
+  const { isLoading: authLoading } = useAuthGuard("/signup");
+
+  // Event Details (Static for now, could be passed as props)
+  const event = {
+    slug: "developer-explorer-2024", // Unique ID for database
+    title: "Developer The Explorer",
+    summary:
+      "Hands-on Google-tech sessions, jamming labs & community networking.",
+    dateLabel: "27 Nov · 10:00 AM–5:00 PM IST",
+    venue: "Auditorium, GHRCE Campus",
+    tracks: ["Cloud", "Web", "Android", "AI/ML"],
+    availability: "available", // "available" | "few" | "waitlist"
+  };
+
+  // --- Effects ---
 
   useEffect(() => {
-    async function checkBooking() {
+    async function fetchData() {
       const { data: userData } = await supabase.auth.getUser();
       const user = userData?.user;
+
       if (!user) return;
 
-      const { data } = await supabase
+      // 1. Check Booking Status
+      const { data: bookingData } = await supabase
         .from("bookings")
         .select("payment_status")
         .eq("user_id", user.id)
         .eq("payment_status", "success")
         .maybeSingle();
 
-      if (data) setIsBooked(true);
+      if (bookingData) setIsBooked(true);
+
+      // 2. Check Like Status
+      const { data: likeData } = await supabase
+        .from("event_likes")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("event_slug", event.slug)
+        .maybeSingle();
+
+      if (likeData) setHasLiked(true);
+      
+      // Optional: Fetch real total count from DB here if you want real-time counts
+      // const { count } = await supabase.from('event_likes').select('*', { count: 'exact' }).eq('event_slug', event.slug);
+      // if(count) setLikeCount(count);
     }
 
-    checkBooking();
-  }, []);
+    fetchData();
+  }, [event.slug]);
+
+  // --- Handlers ---
 
   async function handleLogout() {
     try {
@@ -39,17 +80,55 @@ export default function Event() {
     }
   }
 
-  // example data (edit as needed)
-  const { isLoading } = useAuthGuard("/signup");
-  const event = {
-    title: "Developer The Explorer",
-    summary:
-      "Hands-on Google-tech sessions, jamming labs & community networking.",
-    dateLabel: "27 Nov · 10:00 AM–5:00 PM IST",
-    venue: "Auditorium, GHRCE Campus",
-    tracks: ["Cloud", "Web", "Android", "AI/ML"],
-    availability: "available", // "available" | "few" | "waitlist"
-  };
+  async function handleToggleLike() {
+    if (isLiking) return;
+    
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData?.user;
+
+    if (!user) {
+      alert("Please sign in to like this event!");
+      return;
+    }
+
+    // Optimistic Update (Update UI immediately before API finishes)
+    const previousLikedState = hasLiked;
+    const previousCount = likeCount;
+
+    setHasLiked(!previousLikedState);
+    setLikeCount(previousLikedState ? previousCount - 1 : previousCount + 1);
+    setIsLiking(true);
+
+    try {
+      if (previousLikedState) {
+        // Unlike: Remove from DB
+        const { error } = await supabase
+          .from("event_likes")
+          .delete()
+          .eq("user_id", user.id)
+          .eq("event_slug", event.slug);
+        
+        if (error) throw error;
+      } else {
+        // Like: Add to DB
+        const { error } = await supabase
+          .from("event_likes")
+          .insert([{ user_id: user.id, event_slug: event.slug }]);
+        
+        if (error) throw error;
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
+      // Revert optimistic update on error
+      setHasLiked(previousLikedState);
+      setLikeCount(previousCount);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsLiking(false);
+    }
+  }
+
+  // --- Memos ---
 
   const availabilityPill = useMemo(() => {
     switch (event.availability) {
@@ -68,185 +147,197 @@ export default function Event() {
     }
   }, [event.availability]);
 
-  function goBook() {
-    // change to your route
-    window.location.href = "/book";
-  }
-  function goAgenda() {
-    // change to your route or scroll
-    document.getElementById("agenda")?.scrollIntoView({ behavior: "smooth" });
-  }
+  // --- Render ---
 
-  if (isLoading) {
+  if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased">
+    <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased font-sans">
       <BgCurves />
 
       {/* Top Bar */}
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
-          <a href="/" className="font-semibold tracking-tight">
+          <a href="/" className="font-semibold tracking-tight text-lg">
             <span className="text-slate-900">Developer </span>
             <span className="text-[#4285F4]">The </span>
             <span className="text-[#FBBC05]">Explore</span>
             <span className="text-[#34A853]">r</span>
           </a>
 
-          <div className="hidden sm:flex items-center text-sm text-slate-600 gap-2">
-            <a href="/" className="hover:text-slate-900">
+          {/* Breadcrumbs (Desktop) */}
+          <div className="hidden md:flex items-center text-sm text-slate-600 gap-2">
+            <a href="/" className="hover:text-slate-900 transition-colors">
               Home
             </a>
-            <span>›</span>
+            <span className="text-slate-300">›</span>
             <span className="font-medium text-slate-900">Event</span>
           </div>
 
+          {/* User Profile / Logout */}
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-2 text-sm text-slate-600">
-              <span className="rounded bg-slate-100 px-2 py-0.5">
-                {loadingProfile ? "Syncing…" : "Member"}
+              <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium uppercase tracking-wider">
+                {loadingProfile ? "Syncing" : "Member"}
               </span>
               <span className="font-medium text-slate-900">
-                {loadingProfile ? "Loading…" : profile.name || "Guest"}
+                {loadingProfile ? "Loading..." : profile.name || "Guest"}
               </span>
             </div>
+            
             <button
               onClick={handleLogout}
               disabled={isSigningOut}
-              className="text-xs sm:text-sm font-medium text-slate-600 border border-slate-200 rounded-full px-3 py-1.5 hover:bg-slate-50 transition disabled:opacity-60"
+              className="text-xs sm:text-sm font-medium text-slate-600 border border-slate-200 rounded-full px-4 py-1.5 hover:bg-slate-50 transition disabled:opacity-60"
             >
-              {isSigningOut ? "Signing out…" : "Logout"}
+              {isSigningOut ? "Signing out..." : "Logout"}
             </button>
             <Avatar initials={profile.initials} />
           </div>
         </div>
       </header>
 
-      {/* Page */}
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8 lg:py-10">
-        {/* HERO */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {/* Left: Text & Meta */}
+      {/* Main Content */}
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8 lg:py-12">
+        
+        {/* HERO SECTION */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          
+          {/* Left: Event Details */}
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
-              <Dot color="#6366F1" /> Upcoming event
+            <span className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 uppercase tracking-wide">
+              <Dot color="#6366F1" /> Upcoming Event
             </span>
 
-            <h1 className="mt-3 text-[32px] sm:text-[40px] font-bold leading-tight">
+            <h1 className="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.15]">
               {event.title}
             </h1>
-            <p className="mt-1 text-[15px] text-slate-600 max-w-xl">
+            <p className="mt-4 text-lg text-slate-600 max-w-xl leading-relaxed">
               {event.summary}
             </p>
 
-            {/* Meta */}
-            <ul className="mt-5 space-y-2 text-sm">
+            {/* Metadata List */}
+            <ul className="mt-8 space-y-3">
               <MetaItem icon={<CalendarIcon />} label={event.dateLabel} />
               <MetaItem icon={<PinIcon />} label={event.venue} />
               <MetaItem icon={<StackIcon />} label={event.tracks.join(" · ")} />
             </ul>
 
-            {/* Availability + CTAs */}
-            <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+            {/* Action Buttons & Like */}
+            <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+              
+              {/* Availability Status */}
               <span
-                className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm ${availabilityPill.className}`}
+                className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium ${availabilityPill.className}`}
               >
                 <Dot /> {availabilityPill.text}
               </span>
 
-              <div className="flex gap-3">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 {isBooked ? (
-                  <button className="rounded-full bg-emerald-600 text-white font-medium px-5 py-2.5 shadow-sm cursor-default">
-                    ✓ Slot Booked
+                  <button className="flex-1 sm:flex-none rounded-full bg-emerald-600 text-white font-medium px-6 py-3 shadow-lg shadow-emerald-200 cursor-default flex items-center justify-center gap-2">
+                    <CheckIcon className="text-white" /> Slot Booked
                   </button>
                 ) : (
                   <Link
                     to="/bookslot"
-                    className="rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium px-5 py-2.5 shadow-sm"
+                    className="flex-1 sm:flex-none text-center rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 shadow-lg shadow-blue-200 transition-all active:scale-95"
                   >
                     Book your slot
                   </Link>
                 )}
 
-                <Link
-                  to="/"
-                  className="rounded-full bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 font-medium px-5 py-2.5 shadow-sm"
+                {/* LIKE BUTTON */}
+                <button
+                    onClick={handleToggleLike}
+                    disabled={isLiking}
+                    className={`group relative flex items-center justify-center gap-2 rounded-full border px-5 py-3 font-medium transition-all active:scale-95
+                        ${hasLiked 
+                            ? "border-rose-200 bg-rose-50 text-rose-600" 
+                            : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-300"
+                        }
+                    `}
+                    title="Like this event"
                 >
-                  View agenda
-                </Link>
+                    <HeartIcon filled={hasLiked} className={`transition-transform duration-300 ${hasLiked ? "scale-110" : "group-hover:scale-110"}`} />
+                    <span>{likeCount}</span>
+                </button>
               </div>
             </div>
           </div>
 
-          {/* Right: Dashboard-style card */}
-          <div className="order-first lg:order-none">
+          {/* Right: Dashboard Card */}
+          <div className="order-first lg:order-none w-full">
             <HeroDashboardCard />
           </div>
         </section>
 
-        {/* Info Cards */}
-        <section className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Info Grid */}
+        <section className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           <InfoCard
             icon={<InfoIcon className="text-sky-500" />}
-            title="About"
-            body="Developer The Explorer is a full-day immersive event bringing together students, developers, and tech enthusiasts. Dive into hands-on workshops, explore cutting-edge Google technologies, and connect with industry mentors in a collaborative environment."
+            title="About the event"
+            body="Developer The Explorer is a full-day immersive event bringing together students, developers, and tech enthusiasts. Dive into hands-on workshops, explore cutting-edge Google technologies, and connect with industry mentors."
           />
           <InfoCard
             icon={<StarIcon className="text-emerald-500" />}
-            title="Why attend"
+            title="Why attend?"
             list={[
               "Hands-on labs with real-world projects",
               "Meet mentors from leading tech companies",
-              "Get certificate of participation",
+              "Exclusive swag & digital certificates",
             ]}
           />
           <InfoCard
             icon={<LockerIcon className="text-amber-500" />}
-            title="What to bring"
-            list={["Laptop + charger", "Student ID", "Water bottle"]}
+            title="Essentials to bring"
+            list={["Laptop + Charger (Mandatory)", "Student ID Card", "Water bottle & enthusiasm"]}
           />
         </section>
 
-        {/* Agenda */}
-        <section id="agenda" className="mt-8">
-          <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 p-6 sm:p-7">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Event Agenda</h2>
-              <a className="text-sm text-[#2563EB] hover:underline" href="#">
-                See full Agenda →
+        {/* Agenda Section */}
+        <section id="agenda" className="mt-12 scroll-mt-20">
+          <div className="rounded-2xl bg-white shadow-xl shadow-slate-200/50 ring-1 ring-slate-900/5 p-6 sm:p-8">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-6 mb-6">
+              <h2 className="text-2xl font-bold text-slate-900">Event Agenda</h2>
+              <a className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline" href="#">
+                Download PDF →
               </a>
             </div>
 
-            <ul className="mt-5 space-y-5">
+            <ul className="space-y-8 relative">
+                {/* Vertical Line for timeline effect */}
+                <div className="absolute left-[39px] sm:left-[43px] top-2 bottom-2 w-0.5 bg-slate-100 -z-10 hidden sm:block"></div>
+                
               <AgendaItem
                 time="10:00"
                 color="#3B82F6"
                 title="Opening Keynote"
-                desc="Welcome address and introduction to the day's tracks and activities"
+                desc="Welcome address and introduction to the day's tracks and activities."
               />
               <AgendaItem
                 time="11:30"
                 color="#22C55E"
                 title="Track Briefings"
-                desc="Overview of Cloud, Web, Android, and AI/ML tracks with expert speakers"
+                desc="Overview of Cloud, Web, Android, and AI/ML tracks with expert speakers."
               />
               <AgendaItem
                 time="13:30"
                 color="#F59E0B"
-                title="Hands-on Labs (parallel)"
-                desc="Interactive coding sessions across all four tracks with mentor support"
+                title="Hands-on Labs (Parallel)"
+                desc="Interactive coding sessions across all four tracks with mentor support."
               />
               <AgendaItem
                 time="16:30"
                 color="#EF4444"
                 title="Project Showcase & Closing"
-                desc="Present your work, networking session, and certificate distribution"
+                desc="Present your work, networking session, and certificate distribution."
               />
             </ul>
           </div>
@@ -256,32 +347,33 @@ export default function Event() {
   );
 }
 
-/* -------------------- Reusable pieces -------------------- */
+/* -------------------- Sub-Components -------------------- */
 
 function MetaItem({ icon, label }) {
   return (
-    <li className="flex items-start gap-3">
-      <div className="mt-0.5">{icon}</div>
-      <span className="text-[15px]">{label}</span>
+    <li className="flex items-center gap-3 text-slate-600">
+      <div className="flex-shrink-0 text-slate-400">{icon}</div>
+      <span className="text-[15px] font-medium">{label}</span>
     </li>
   );
 }
 
 function InfoCard({ icon, title, body, list }) {
   return (
-    <div className="rounded-xl bg-white ring-1 ring-black/5 shadow-[0_10px_30px_rgba(0,0,0,.06)] p-5">
-      <div className="flex items-center gap-3">
-        <div className="h-9 w-9 grid place-items-center rounded-full bg-slate-50">
+    <div className="group rounded-2xl bg-white ring-1 ring-slate-900/5 shadow-sm hover:shadow-md transition-shadow p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="h-10 w-10 grid place-items-center rounded-xl bg-slate-50 ring-1 ring-slate-900/5 group-hover:bg-white group-hover:scale-110 transition-all">
           {icon}
         </div>
-        <h3 className="text-base font-semibold">{title}</h3>
+        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
       </div>
-      {body && <p className="mt-3 text-sm text-slate-700">{body}</p>}
+      {body && <p className="text-sm leading-relaxed text-slate-600">{body}</p>}
       {list && (
-        <ul className="mt-3 space-y-2 text-sm text-slate-700">
+        <ul className="space-y-2.5">
           {list.map((item, i) => (
-            <li key={i} className="flex items-center gap-2">
-              <CheckIcon className="text-emerald-600" /> {item}
+            <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
+              <CheckIcon className="mt-0.5 text-emerald-500 shrink-0" /> 
+              <span>{item}</span>
             </li>
           ))}
         </ul>
@@ -292,16 +384,16 @@ function InfoCard({ icon, title, body, list }) {
 
 function AgendaItem({ time, color, title, desc }) {
   return (
-    <li className="flex flex-col sm:flex-row sm:items-start gap-4">
+    <li className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6 bg-white sm:bg-transparent p-4 sm:p-0 rounded-xl border sm:border-0 border-slate-100">
       <span
-        className="inline-flex h-8 items-center rounded-full px-3 text-sm font-medium text-white"
-        style={{ background: color }}
+        className="flex-shrink-0 inline-flex h-9 items-center justify-center rounded-full px-3 text-sm font-bold text-white shadow-sm w-fit"
+        style={{ backgroundColor: color }}
       >
         {time}
       </span>
-      <div className="flex-1">
-        <div className="text-[15px] font-semibold">{title}</div>
-        <p className="text-sm text-slate-600">{desc}</p>
+      <div className="flex-1 pt-1">
+        <h4 className="text-lg font-semibold text-slate-900">{title}</h4>
+        <p className="mt-1 text-sm text-slate-600 leading-relaxed">{desc}</p>
       </div>
     </li>
   );
@@ -309,249 +401,182 @@ function AgendaItem({ time, color, title, desc }) {
 
 function HeroDashboardCard() {
   return (
-    <div className="rounded-2xl bg-white shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-4 sm:p-5">
-      {/* App bar */}
-      <div className="flex items-center gap-3">
+    <div className="rounded-2xl bg-white shadow-2xl shadow-slate-200/60 ring-1 ring-slate-900/5 p-5 transform transition-transform hover:-translate-y-1 duration-500">
+      {/* Fake Search Bar */}
+      <div className="flex items-center gap-3 mb-5">
         <div className="relative flex-1">
-          <input
-            placeholder="Search sessions..."
-            className="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 pr-9 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-sky-100 focus:border-sky-400"
-          />
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">
-            <SearchIcon />
+          <div className="h-10 w-full rounded-lg border border-slate-200 bg-slate-50 flex items-center px-3 text-slate-400 text-sm">
+            <SearchIcon className="mr-2 h-4 w-4" />
+            <span>Search sessions...</span>
           </div>
         </div>
-        <button
-          className="h-8 w-8 rounded-full bg-sky-500"
-          aria-label="Toggle"
-          title="Toggle"
-        />
+        <div className="h-9 w-9 rounded-full bg-sky-500 shadow-lg shadow-sky-200" />
       </div>
 
-      {/* 2x2 tiles */}
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <Tile color="#E8F1FF" icon={<CompassIcon />} label="Discover" />
-        <Tile color="#FEF6DC" icon={<PinBulbIcon />} label="Jam" />
-        <Tile color="#EAF7F0" icon={<HammerIcon />} label="Build" />
-        <Tile color="#FDECEC" icon={<TrophyIcon />} label="Showcase" />
+      {/* Grid Tiles */}
+      <div className="grid grid-cols-2 gap-4">
+        <Tile color="#eff6ff" borderColor="#dbeafe" icon={<CompassIcon />} label="Discover" />
+        <Tile color="#fefce8" borderColor="#fef9c3" icon={<PinBulbIcon />} label="Jam Labs" />
+        <Tile color="#f0fdf4" borderColor="#dcfce7" icon={<HammerIcon />} label="Build" />
+        <Tile color="#fef2f2" borderColor="#fee2e2" icon={<TrophyIcon />} label="Showcase" />
       </div>
     </div>
   );
 }
 
-function Tile({ color, icon, label }) {
+function Tile({ color, borderColor, icon, label }) {
   return (
     <div
-      className="rounded-xl h-28 sm:h-32 grid place-items-center border border-slate-100"
-      style={{ background: color }}
+      className="rounded-xl h-28 sm:h-32 flex flex-col items-center justify-center gap-3 border transition-colors hover:brightness-95 cursor-default"
+      style={{ backgroundColor: color, borderColor: borderColor }}
     >
-      <div className="flex flex-col items-center gap-2">
-        <div className="text-sky-600">{icon}</div>
-        <div className="text-sm font-medium text-slate-800">{label}</div>
-      </div>
+      <div className="text-slate-700">{icon}</div>
+      <div className="text-sm font-semibold text-slate-800">{label}</div>
     </div>
   );
 }
 
 function Avatar({ initials }) {
   return (
-    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-sky-200 to-violet-200 ring-1 ring-black/10 grid place-items-center text-[11px] font-semibold text-slate-700">
-      {initials || "DT"}
+    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md ring-2 ring-white grid place-items-center text-xs font-bold text-white tracking-wider cursor-pointer">
+      {initials || "U"}
     </div>
   );
 }
 
-/* -------------------- Icons (inline SVGs) -------------------- */
+/* -------------------- Icons -------------------- */
 
 function Dot({ color = "currentColor" }) {
   return (
     <span
       className="inline-block h-2 w-2 rounded-full"
-      style={{ background: color }}
+      style={{ backgroundColor: color }}
     />
+  );
+}
+
+// New Heart Icon for Like Feature
+function HeartIcon({ filled, className = "" }) {
+  return (
+    <svg 
+        width="20" height="20" viewBox="0 0 24 24" 
+        fill={filled ? "currentColor" : "none"}
+        className={className}
+    >
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
 function CalendarIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <rect
-        x="3"
-        y="4"
-        width="18"
-        height="17"
-        rx="2"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path d="M8 2v4M16 2v4M3 9h18" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2" />
+      <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2" />
+      <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2" />
+      <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function PinIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="2" />
+      <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function StackIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M12 3l10 5-10 5L2 8l10-5z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path d="M22 13l-10 5L2 13" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M22 18l-10 5-10-5" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
-function SearchIcon() {
+function SearchIcon({className}) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M20 20l-3-3" stroke="currentColor" strokeWidth="1.6" />
+    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function CompassIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-      <path
-        d="M15.5 8.5l-2 5-5 2 2-5 5-2z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function PinBulbIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M12 3a7 7 0 0 1 7 7c0 3-2 4.5-3 6H10c-1-1.5-3-3-3-6a7 7 0 0 1 7-7z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path d="M10 19h4M11 22h2" stroke="currentColor" strokeWidth="1.6" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M10 22h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M12 2v1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M12 15a6 6 0 0 0 6-6c0-2.8-1.8-5.3-4.4-6" stroke="currentColor" strokeWidth="2" />
+        <path d="M6.4 9A6 6 0 0 0 12 15" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function HammerIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path d="M2 21l7-7" stroke="currentColor" strokeWidth="1.6" />
-      <path
-        d="M13 3l4 4-3 3-4-4 3-3z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path d="M7 13l4 4" stroke="currentColor" strokeWidth="1.6" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function TrophyIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M8 4h8v4a4 4 0 0 1-8 0V4z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path d="M6 4H4a3 3 0 0 0 3 3" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M18 4h2a3 3 0 0 1-3 3" stroke="currentColor" strokeWidth="1.6" />
-      <path
-        d="M10 14h4v3H10zM7 21h10"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M8 21h8" stroke="currentColor" strokeWidth="2" />
+      <path d="M12 17v4" stroke="currentColor" strokeWidth="2" />
+      <path d="M7 4h10" stroke="currentColor" strokeWidth="2" />
+      <path d="M17 4v8a5 5 0 0 1-10 0V4" stroke="currentColor" strokeWidth="2" />
+      <path d="M5 9v-.2A3 3 0 0 1 8 4" stroke="currentColor" strokeWidth="2" />
+      <path d="M19 9v-.2A3 3 0 0 0 16 4" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function InfoIcon({ className = "" }) {
   return (
-    <svg
-      className={className}
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-      <path
-        d="M12 8h.01M11 11h2v5h-2z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+      <line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" strokeWidth="2" />
+      <line x1="12" y1="8" x2="12.01" y2="8" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function StarIcon({ className = "" }) {
   return (
-    <svg
-      className={className}
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <path
-        d="M12 3l3 6 7 .9-5 4.8 1.4 6.3L12 17l-6.4 4 1.4-6.3-5-4.8L9 9l3-6z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
     </svg>
   );
 }
 function LockerIcon({ className = "" }) {
   return (
-    <svg
-      className={className}
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <rect
-        x="4"
-        y="10"
-        width="16"
-        height="10"
-        rx="2"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path
-        d="M8 10V7a4 4 0 0 1 8 0v3"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" strokeWidth="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 function CheckIcon({ className = "" }) {
   return (
-    <svg
-      className={className}
-      width="16"
-      height="16"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path d="M7.629 13.233 3.9 9.504l1.414-1.415 2.315 2.315 6.06-6.06 1.415 1.414-7.475 7.475z" />
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
     </svg>
   );
 }
 
-/* Background decoration */
 function BgCurves() {
   return (
     <svg

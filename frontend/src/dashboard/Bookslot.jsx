@@ -1,20 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChevronRight,
   ChevronDown,
   Lock,
   Bell,
+  Menu,
+  User,
+  LogOut,
+  CheckCircle2,
+  AlertCircle
 } from "lucide-react";
-import { useAuthGuard } from "./useAuthGuard";
-import { supabase } from "../../supabase/supabase.js";
-import { useNavigate } from "react-router-dom";
-import { useUserProfile } from "./useUserProfile";
 
+// --- REAL IMPORTS (Uncomment these in your project) ---
+// import { useNavigate } from "react-router-dom";
+// import { useAuthGuard } from "./useAuthGuard";
+// import { useUserProfile } from "./useUserProfile";
+// import { supabase } from "../../supabase/supabase.js";
+
+// --- MOCKS FOR PREVIEW (Delete this section in your project) ---
+const useNavigate = () => (path) => console.log(`[Mock Navigate] -> ${path}`);
+const useAuthGuard = () => ({ isLoading: false });
+const useUserProfile = () => ({
+  profile: { name: "Alex Developer", initials: "AD" },
+  loadingProfile: false,
+});
+const supabase = {
+  auth: {
+    getUser: async () => ({ data: { user: { id: "mock-user-id" } } }),
+    signOut: async () => console.log("Signed out"),
+  },
+  functions: {
+    invoke: async (fn, { body }) => {
+      console.log(`[Supabase Fn] ${fn}`, body);
+      return { data: { key: "rzp_test_123", order: { id: "order_123", amount: body.amount * 100 }, booking_id: "bk_123" }, error: null };
+    }
+  },
+  from: () => ({
+    update: () => ({ eq: async () => ({ error: null }) })
+  })
+};
+window.Razorpay = class {
+  constructor(options) { this.options = options; }
+  open() { 
+    const success = confirm("[Mock Razorpay] Click OK to simulate Success, Cancel to simulate Failure.");
+    if (success) this.options.handler({ razorpay_payment_id: "pay_123456" });
+    else this.options.modal.ondismiss();
+  }
+};
+// -------------------------------------------------------------
 
 const inr = (v) =>
-  new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(
-    v
-  );
+  new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(v);
 
 export default function Bookslot() {
   const navigate = useNavigate();
@@ -22,6 +58,7 @@ export default function Bookslot() {
   const { profile, loadingProfile } = useUserProfile();
   const [isSigningOut, setIsSigningOut] = useState(false);
 
+  // Form State
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [cc, setCc] = useState("+91");
@@ -36,6 +73,12 @@ export default function Bookslot() {
     college: false,
   });
 
+  // Prefill data if profile loads (Optional enhancement)
+  useEffect(() => {
+    if (profile?.name && !name) setName(profile.name);
+    if (profile?.email && !email) setEmail(profile.email);
+  }, [profile]);
+
   const validate = () => {
     const errors = {};
     if (!name.trim()) errors.name = "Name is required";
@@ -44,7 +87,7 @@ export default function Bookslot() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)) {
       errors.email = "Invalid email address";
     }
-    
+
     const cleanPhone = phone.replace(/\s|-/g, "");
     if (!phone.trim()) {
       errors.phone = "Phone number is required";
@@ -53,7 +96,7 @@ export default function Bookslot() {
     }
 
     if (!college.trim()) errors.college = "College/Organization is required";
-    
+
     return errors;
   };
 
@@ -70,6 +113,7 @@ export default function Bookslot() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   async function handleProceed() {
+    // Mark all as touched to show errors
     if (!formValid) {
       setTouched({
         name: true,
@@ -77,14 +121,14 @@ export default function Bookslot() {
         phone: true,
         college: true,
       });
+      // Scroll to top error
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     setIsProcessing(true);
 
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
         alert("Please login first");
@@ -92,8 +136,7 @@ export default function Bookslot() {
         return;
       }
 
-      const amountToCharge = Number(total.toFixed(2));
-
+      // Create Order
       const { data, error } = await supabase.functions.invoke("create-order", {
         body: {
           user_id: user.id,
@@ -123,6 +166,7 @@ export default function Bookslot() {
         description: "Event Slot Booking",
         order_id: order.id,
         prefill: { name, email, contact: phone },
+        theme: { color: "#3B82F6" }, 
 
         handler: async function (response) {
           try {
@@ -136,7 +180,7 @@ export default function Bookslot() {
               .eq("id", booking_id);
 
             // Send confirmation email
-            const emailResponse = await supabase.functions.invoke("send-booking-confirmation", {
+            await supabase.functions.invoke("send-booking-confirmation", {
               body: {
                 email,
                 full_name: name,
@@ -148,18 +192,9 @@ export default function Bookslot() {
               },
             });
 
-            if (emailResponse.error) {
-              console.error("Failed to send confirmation email:", emailResponse.error);
-              // Don't block navigation even if email fails
-            } else {
-              console.log("Confirmation email sent successfully");
-            }
-
-            // Navigate to event page
             navigate("/event");
           } catch (error) {
             console.error("Error in payment handler:", error);
-            // Still navigate even if there's an error
             navigate("/event");
           } finally {
             setIsProcessing(false);
@@ -182,13 +217,17 @@ export default function Bookslot() {
     } catch (err) {
       console.error(err);
       setIsProcessing(false);
+      alert("An unexpected error occurred. Please try again.");
     }
   }
+
   async function handleLogout() {
     try {
       setIsSigningOut(true);
       await supabase.auth.signOut();
-      window.location.href = "/signup";
+      // Use window.location for hard refresh/redirect or navigate for SPA
+      // window.location.href = "/signup"; 
+      navigate("/signup"); 
     } catch (error) {
       console.error("Failed to sign out:", error);
       setIsSigningOut(false);
@@ -197,190 +236,325 @@ export default function Bookslot() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      <div className="flex items-center justify-center min-h-screen bg-[#F5F7FB]">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-sky-600"></div>
+          <p className="text-sm text-slate-500 font-medium">Verifying session...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased">
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200">
-        <div className="mx-auto max-w-6xl h-14 px-4 sm:px-6 flex items-center justify-between">
-          <a href="/" className="font-semibold">Developer The Explorer</a>
-          <div className="hidden sm:flex items-center gap-2 text-sm text-slate-600">
-            <a className="hover:text-slate-900" href="/">Home</a>
-            <ChevronRight size={16} />
-            <a className="hover:text-slate-900" href="/event">Event</a>
-            <ChevronRight size={16} />
-            <span className="font-medium text-slate-900">Book your slot</span>
+    <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased font-sans pb-20 sm:pb-0">
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-200">
+        <div className="mx-auto max-w-6xl h-16 px-4 sm:px-6 flex items-center justify-between">
+          
+          {/* Logo / Brand */}
+          <div className="flex items-center gap-2">
+             <div className="h-8 w-8 bg-sky-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-sm shadow-sky-200">
+                DT
+             </div>
+             <a href="/" className="font-bold text-lg tracking-tight text-slate-800 hover:text-sky-700 transition-colors">
+               Developer<span className="hidden xs:inline"> The Explorer</span>
+             </a>
           </div>
-          <div className="flex items-center gap-3 text-slate-600">
-            <Bell size={18} className="hidden sm:block" />
-            <div className="hidden sm:flex flex-col text-right text-xs">
-              <span className="text-slate-500">
-                {loadingProfile ? "Syncing…" : "Signed in"}
-              </span>
-              <span className="text-sm font-medium text-slate-900">
-                {loadingProfile ? "Loading…" : profile.name || "Guest"}
-              </span>
-            </div>
-            <button
-              onClick={handleLogout}
-              disabled={isSigningOut}
-              className="text-xs sm:text-sm font-medium text-slate-600 border border-slate-200 rounded-full px-3 py-1.5 hover:bg-slate-50 transition disabled:opacity-60"
-            >
-              {isSigningOut ? "Signing out…" : "Logout"}
+
+          {/* Desktop Breadcrumbs */}
+          <div className="hidden md:flex items-center gap-2 text-sm text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+            <a className="hover:text-slate-900 transition-colors" href="/">Home</a>
+            <ChevronRight size={14} className="text-slate-400" />
+            <a className="hover:text-slate-900 transition-colors" href="/event">Event</a>
+            <ChevronRight size={14} className="text-slate-400" />
+            <span className="font-semibold text-sky-700">Checkout</span>
+          </div>
+
+          {/* User Controls */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Notification Bell (Desktop) */}
+            <button className="hidden sm:flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 transition-colors">
+              <Bell size={20} />
             </button>
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-sky-200 to-violet-200 text-[11px] font-semibold text-slate-700 ring-1 ring-black/10">
-              {profile.initials || "DT"}
+
+            {/* Divider */}
+            <div className="hidden sm:block h-6 w-px bg-slate-200"></div>
+
+            {/* Profile Info */}
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex flex-col text-right">
+                <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                  {loadingProfile ? "Syncing..." : "Logged in as"}
+                </span>
+                <span className="text-sm font-semibold text-slate-800 leading-none">
+                  {loadingProfile ? "Loading..." : profile.name || "Guest"}
+                </span>
+              </div>
+              
+              {/* Avatar */}
+              <div className="relative group cursor-pointer">
+                <div className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 text-sm font-bold text-white shadow-md shadow-sky-200 ring-2 ring-white">
+                    {profile.initials || <User size={18} />}
+                </div>
+                {/* Mobile Logout Dropdown Hint (Could be expanded to real dropdown) */}
+              </div>
+
+              {/* Logout Button */}
+              <button
+                onClick={handleLogout}
+                disabled={isSigningOut}
+                className="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-600 bg-white border border-slate-200 rounded-full px-4 py-2 hover:bg-slate-50 hover:text-red-600 hover:border-red-100 transition-all disabled:opacity-60 shadow-sm"
+              >
+                {isSigningOut ? "..." : <LogOut size={14} />}
+                <span className="hidden lg:inline">{isSigningOut ? "Exiting" : "Logout"}</span>
+              </button>
+              
+               {/* Mobile Logout Icon Only */}
+               <button
+                onClick={handleLogout}
+                disabled={isSigningOut}
+                className="sm:hidden flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+              >
+                 <LogOut size={20} />
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
-        <section>
-          <h1 className="text-3xl sm:text-[32px] font-semibold">Book your slot</h1>
-          <p className="mt-1 text-[15px] text-slate-600">
-            Reserve your seat for hands-on sessions and showcase.
-          </p>
-          <p className="mt-2 flex items-center gap-2 text-sm text-emerald-700">
-            <Lock size={16} />
-            Secure checkout via Razorpay
-          </p>
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-10">
+        
+        {/* Page Title Section */}
+        <section className="mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+            Secure your spot
+          </h1>
+          <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-slate-600">
+            <p className="text-[15px]">
+              Complete your registration for the upcoming hands-on session.
+            </p>
+            <div className="hidden sm:block h-1 w-1 rounded-full bg-slate-300"></div>
+            <p className="flex items-center gap-1.5 text-sm font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md w-fit">
+              <Lock size={14} />
+              SSL Encrypted Checkout
+            </p>
+          </div>
         </section>
 
-        <section className="mt-6 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6">
-          <div className="rounded-2xl bg-white ring-1 ring-black/5 shadow-[0_10px_30px_rgba(0,0,0,.06)] p-5 sm:p-7">
-            <h2 className="text-base font-semibold">Attendee details</h2>
+        {/* Two Column Layout */}
+        <section className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 lg:gap-8 items-start">
+          
+          {/* Left Column: Form */}
+          <div className="order-2 lg:order-1 rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-5 sm:p-8">
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <span className="flex items-center justify-center h-6 w-6 rounded-full bg-sky-100 text-sky-600 text-xs font-bold">1</span>
+                    Attendee Details
+                </h2>
+                <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Step 1 of 2</span>
+            </div>
 
-            <div className="mt-4 space-y-4">
-              <Field label="Full name" error={touched.name && errors.name}>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  onBlur={() => handleBlur("name")}
-                  className={inputCls(touched.name && errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
-                  placeholder="Please Enter your Name"
-                />
+            <div className="space-y-5">
+              <Field label="Full Name" error={touched.name && errors.name}>
+                <div className="relative">
+                    <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    onBlur={() => handleBlur("name")}
+                    className={inputCls(touched.name && errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                    placeholder="e.g. John Doe"
+                    type="text"
+                    />
+                    {touched.name && !errors.name && <CheckCircle2 className="absolute right-3 top-3 text-emerald-500 pointer-events-none" size={18} />}
+                </div>
               </Field>
 
-              <Field label="Email" error={touched.email && errors.email}>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onBlur={() => handleBlur("email")}
-                  className={inputCls(touched.email && errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
-                  placeholder="your email address"
-                />
+              <Field label="Email Address" error={touched.email && errors.email} subLabel="We'll send your ticket here">
+                <div className="relative">
+                    <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onBlur={() => handleBlur("email")}
+                    className={inputCls(touched.email && errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                    placeholder="john@example.com"
+                    />
+                </div>
               </Field>
 
-              <Field label="Phone" error={touched.phone && errors.phone}>
-                <div className="flex">
-                  <button type="button" className="me-2 inline-flex items-center justify-between min-w-[88px] h-11 rounded-md border border-slate-300 bg-white px-3 text-[15px]">
-                    {cc}
-                    <ChevronDown size={16} className="text-slate-500" />
-                  </button>
+              <Field label="WhatsApp / Phone" error={touched.phone && errors.phone}>
+                <div className="flex rounded-md shadow-sm">
+                  <div className="relative">
+                      <select 
+                        value={cc}
+                        onChange={e => setCc(e.target.value)}
+                        className="h-11 appearance-none rounded-l-md border border-r-0 border-slate-300 bg-slate-50 pl-3 pr-8 text-slate-600 text-base focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                      >
+                        <option>+91</option>
+                        <option>+1</option>
+                        <option>+44</option>
+                      </select>
+                      <ChevronDown size={14} className="absolute right-2 top-3.5 text-slate-400 pointer-events-none"/>
+                  </div>
                   <input
+                    type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                        setPhone(val);
+                    }}
                     onBlur={() => handleBlur("phone")}
-                    className={inputCls(touched.phone && errors.phone ? "flex-1 border-red-500 focus:border-red-500 focus:ring-red-100" : "flex-1")}
-                    placeholder="xxxxxxxxxx"
+                    className={`block w-full flex-1 rounded-none rounded-r-md border border-slate-300 px-3 py-2 placeholder-slate-400 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-4 focus:ring-sky-100 sm:text-sm h-11 text-base ${touched.phone && errors.phone ? "border-red-500 z-20" : ""}`}
+                    placeholder="98765 43210"
                   />
                 </div>
               </Field>
 
-              <Field label="College/Organization" error={touched.college && errors.college}>
-                <input
-                  value={college}
-                  onChange={(e) => setCollege(e.target.value)}
-                  onBlur={() => handleBlur("college")}
-                  className={inputCls(touched.college && errors.college ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
-                  placeholder="college/organization"
-                />
-              </Field>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <Field label="Organization / College" error={touched.college && errors.college}>
+                    <input
+                      value={college}
+                      onChange={(e) => setCollege(e.target.value)}
+                      onBlur={() => handleBlur("college")}
+                      className={inputCls(touched.college && errors.college ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                      placeholder="e.g. IIT Delhi"
+                    />
+                  </Field>
 
-              <Field label="Gender">
-                <select value={gender} onChange={(e) => setGender(e.target.value)} className={inputCls("appearance-none pe-10")}>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-                  <option>Prefer not to say</option>
-                </select>
-                <ChevronDown size={16} className="pointer-events-none absolute right-3 -translate-y-6 text-slate-500" />
-              </Field>
+                  <Field label="Gender">
+                    <div className="relative">
+                        <select 
+                            value={gender} 
+                            onChange={(e) => setGender(e.target.value)} 
+                            className={`${inputCls("appearance-none cursor-pointer")} bg-no-repeat bg-right`}
+                        >
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                        <option>Prefer not to say</option>
+                        </select>
+                        <ChevronDown size={16} className="pointer-events-none absolute right-3 top-3.5 text-slate-500" />
+                    </div>
+                  </Field>
+              </div>
             </div>
           </div>
 
-          <aside className="lg:sticky lg:top-6">
-            <div className="rounded-2xl bg-white ring-1 ring-black/5 shadow-[0_10px_30px_rgba(0,0,0,.06)] p-5 sm:p-6">
-              <h3 className="text-lg font-semibold">Order Summary</h3>
+          {/* Right Column: Summary Sticky Sidebar */}
+          <aside className="order-1 lg:order-2 lg:sticky lg:top-24 h-fit">
+            <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-xl shadow-slate-200/50 p-5 sm:p-6 overflow-hidden relative">
+              
+              {/* Decorative top gradient */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-sky-400 to-indigo-500"></div>
 
-              <div className="mt-4 space-y-2 text-sm">
-                <SummaryRow label="Subtotal" value={inr(subtotal)} />
-                <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
-                  <span className="text-sm font-medium">Total</span>
-                  <span className="text-2xl font-semibold">{inr(total)}</span>
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Order Summary</h3>
+
+              {/* Event Mini Details */}
+              <div className="mb-4 pb-4 border-b border-dashed border-slate-200">
+                  <div className="flex gap-3">
+                     <div className="h-12 w-12 rounded-lg bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0">
+                        <span className="text-xl">🎟️</span>
+                     </div>
+                     <div>
+                        <p className="text-sm font-semibold text-slate-900 line-clamp-1">Developer Explorer Summit</p>
+                        <p className="text-xs text-slate-500">Standard Access Pass</p>
+                     </div>
+                  </div>
+              </div>
+
+              <div className="space-y-3 text-sm">
+                <SummaryRow label="Ticket Price" value={inr(subtotal)} />
+                <SummaryRow label="Processing Fee" value={inr(0)} className="text-emerald-600" />
+                <SummaryRow label="Taxes" value="Included" className="text-slate-400" />
+                
+                <div className="pt-3 mt-3 border-t border-slate-200 flex items-center justify-between">
+                  <div className="flex flex-col">
+                     <span className="text-sm font-medium text-slate-600">Total Amount</span>
+                     <span className="text-[10px] text-slate-400">Including GST</span>
+                  </div>
+                  <span className="text-2xl font-bold text-slate-900 tracking-tight">{inr(total)}</span>
                 </div>
               </div>
 
+              {/* Action Button */}
               <button
                 disabled={isProcessing}
                 onClick={handleProceed}
-                className={`mt-5 w-full rounded-lg px-4 py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 ${
-                  !isProcessing ? "bg-[#3B82F6] hover:bg-[#2563EB]" : "bg-slate-300 cursor-not-allowed"
+                className={`group relative mt-6 w-full overflow-hidden rounded-xl py-3.5 text-sm font-bold text-white shadow-lg transition-all active:scale-[0.98] ${
+                  !isProcessing 
+                    ? "bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 shadow-sky-200 hover:shadow-sky-300" 
+                    : "bg-slate-300 cursor-not-allowed"
                 }`}
               >
-                {isProcessing ? (
-                  <>
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    Processing...
-                  </>
-                ) : (
-                  "Proceed to payment"
-                )}
+                <div className="flex items-center justify-center gap-2 relative z-10">
+                    {isProcessing ? (
+                    <>
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        <span>Processing...</span>
+                    </>
+                    ) : (
+                    <>
+                        <span>Proceed to Pay</span>
+                        <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
+                    </>
+                    )}
+                </div>
               </button>
 
-              <p className="mt-3 flex items-center gap-2 text-[13px] text-emerald-700">
-                <Lock size={16} /> Safe & secure — Powered by Razorpay
-              </p>
-
-              <div className="mt-4 rounded-lg bg-slate-50 px-3 py-3 text-[13px] text-slate-600">
-                You’ll be redirected to Razorpay to complete payment.
+              {/* Trust Badges */}
+              <div className="mt-4 flex items-center justify-center gap-2 text-[11px] font-medium text-slate-400 bg-slate-50 py-2 rounded-lg border border-slate-100">
+                <Lock size={12} className="text-slate-400" />
+                <span>256-bit SSL Secured Payment</span>
               </div>
             </div>
+
+            {/* Help Text */}
+            <p className="mt-4 text-center text-xs text-slate-400 px-4">
+               By proceeding, you agree to our <a href="#" className="underline hover:text-sky-600">Terms</a> & <a href="#" className="underline hover:text-sky-600">Conditions</a>.
+            </p>
           </aside>
+
         </section>
       </main>
     </div>
   );
 }
 
+// --- Reusable Components ---
 
-function Field({ label, children, error }) {
+function Field({ label, subLabel, children, error }) {
   return (
-    <div>
-      <label className="mb-1.5 block text-[13px] font-medium text-slate-800">
-        {label} <span className="text-red-500">*</span>
-      </label>
+    <div className="w-full">
+      <div className="flex items-baseline justify-between mb-1.5">
+          <label className="block text-[13px] font-semibold text-slate-700">
+            {label} <span className="text-red-500">*</span>
+          </label>
+          {subLabel && <span className="text-[11px] text-slate-400 hidden xs:block">{subLabel}</span>}
+      </div>
       {children}
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      {error && (
+        <div className="mt-1.5 flex items-center gap-1.5 text-xs text-red-500 font-medium animate-in slide-in-from-top-1 fade-in duration-200">
+            <AlertCircle size={12} />
+            {error}
+        </div>
+      )}
     </div>
   );
 }
 
-function SummaryRow({ label, value }) {
+function SummaryRow({ label, value, className = "" }) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-slate-600">{label}</span>
-      <span className="font-medium">{value}</span>
+      <span className={`font-medium ${className}`}>{value}</span>
     </div>
   );
 }
 
+// Utility class for inputs - Text-base ensures no zoom on iOS
 const inputCls = (extra = "") =>
-  `h-11 w-full rounded-md border border-slate-300 bg-white px-3 text-[15px] placeholder:text-slate-400
-   focus:outline-none focus:ring-4 focus:ring-sky-100 focus:border-sky-400 ${extra}`;
+  `h-11 w-full rounded-md border border-slate-300 bg-white px-3 text-base sm:text-sm placeholder:text-slate-400
+   transition-all duration-200
+   focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-100 
+   disabled:bg-slate-50 disabled:text-slate-500
+   ${extra}`;
