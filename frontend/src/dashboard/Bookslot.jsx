@@ -10,20 +10,13 @@ import {
   CheckCircle2,
   AlertCircle
 } from "lucide-react";
+import { useUserProfile } from "./useUserProfile";
 
-// --- REAL IMPORTS (Uncomment these in your project) ---
-// import { useNavigate } from "react-router-dom";
-// import { useAuthGuard } from "./useAuthGuard";
-// import { useUserProfile } from "./useUserProfile";
-// import { supabase } from "../../supabase/supabase.js";
 
 // --- MOCKS FOR PREVIEW (Delete this section in your project) ---
 const useNavigate = () => (path) => console.log(`[Mock Navigate] -> ${path}`);
 const useAuthGuard = () => ({ isLoading: false });
-const useUserProfile = () => ({
-  profile: { name: "Alex Developer", initials: "AD" },
-  loadingProfile: false,
-});
+ 
 const supabase = {
   auth: {
     getUser: async () => ({ data: { user: { id: "mock-user-id" } } }),
@@ -47,7 +40,6 @@ window.Razorpay = class {
     else this.options.modal.ondismiss();
   }
 };
-// -------------------------------------------------------------
 
 const inr = (v) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(v);

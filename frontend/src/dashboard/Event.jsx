@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useAuthGuard } from "./useAuthGuard";
 import { Link } from "react-router-dom";
 import { supabase } from "../../supabase/supabase.js";
-import { useUserProfile } from "./useUserProfile";
+import { useUserProfile } from "./useUserProfile.js";
 
 export default function Event() {
   // --- State ---
