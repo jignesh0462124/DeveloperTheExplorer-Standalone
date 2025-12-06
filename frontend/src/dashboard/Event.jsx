@@ -66,9 +66,7 @@ export default function Event() {
 
     fetchData();
   }, [event.slug]);
-
-  // --- Handlers ---
-
+  
   async function handleLogout() {
     try {
       setIsSigningOut(true);

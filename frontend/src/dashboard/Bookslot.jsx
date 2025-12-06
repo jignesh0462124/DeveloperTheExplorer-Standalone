@@ -218,7 +218,7 @@ export default function Bookslot() {
       setIsSigningOut(true);
       await supabase.auth.signOut();
       // Use window.location for hard refresh/redirect or navigate for SPA
-      // window.location.href = "/signup"; 
+      window.location.href = "/signup"; 
       navigate("/signup"); 
     } catch (error) {
       console.error("Failed to sign out:", error);
