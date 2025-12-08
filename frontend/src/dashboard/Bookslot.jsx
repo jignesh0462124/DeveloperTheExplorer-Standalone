@@ -10,36 +10,12 @@ import {
   CheckCircle2,
   AlertCircle
 } from "lucide-react";
+
+// --- REAL IMPORTS (Uncomment these in your project) ---
+import { useNavigate } from "react-router-dom";
+import { useAuthGuard } from "./useAuthGuard";
 import { useUserProfile } from "./useUserProfile";
-
-
-// --- MOCKS FOR PREVIEW (Delete this section in your project) ---
-const useNavigate = () => (path) => console.log(`[Mock Navigate] -> ${path}`);
-const useAuthGuard = () => ({ isLoading: false });
- 
-const supabase = {
-  auth: {
-    getUser: async () => ({ data: { user: { id: "mock-user-id" } } }),
-    signOut: async () => console.log("Signed out"),
-  },
-  functions: {
-    invoke: async (fn, { body }) => {
-      console.log(`[Supabase Fn] ${fn}`, body);
-      return { data: { key: "rzp_test_123", order: { id: "order_123", amount: body.amount * 100 }, booking_id: "bk_123" }, error: null };
-    }
-  },
-  from: () => ({
-    update: () => ({ eq: async () => ({ error: null }) })
-  })
-};
-window.Razorpay = class {
-  constructor(options) { this.options = options; }
-  open() { 
-    const success = confirm("[Mock Razorpay] Click OK to simulate Success, Cancel to simulate Failure.");
-    if (success) this.options.handler({ razorpay_payment_id: "pay_123456" });
-    else this.options.modal.ondismiss();
-  }
-};
+import { supabase } from "../../supabase/supabase.js";
 
 const inr = (v) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(v);
@@ -218,7 +194,7 @@ export default function Bookslot() {
       setIsSigningOut(true);
       await supabase.auth.signOut();
       // Use window.location for hard refresh/redirect or navigate for SPA
-      window.location.href = "/signup"; 
+      // window.location.href = "/signup"; 
       navigate("/signup"); 
     } catch (error) {
       console.error("Failed to sign out:", error);
