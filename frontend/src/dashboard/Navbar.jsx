@@ -28,15 +28,12 @@ export default function Navbar({ breadcrumbs }) {
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-200">
-      <div className="mx-auto max-w-6xl h-16 px-4 sm:px-6 flex items-center justify-between">
+      <div className="mx-auto max-w-6xl h-18 px-4 sm:px-6 flex items-center justify-between">
         
         {/* Logo / Brand */}
         <div className="flex items-center gap-2">
-           <div className="h-8 w-8 bg-sky-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-sm shadow-sky-200">
-              DT
-           </div>
            <a href="/" className="font-bold text-lg tracking-tight text-slate-800 hover:text-sky-700 transition-colors">
-             Developer<span className="hidden xs:inline"> The Explorer</span>
+             <img src="images/logo.png" className="w-45 h-35 mt-4"></img>
            </a>
         </div>
 
