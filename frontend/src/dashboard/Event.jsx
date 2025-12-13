@@ -8,6 +8,7 @@ import { ChevronRight } from "lucide-react";
 export default function Event() {
   // --- State ---
   const [isBooked, setIsBooked] = useState(false);
+  const [isCheckingBooking, setIsCheckingBooking] = useState(true);
   
   // Like Feature State
   const [hasLiked, setHasLiked] = useState(false);
@@ -34,34 +35,40 @@ export default function Event() {
 
   useEffect(() => {
     async function fetchData() {
+      setIsCheckingBooking(true);
       const { data: userData } = await supabase.auth.getUser();
       const user = userData?.user;
 
-      if (!user) return;
+      if (!user) {
+        setIsCheckingBooking(false);
+        return;
+      }
 
-      // 1. Check Booking Status
-      const { data: bookingData } = await supabase
-        .from("bookings")
-        .select("payment_status")
-        .eq("user_id", user.id)
-        .eq("payment_status", "success")
-        .maybeSingle();
+      try {
+        // 1. Check Booking Status
+        const { data: bookingData } = await supabase
+          .from("bookings")
+          .select("payment_status")
+          .eq("user_id", user.id)
+          .eq("payment_status", "success")
+          .maybeSingle();
 
-      if (bookingData) setIsBooked(true);
+        if (bookingData) setIsBooked(true);
 
-      // 2. Check Like Status
-      const { data: likeData } = await supabase
-        .from("event_likes")
-        .select("id")
-        .eq("user_id", user.id)
-        .eq("event_slug", event.slug)
-        .maybeSingle();
+        // 2. Check Like Status
+        const { data: likeData } = await supabase
+          .from("event_likes")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("event_slug", event.slug)
+          .maybeSingle();
 
-      if (likeData) setHasLiked(true);
-      
-      // Optional: Fetch real total count from DB here if you want real-time counts
-      // const { count } = await supabase.from('event_likes').select('*', { count: 'exact' }).eq('event_slug', event.slug);
-      // if(count) setLikeCount(count);
+        if (likeData) setHasLiked(true);
+      } catch (error) {
+        console.error("Error fetching event data:", error);
+      } finally {
+        setIsCheckingBooking(false);
+      }
     }
 
     fetchData();
@@ -196,7 +203,15 @@ export default function Event() {
               </span>
 
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                {isBooked ? (
+                {isCheckingBooking ? (
+                  <button
+                    disabled
+                    className="flex-1 sm:flex-none rounded-full bg-blue-600/80 text-white font-medium px-6 py-3 shadow-lg shadow-blue-200 cursor-wait flex items-center justify-center gap-2"
+                  >
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
+                    Checking...
+                  </button>
+                ) : isBooked ? (
                   <button className="flex-1 sm:flex-none rounded-full bg-emerald-600 text-white font-medium px-6 py-3 shadow-lg shadow-emerald-200 cursor-default flex items-center justify-center gap-2">
                     <CheckIcon className="text-white" /> Slot Booked
                   </button>
