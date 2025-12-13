@@ -20,6 +20,12 @@ function Footer() {
               <p className="text-sm text-gray-600 leading-relaxed">
                 A flagship tech campaign by GDGOC GHRCE celebrating innovation and collaboration.
               </p>
+              
+              <div className="mt-6 space-y-2">
+                  <h4 className="font-semibold text-gray-900">Contact Us</h4>
+                  <p className="text-sm text-gray-600">contact@developertheexplorer.com</p>
+                  <p className="text-sm text-gray-600">+91 123 456 7890</p>
+              </div>
             </div>
 
             <div>
@@ -29,7 +35,6 @@ function Footer() {
                 <li><a href="#highlights" className="text-sm text-gray-600 hover:text-blue-500">Highlights</a></li>
                 <li><a href="#campaign" className="text-sm text-gray-600 hover:text-blue-500">Campaign Modules</a></li>
                 <li><a href="#sponsors" className="text-sm text-gray-600 hover:text-blue-500">Sponsors</a></li>
-                <li><Link to="/contact" className="text-sm text-gray-600 hover:text-blue-500">Contact</Link></li>
               </ul>
             </div>
 

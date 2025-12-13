@@ -34,7 +34,7 @@ function Campaign() {
   ];
 
   return (
-    <section ref={campaignRef} className="relative w-full  py-20 px-4">
+    <section id="campaign" ref={campaignRef} className="relative w-full  py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <h2 className={`campaign-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16 ${fadeUp}`}>
           Campaign Modules

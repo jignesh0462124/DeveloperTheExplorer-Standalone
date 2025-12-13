@@ -7,7 +7,7 @@ import Signup from "./dashboard/signup";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Event from "./dashboard/Event";
 import Bookslot from "./dashboard/Bookslot";
-import ContactUs from "./components/ContactUs";
+
 import TermsAndConditions from "./components/TermsAndConditions";
 import CancellationsAndRefund from "./components/CancellationsAndRefund";
 import PrivacyPolicy from "./components/PrivacyPolicy";
@@ -74,7 +74,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/event" element={<Event />} />
           <Route path="/bookslot" element={<Bookslot />} />
-          <Route path="/contact" element={<ContactUs />} />
+
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/cancellations" element={<CancellationsAndRefund />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
