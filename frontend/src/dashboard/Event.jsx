@@ -2,12 +2,12 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useAuthGuard } from "./useAuthGuard";
 import { Link } from "react-router-dom";
 import { supabase } from "../../supabase/supabase.js";
-import { useUserProfile } from "./useUserProfile.js";
+import Navbar from "./Navbar";
+import { ChevronRight } from "lucide-react";
 
 export default function Event() {
   // --- State ---
   const [isBooked, setIsBooked] = useState(false);
-  const [isSigningOut, setIsSigningOut] = useState(false);
   
   // Like Feature State
   const [hasLiked, setHasLiked] = useState(false);
@@ -15,7 +15,7 @@ export default function Event() {
   const [isLiking, setIsLiking] = useState(false);
 
   // Custom Hooks
-  const { profile, loadingProfile } = useUserProfile();
+  // useUserProfile removed, handled in Navbar
   const { isLoading: authLoading } = useAuthGuard("/signup");
 
   // Event Details (Static for now, could be passed as props)
@@ -66,17 +66,6 @@ export default function Event() {
 
     fetchData();
   }, [event.slug]);
-  
-  async function handleLogout() {
-    try {
-      setIsSigningOut(true);
-      await supabase.auth.signOut();
-      window.location.href = "/signup";
-    } catch (error) {
-      console.error("Failed to sign out:", error);
-      setIsSigningOut(false);
-    }
-  }
 
   async function handleToggleLike() {
     if (isLiking) return;
@@ -155,51 +144,20 @@ export default function Event() {
     );
   }
 
+  const breadcrumbs = (
+    <>
+      <a className="hover:text-slate-900 transition-colors" href="/">Home</a>
+      <ChevronRight size={14} className="text-slate-400" />
+      <span className="font-semibold text-slate-700">Event</span>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased font-sans">
       <BgCurves />
 
-      {/* Top Bar */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
-          <a href="/" className="font-semibold tracking-tight text-lg">
-            <span className="text-slate-900">Developer </span>
-            <span className="text-[#4285F4]">The </span>
-            <span className="text-[#FBBC05]">Explore</span>
-            <span className="text-[#34A853]">r</span>
-          </a>
-
-          {/* Breadcrumbs (Desktop) */}
-          <div className="hidden md:flex items-center text-sm text-slate-600 gap-2">
-            <a href="/" className="hover:text-slate-900 transition-colors">
-              Home
-            </a>
-            <span className="text-slate-300">›</span>
-            <span className="font-medium text-slate-900">Event</span>
-          </div>
-
-          {/* User Profile / Logout */}
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 text-sm text-slate-600">
-              <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium uppercase tracking-wider">
-                {loadingProfile ? "Syncing" : "Member"}
-              </span>
-              <span className="font-medium text-slate-900">
-                {loadingProfile ? "Loading..." : profile.name || "Guest"}
-              </span>
-            </div>
-            
-            <button
-              onClick={handleLogout}
-              disabled={isSigningOut}
-              className="text-xs sm:text-sm font-medium text-slate-600 border border-slate-200 rounded-full px-4 py-1.5 hover:bg-slate-50 transition disabled:opacity-60"
-            >
-              {isSigningOut ? "Signing out..." : "Logout"}
-            </button>
-            <Avatar initials={profile.initials} />
-          </div>
-        </div>
-      </header>
+      {/* Top Bar using Unified Navbar */}
+      <Navbar breadcrumbs={breadcrumbs} />
 
       {/* Main Content */}
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8 lg:py-12">
