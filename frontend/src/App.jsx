@@ -12,6 +12,7 @@ import TermsAndConditions from "./components/TermsAndConditions";
 import CancellationsAndRefund from "./components/CancellationsAndRefund";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./components/404.jsx";
 
 import { supabase } from "../supabase/supabase.js";
 import { useEffect } from "react";
@@ -78,6 +79,7 @@ function App() {
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/cancellations" element={<CancellationsAndRefund />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
