@@ -37,6 +37,24 @@ export default function Bookslot() {
     college: false,
   });
 
+  // Ticket Types State
+  const [ticketType, setTicketType] = useState('standard');
+  const [bookingCount, setBookingCount] = useState(0);
+
+  useEffect(() => {
+    const fetchBookingCount = async () => {
+      const { count, error } = await supabase
+        .from('bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('payment_status', 'success');
+      
+      if (!error && count !== null) {
+        setBookingCount(count);
+      }
+    };
+    fetchBookingCount();
+  }, []);
+
   // Prefill data if profile loads (Optional enhancement)
   useEffect(() => {
     if (profile?.name && !name) setName(profile.name);
@@ -56,7 +74,7 @@ export default function Bookslot() {
     if (!phone.trim()) {
       errors.phone = "Phone number is required";
     } else if (!/^[0-9]{10}$/.test(cleanPhone)) {
-      errors.phone = "Phone number must be 10 digits";
+      errors.phone = "Invalid Phone Number";
     }
 
     if (!college.trim()) errors.college = "College/Organization is required";
@@ -71,7 +89,16 @@ export default function Bookslot() {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  const subtotal = 2.0;
+
+  const getTicketPrice = (type) => {
+    switch(type) {
+      case 'vip': return 1300;
+      case 'late': return 1500;
+      case 'standard': default: return 2.0;
+    }
+  };
+
+  const subtotal = getTicketPrice(ticketType);
   const total = subtotal;
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -110,6 +137,7 @@ export default function Bookslot() {
           college,
           gender,
           amount: total.toFixed(2),
+          ticket_type: ticketType === 'vip' ? 'VIP Pass' : ticketType === 'late' ? 'Late Comers Pass' : 'Standard Pass',
         },
       });
 
@@ -153,6 +181,7 @@ export default function Bookslot() {
                 phone: `${cc} ${phone}`,
                 college,
                 gender,
+                ticket_type: ticketType === 'vip' ? 'VIP Pass' : ticketType === 'late' ? 'Late Comers Pass' : 'Standard Pass',
               },
             });
 
@@ -243,6 +272,48 @@ export default function Bookslot() {
             </div>
 
             <div className="space-y-5">
+              
+              {/* Ticket Type Selection */}
+              <Field label="Select Pass Type">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {/* Standard Pass */}
+                  <div 
+                    onClick={() => setTicketType('standard')}
+                    className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all ${ticketType === 'standard' ? 'border-sky-500 bg-sky-50' : 'border-slate-200 hover:border-sky-300'}`}
+                  >
+                     <span className="text-sm font-bold text-slate-800">Standard</span>
+                     <span className="text-xs text-slate-500">₹2.0</span>
+                     {ticketType === 'standard' && <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-sky-500"></div>}
+                  </div>
+
+                  {/* VIP Pass */}
+                  <div 
+                    onClick={() => setTicketType('vip')}
+                    className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all ${ticketType === 'vip' ? 'border-amber-500 bg-amber-50' : 'border-slate-200 hover:border-amber-300'}`}
+                  >
+                     <span className="text-sm font-bold text-slate-800">VIP</span>
+                     <span className="text-xs text-slate-500">₹1,300</span>
+                     {ticketType === 'vip' && <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-amber-500"></div>}
+                  </div>
+
+                  {/* Late Comers Pass */}
+                  <div 
+                    onClick={() => {
+                        if(bookingCount >= 80) setTicketType('late');
+                    }}
+                    className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
+                        bookingCount < 80 
+                        ? 'border-slate-100 bg-slate-50 opacity-60 cursor-not-allowed' 
+                        : ticketType === 'late' ? 'border-rose-500 bg-rose-50 cursor-pointer' : 'border-slate-200 hover:border-rose-300 cursor-pointer'
+                    }`}
+                  >
+                     <span className="text-sm font-bold text-slate-800">Late Comer</span>
+                     <span className="text-xs text-slate-500">₹1,500</span>
+                     {bookingCount < 80 && <span className="text-[10px] text-rose-500 mt-1 font-medium">Locked ({80 - bookingCount} left)</span>}
+                     {ticketType === 'late' && <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-rose-500"></div>}
+                  </div>
+                </div>
+              </Field>
               <Field label="Full Name" error={touched.name && errors.name}>
                 <div className="relative">
                     <input
@@ -345,7 +416,9 @@ export default function Bookslot() {
                      </div>
                      <div>
                         <p className="text-sm font-semibold text-slate-900 line-clamp-1">Developer Explorer Summit</p>
-                        <p className="text-xs text-slate-500">Standard Access Pass</p>
+                        <p className="text-xs text-slate-500">
+                            {ticketType === 'vip' ? 'VIP Access Pass' : ticketType === 'late' ? 'Late Comers Pass' : 'Standard Access Pass'}
+                        </p>
                      </div>
                   </div>
               </div>

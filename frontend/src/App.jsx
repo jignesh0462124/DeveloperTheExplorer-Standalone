@@ -1,20 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import "./App.css";
-import EventPoster from "./EventPoster";
-import Checkout from "./Checkout";
-import LandingPage from "./components/LandingPage";
-import Signup from "./dashboard/signup";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Event from "./dashboard/Event";
-import Bookslot from "./dashboard/Bookslot";
-
-import TermsAndConditions from "./components/TermsAndConditions";
-import CancellationsAndRefund from "./components/CancellationsAndRefund";
-import PrivacyPolicy from "./components/PrivacyPolicy";
 import ScrollToTop from "./components/ScrollToTop";
-
 import { supabase } from "../supabase/supabase.js";
-import { useEffect } from "react";
+
+const LandingPage = lazy(() => import("./components/LandingPage"));
+const Signup = lazy(() => import("./dashboard/signup"));
+const Event = lazy(() => import("./dashboard/Event"));
+const Bookslot = lazy(() => import("./dashboard/Bookslot"));
+const TermsAndConditions = lazy(() => import("./components/TermsAndConditions"));
+const CancellationsAndRefund = lazy(() => import("./components/CancellationsAndRefund"));
+const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
 
 function App() {
   const [isAuthProcessing, setIsAuthProcessing] = useState(
@@ -69,16 +65,24 @@ function App() {
     <>
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/event" element={<Event />} />
-          <Route path="/bookslot" element={<Bookslot />} />
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center min-h-screen bg-[#F6F7FB]">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4285F4]"></div>
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/event" element={<Event />} />
+            <Route path="/bookslot" element={<Bookslot />} />
 
-          <Route path="/terms" element={<TermsAndConditions />} />
-          <Route path="/cancellations" element={<CancellationsAndRefund />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-        </Routes>
+            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/cancellations" element={<CancellationsAndRefund />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </>
   );

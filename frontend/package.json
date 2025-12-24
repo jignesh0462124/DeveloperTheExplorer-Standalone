@@ -35,6 +35,7 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
     "chart.js": "^4.5.1",
     "plotly.js-dist-min": "^3.3.0"
   }
