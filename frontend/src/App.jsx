@@ -2,6 +2,8 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./components/404.jsx";
+
 import { supabase } from "../supabase/supabase.js";
 
 const LandingPage = lazy(() => import("./components/LandingPage"));
@@ -71,18 +73,19 @@ function App() {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4285F4]"></div>
             </div>
           }
-        >
+        />
+        
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/event" element={<Event />} />
             <Route path="/bookslot" element={<Bookslot />} />
 
-            <Route path="/terms" element={<TermsAndConditions />} />
-            <Route path="/cancellations" element={<CancellationsAndRefund />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-          </Routes>
-        </Suspense>
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/cancellations" element={<CancellationsAndRefund />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </>
   );
