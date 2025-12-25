@@ -58,13 +58,13 @@ function Community() {
 
           {/* Image Section */}
           <div
-            className={`mx-auto w-90 lg:w-120 lg:h-100 bg-white rounded-3xl shadow-xl community-img ${fadeRight}`}
+            className={`mx-auto w-80 lg:w-120 lg:h-100 bg-white rounded-3xl shadow-xl community-img ${fadeRight}`}
             style={{ transitionDelay: "200ms" }}
           >
             <img
               src="images/Community.png"
               alt="Community"
-              className="ms-6 lg:ms-8 lg:ms-0 h-80  lg:h-100  rounded-4xl "
+              className="md:ms-2 lg:ms-8 lg:ms-0 h-80   lg:h-100  rounded-4xl "
             />
           </div>
         </div>

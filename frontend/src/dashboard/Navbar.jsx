@@ -56,18 +56,15 @@ export default function Navbar({ breadcrumbs }) {
 
           {/* Profile Info */}
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex flex-col text-right">
-              <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                {loadingProfile ? "Syncing..." : "Logged in as"}
-              </span>
-              <span className="text-sm font-semibold text-slate-800 leading-none">
+            <div className="hidden sm:flex flex-col text-right justify-center">
+              <span className="text-sm font-semibold text-slate-800 leading-tight">
                 {loadingProfile ? "Loading..." : profile.name || "Guest"}
               </span>
             </div>
             
             {/* Avatar */}
             <div className="relative group cursor-pointer">
-              <div className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 text-sm font-bold text-white shadow-md shadow-sky-200 ring-2 ring-white">
+              <div className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-800 text-sm font-bold text-white shadow-sm ring-2 ring-white">
                   {profile.initials || <User size={18} />}
               </div>
             </div>

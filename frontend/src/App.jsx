@@ -13,6 +13,7 @@ const Bookslot = lazy(() => import("./dashboard/Bookslot"));
 const TermsAndConditions = lazy(() => import("./components/TermsAndConditions"));
 const CancellationsAndRefund = lazy(() => import("./components/CancellationsAndRefund"));
 const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
+const UpdatePassword = lazy(() => import("./dashboard/UpdatePassword"));
 
 function App() {
   const [isAuthProcessing, setIsAuthProcessing] = useState(
@@ -84,6 +85,7 @@ function App() {
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/cancellations" element={<CancellationsAndRefund />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -89,22 +89,24 @@ export default function Signup() {
   async function handleForgot(e) {
     e.preventDefault();
     if (!isEmail(email)) {
-      setMessage("Enter your email above to receive a reset link.");
+      setMessage("Please enter a valid email address in the field above to receive a reset link.");
       return;
     }
+    setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/update-password`,
     });
+    setLoading(false);
     setMessage(
-      error ? error.message : "Password reset link sent. Check your inbox."
+      error ? error.message : "Password reset link sent! Please check your inbox."
     );
   }
 
   // ----- right-card meta -----
   const meta = {
-    dates: "Nov 27 · 10:00 AM – 5:00 PM IST",
-    venue: "Auditorium, GHRCE Campus",
-    community: "500+ Developers",
+    dates: "Feb 6-8, 2025",
+    venue: "Jungle Retreat (GDGoC-GHRCE)",
+    community: "Developer The Explorer Camp",
   };
 
   const isSignup = mode === "signup";
@@ -115,21 +117,33 @@ export default function Signup() {
       <Curves />
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+        
+        {/* Back Link */}
+        <div className="mb-6">
+            <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 12H5"/>
+                    <path d="M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8">
           {/* LEFT: Auth card */}
           <div className="relative">
-            <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-6 sm:p-8">
+            <div className="rounded-xl sm:rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-6 sm:p-8">
               {/* Mode switcher */}
-              <div className="flex items-center justify-between">
-                <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-[12px] font-medium text-gray-700">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-[12px] font-medium text-gray-700 w-fit">
                   <span className="block h-2 w-2 rounded-full bg-[#4285F4]" />
                   {isSignup ? "Create your event account" : "Welcome back"}
                 </div>
 
-                <div className="inline-flex rounded-full bg-gray-100 p-1 text-sm">
+                <div className="inline-flex rounded-full bg-gray-100 p-1 text-sm self-start sm:self-auto">
                   <button
                     onClick={() => setMode("signup")}
-                    className={`px-4 py-1.5 rounded-full transition ${
+                    className={`px-6 py-2 rounded-full transition whitespace-nowrap ${
                       isSignup
                         ? "bg-white shadow text-gray-900"
                         : "text-gray-600 hover:text-gray-900"
@@ -139,7 +153,7 @@ export default function Signup() {
                   </button>
                   <button
                     onClick={() => setMode("login")}
-                    className={`px-4 py-1.5 rounded-full transition ${
+                    className={`px-6 py-2 rounded-full transition whitespace-nowrap ${
                       !isSignup
                         ? "bg-white shadow text-gray-900"
                         : "text-gray-600 hover:text-gray-900"
@@ -265,6 +279,7 @@ export default function Signup() {
                   ) : (
                     <div className="mt-2">
                       <button
+                        type="button"
                         className="text-xs text-[#1A73E8] hover:underline"
                         onClick={handleForgot}
                       >
@@ -336,28 +351,27 @@ export default function Signup() {
                 </button>
 
                 {message && (
-                  <p className="mt-3 text-center text-sm text-gray-700">
-                    {message}
-                  </p>
-                )}
-
-                {isSignup && (
-                  <div className="text-center">
-                    <a
-                      href="#"
-                      className="mt-3 inline-block text-sm text-[#1A73E8] hover:underline"
-                    >
-                      View agenda before signing up
-                    </a>
+                  <div className={`mt-4 p-3 rounded-lg flex items-start gap-2 text-sm ${
+                      message.toLowerCase().includes("success") || message.toLowerCase().includes("sent") || message.includes("Welcome")
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-100" 
+                      : "bg-red-50 text-red-600 border border-red-100"
+                  }`}>
+                    {message.toLowerCase().includes("success") || message.toLowerCase().includes("sent") || message.includes("Welcome") ? (
+                         <div className="mt-0.5 shrink-0">✅</div>
+                    ) : (
+                         <div className="mt-0.5 shrink-0">⚠️</div>
+                    )}
+                    <span>{message}</span>
                   </div>
                 )}
+
               </form>
             </div>
           </div>
 
           {/* RIGHT: Highlights */}
           <aside className="lg:block">
-            <div className="sticky top-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 p-6 sm:p-7">
+            <div className="sticky top-8 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 p-6 sm:p-7">
               <h3 className="text-lg font-semibold">Event Highlights</h3>
 
               <ul className="mt-4 space-y-4 text-[15px]">
@@ -368,7 +382,7 @@ export default function Signup() {
                   <div>
                     <div className="font-medium">{meta.dates}</div>
                     <div className="text-gray-600 text-sm">
-                      1-day developer conference
+                      3-Day Adventure Camp
                     </div>
                   </div>
                 </li>
@@ -379,7 +393,7 @@ export default function Signup() {
                   </Badge>
                   <div>
                     <div className="font-medium">{meta.venue}</div>
-                    <div className="text-gray-600 text-sm">On-campus venue</div>
+                    <div className="text-gray-600 text-sm">Wild Tech Retreat</div>
                   </div>
                 </li>
 
@@ -390,7 +404,7 @@ export default function Signup() {
                   <div>
                     <div className="font-medium">{meta.community}</div>
                     <div className="text-gray-600 text-sm">
-                      Join the community
+                      Exclusive Cohort
                     </div>
                   </div>
                 </li>
@@ -424,15 +438,15 @@ export default function Signup() {
         </div>
 
         <footer className="mx-auto mt-10 flex items-center justify-center gap-6 text-sm text-gray-500">
-          <a href="#" className="hover:text-gray-700">
+          <a href="/privacy" className="hover:text-gray-700">
             Privacy
           </a>
           <span>·</span>
-          <a href="#" className="hover:text-gray-700">
+          <a href="/terms" className="hover:text-gray-700">
             Terms
           </a>
           <span>·</span>
-          <a href="#" className="hover:text-gray-700">
+          <a href="mailto:support@developertheexplorer.com" className="hover:text-gray-700">
             Help
           </a>
         </footer>

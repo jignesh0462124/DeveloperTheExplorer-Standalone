@@ -4,7 +4,14 @@ import {
   ChevronDown,
   Lock,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  User,
+  Mail,
+  Phone,
+  Building2,
+  Ticket,
+  ShieldCheck,
+  Zap
 } from "lucide-react";
 
 // --- REAL IMPORTS (Uncomment these in your project) ---
@@ -40,20 +47,63 @@ export default function Bookslot() {
   // Ticket Types State
   const [ticketType, setTicketType] = useState('standard');
   const [bookingCount, setBookingCount] = useState(0);
+  const [vipCount, setVipCount] = useState(0);
 
   useEffect(() => {
+    async function checkExistingBooking() {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+             // 1. Check if User already booked
+            const { data } = await supabase
+                .from('bookings')
+                .select('id')
+                .eq('user_id', user.id)
+                .eq('payment_status', 'success')
+                .maybeSingle();
+
+            if (data) {
+                navigate('/event');
+                return;
+            }
+        }
+        
+        // 2. Check Global Cap (Double check)
+        const { count } = await supabase
+           .from('bookings')
+           .select('*', { count: 'exact', head: true })
+           .eq('payment_status', 'success');
+
+        if (count > 120) {
+            alert("Registrations are closed!");
+            navigate('/event');
+        }
+    }
+
     const fetchBookingCount = async () => {
-      const { count, error } = await supabase
+      await checkExistingBooking(); // Check first
+      
+      const { count: total, error: totalError } = await supabase
         .from('bookings')
         .select('*', { count: 'exact', head: true })
         .eq('payment_status', 'success');
       
-      if (!error && count !== null) {
-        setBookingCount(count);
+      if (!totalError && total !== null) {
+        setBookingCount(total);
+      }
+
+      // Fetch VIP Count
+      const { count: vip, error: vipError } = await supabase
+        .from('bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('payment_status', 'success')
+        .eq('ticket_type', 'VIP Pass');
+
+      if (!vipError && vip !== null) {
+        setVipCount(vip);
       }
     };
     fetchBookingCount();
-  }, []);
+  }, [navigate]);
 
   // Prefill data if profile loads (Optional enhancement)
   useEffect(() => {
@@ -102,6 +152,7 @@ export default function Bookslot() {
   const total = subtotal;
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
 
   async function handleProceed() {
     // Mark all as touched to show errors
@@ -162,6 +213,9 @@ export default function Bookslot() {
 
         handler: async function (response) {
           try {
+            setIsProcessing(true); // Keep processing state true
+            setIsPaymentSuccess(true); // Trigger loading screen
+
             // Update booking status
             await supabase
               .from("bookings")
@@ -185,12 +239,17 @@ export default function Bookslot() {
               },
             });
 
-            navigate("/event");
+            // Delay navigation slightly to show success state
+            setTimeout(() => {
+                navigate("/event");
+            }, 2000);
+            
           } catch (error) {
             console.error("Error in payment handler:", error);
             navigate("/event");
+            setIsPaymentSuccess(false);
           } finally {
-            setIsProcessing(false);
+             // We don't turn off isProcessing here to prevent UI flash before nav
           }
         },
 
@@ -225,6 +284,16 @@ export default function Bookslot() {
     );
   }
 
+  if (isPaymentSuccess) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-slate-200 border-t-emerald-500 mb-6"></div>
+        <h2 className="text-2xl font-bold text-emerald-600 mb-2">Payment Successful!</h2>
+        <p className="text-slate-500">Confirming your slot & redirecting to event page...</p>
+      </div>
+    );
+  }
+
   const breadcrumbs = (
     <>
       <a className="hover:text-slate-900 transition-colors" href="/">Home</a>
@@ -236,148 +305,188 @@ export default function Bookslot() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F5F7FB] text-slate-900 antialiased font-sans pb-20 sm:pb-0">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 antialiased font-sans pb-20 sm:pb-0">
+      <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
       <Navbar breadcrumbs={breadcrumbs} />
 
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-10">
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8 lg:py-12 relative z-10">
         
         {/* Page Title Section */}
-        <section className="mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
-            Secure your spot
-          </h1>
-          <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-slate-600">
-            <p className="text-[15px]">
-              Complete your registration for the upcoming hands-on session.
-            </p>
-            <div className="hidden sm:block h-1 w-1 rounded-full bg-slate-300"></div>
-            <p className="flex items-center gap-1.5 text-sm font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md w-fit">
-              <Lock size={14} />
-              SSL Encrypted Checkout
-            </p>
+        <section className="mb-10 text-center lg:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-wide mb-3">
+             <ShieldCheck size={14} /> Secure Checkout
           </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
+            Confirm your attendance
+          </h1>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0">
+            Join the elite community of developers at the jungle retreat.
+          </p>
         </section>
 
         {/* Two Column Layout */}
         <section className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 lg:gap-8 items-start">
           
           {/* Left Column: Form */}
-          <div className="order-2 lg:order-1 rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-5 sm:p-8">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                    <span className="flex items-center justify-center h-6 w-6 rounded-full bg-sky-100 text-sky-600 text-xs font-bold">1</span>
+          <div className="lg:order-1 rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-5 sm:p-8">
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
+                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <User className="text-blue-600" size={24} />
                     Attendee Details
                 </h2>
-                <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Step 1 of 2</span>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-3 py-1 rounded-full">Step 1 of 2</div>
             </div>
 
             <div className="space-y-5">
               
               {/* Ticket Type Selection */}
-              <Field label="Select Pass Type">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {/* Standard Pass */}
-                  <div 
-                    onClick={() => setTicketType('standard')}
-                    className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all ${ticketType === 'standard' ? 'border-sky-500 bg-sky-50' : 'border-slate-200 hover:border-sky-300'}`}
-                  >
-                     <span className="text-sm font-bold text-slate-800">Standard</span>
-                     <span className="text-xs text-slate-500">₹2.0</span>
-                     {ticketType === 'standard' && <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-sky-500"></div>}
-                  </div>
+              <Field label="Select your Experience">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {bookingCount < 80 ? (
+                    <>
+                      {/* Standard Pass */}
+                      <div 
+                        onClick={() => setTicketType('standard')}
+                        className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${ticketType === 'standard' ? 'border-blue-500 bg-blue-50/50 shadow-md ring-1 ring-blue-500/20' : 'border-slate-200 hover:border-blue-300 hover:shadow-sm'}`}
+                      >
+                         <div className="flex justify-between items-start mb-2">
+                             <div className="flex items-center gap-2">
+                                <span className={`p-1.5 rounded-lg ${ticketType === 'standard' ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-500'}`}><Ticket size={16}/></span>
+                                <span className="font-bold text-slate-900">Standard</span>
+                             </div>
+                             {ticketType === 'standard' && <CheckCircle2 size={20} className="text-blue-600" />}
+                         </div>
+                         <div className="mt-2 space-y-1">
+                             <div className="text-2xl font-bold text-slate-900">₹2.0</div>
+                             <div className="text-xs text-slate-500 font-medium">Full event access</div>
+                         </div>
+                         <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
+                             <p>✓ All Sessions & Labs</p>
+                             <p>✓ Lunch & Refreshments</p>
+                         </div>
+                      </div>
 
-                  {/* VIP Pass */}
-                  <div 
-                    onClick={() => setTicketType('vip')}
-                    className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all ${ticketType === 'vip' ? 'border-amber-500 bg-amber-50' : 'border-slate-200 hover:border-amber-300'}`}
-                  >
-                     <span className="text-sm font-bold text-slate-800">VIP</span>
-                     <span className="text-xs text-slate-500">₹1,300</span>
-                     {ticketType === 'vip' && <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-amber-500"></div>}
-                  </div>
 
-                  {/* Late Comers Pass */}
-                  <div 
-                    onClick={() => {
-                        if(bookingCount >= 80) setTicketType('late');
-                    }}
-                    className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
-                        bookingCount < 80 
-                        ? 'border-slate-100 bg-slate-50 opacity-60 cursor-not-allowed' 
-                        : ticketType === 'late' ? 'border-rose-500 bg-rose-50 cursor-pointer' : 'border-slate-200 hover:border-rose-300 cursor-pointer'
-                    }`}
-                  >
-                     <span className="text-sm font-bold text-slate-800">Late Comer</span>
-                     <span className="text-xs text-slate-500">₹1,500</span>
-                     {bookingCount < 80 && <span className="text-[10px] text-rose-500 mt-1 font-medium">Locked ({80 - bookingCount} left)</span>}
-                     {ticketType === 'late' && <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-rose-500"></div>}
-                  </div>
+                      {/* VIP Pass - Only show if count < 20 */}
+                      {vipCount < 20 && (
+                        <div 
+                            onClick={() => setTicketType('vip')}
+                            className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${ticketType === 'vip' ? 'border-amber-500 bg-amber-50/50 shadow-md ring-1 ring-amber-500/20' : 'border-slate-200 hover:border-amber-300 hover:shadow-sm'}`}
+                        >
+                            <div className="absolute -top-3 left-6 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                                {20 - vipCount <= 5 ? `ONLY ${20 - vipCount} LEFT!` : "MOST POPULAR"}
+                            </div>
+                            <div className="flex justify-between items-start mb-2">
+                                <div className="flex items-center gap-2">
+                                    <span className={`p-1.5 rounded-lg ${ticketType === 'vip' ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-500'}`}><Zap size={16}/></span>
+                                    <span className="font-bold text-slate-900">VIP Access</span>
+                                </div>
+                                {ticketType === 'vip' && <CheckCircle2 size={20} className="text-amber-600" />}
+                            </div>
+                            <div className="mt-2 space-y-1">
+                                <div className="text-2xl font-bold text-slate-900">₹1,300</div>
+                                <div className="text-xs text-slate-500 font-medium">Priority Experience</div>
+                            </div>
+                            <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
+                                <p>✓ Front Row Seating</p>
+                                <p>✓ Exclusive Swag Kit</p>
+                            </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    /* Late Comers Pass Active - Hides others */
+                    <div className="col-span-2">
+                        <div 
+                            onClick={() => setTicketType('late')}
+                            className="relative flex items-center justify-between p-6 rounded-2xl border-2 border-rose-500 bg-rose-50/50 cursor-pointer shadow-sm"
+                        >
+                            <div>
+                                <span className="inline-flex items-center gap-2 text-rose-700 font-bold mb-1">
+                                    <AlertCircle size={16} /> Late Comer Pass
+                                </span>
+                                <div className="text-3xl font-bold text-slate-900">₹1,500</div>
+                                <p className="text-sm text-slate-600 mt-2">Standard & VIP Sold Out. Last few spots!</p>
+                            </div>
+                            <div className="h-12 w-12 rounded-full bg-rose-500 flex items-center justify-center text-white">
+                                <CheckCircle2 size={24} />
+                            </div>
+                        </div>
+                    </div>
+                  )}
                 </div>
               </Field>
               <Field label="Full Name" error={touched.name && errors.name}>
-                <div className="relative">
+                <div className="relative group">
+                    <User className="absolute left-3 top-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
                     <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onBlur={() => handleBlur("name")}
-                    className={inputCls(touched.name && errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                    className={inputCls("pl-10 " + (touched.name && errors.name ? "!border-red-500 !bg-red-50" : ""))}
                     placeholder="e.g. John Doe"
                     type="text"
                     />
-                    {touched.name && !errors.name && <CheckCircle2 className="absolute right-3 top-3 text-emerald-500 pointer-events-none" size={18} />}
                 </div>
               </Field>
 
-              <Field label="Email Address" error={touched.email && errors.email} subLabel="We'll send your ticket here">
-                <div className="relative">
+              <Field label="Email Address" error={touched.email && errors.email} subLabel="Tickets sent here">
+                <div className="relative group">
+                    <Mail className="absolute left-3 top-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
                     <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onBlur={() => handleBlur("email")}
-                    className={inputCls(touched.email && errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
+                    className={inputCls("pl-10 " + (touched.email && errors.email ? "!border-red-500 !bg-red-50" : ""))}
                     placeholder="john@example.com"
                     />
                 </div>
               </Field>
 
-              <Field label="WhatsApp / Phone" error={touched.phone && errors.phone}>
-                <div className="flex rounded-md shadow-sm">
+              <Field label="WhatsApp Number" error={touched.phone && errors.phone}>
+                <div className="flex rounded-lg shadow-sm group">
                   <div className="relative">
                       <select 
                         value={cc}
                         onChange={e => setCc(e.target.value)}
-                        className="h-11 appearance-none rounded-l-md border border-r-0 border-slate-300 bg-slate-50 pl-3 pr-8 text-slate-600 text-base focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                        className="h-12 appearance-none rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 pl-3 pr-8 text-slate-700 font-medium focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                       >
                         <option>+91</option>
                         <option>+1</option>
                         <option>+44</option>
                       </select>
-                      <ChevronDown size={14} className="absolute right-2 top-3.5 text-slate-400 pointer-events-none"/>
+                      <ChevronDown size={14} className="absolute right-2 top-4 text-slate-500 pointer-events-none"/>
                   </div>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => {
-                        const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-                        setPhone(val);
-                    }}
-                    onBlur={() => handleBlur("phone")}
-                    className={`block w-full flex-1 rounded-none rounded-r-md border border-slate-300 px-3 py-2 placeholder-slate-400 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-4 focus:ring-sky-100 sm:text-sm h-11 text-base ${touched.phone && errors.phone ? "border-red-500 z-20" : ""}`}
-                    placeholder="98765 43210"
-                  />
+                  <div className="relative flex-1">
+                      <Phone className="absolute left-3 top-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setPhone(val);
+                        }}
+                        onBlur={() => handleBlur("phone")}
+                        className={`block h-12 w-full rounded-r-lg border border-slate-300 px-3 pl-10 py-2 placeholder-slate-400 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm ${touched.phone && errors.phone ? "border-red-500 bg-red-50 z-20" : ""}`}
+                        placeholder="98765 43210"
+                      />
+                  </div>
                 </div>
               </Field>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <Field label="Organization / College" error={touched.college && errors.college}>
-                    <input
-                      value={college}
-                      onChange={(e) => setCollege(e.target.value)}
-                      onBlur={() => handleBlur("college")}
-                      className={inputCls(touched.college && errors.college ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "")}
-                      placeholder="e.g. IIT Delhi"
-                    />
+                  <Field label="Organization" error={touched.college && errors.college}>
+                    <div className="relative group">
+                         <Building2 className="absolute left-3 top-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+                        <input
+                        value={college}
+                        onChange={(e) => setCollege(e.target.value)}
+                        onBlur={() => handleBlur("college")}
+                        className={inputCls("pl-10 " + (touched.college && errors.college ? "!border-red-500 !bg-red-50" : ""))}
+                        placeholder="e.g. IIT Delhi"
+                        />
+                    </div>
                   </Field>
 
                   <Field label="Gender">
@@ -400,78 +509,71 @@ export default function Bookslot() {
           </div>
 
           {/* Right Column: Summary Sticky Sidebar */}
-          <aside className="order-1 lg:order-2 lg:sticky lg:top-24 h-fit">
-            <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-xl shadow-slate-200/50 p-5 sm:p-6 overflow-hidden relative">
-              
-              {/* Decorative top gradient */}
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-sky-400 to-indigo-500"></div>
+          <aside className="lg:order-2 lg:sticky lg:top-24 h-fit">
+            <div className="bg-white rounded-2xl shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100 overflow-hidden">
+               {/* Header of Receipt */}
+               <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 text-white flex justify-between items-start">
+                   <div>
+                       <div className="flex items-center gap-2 mb-1">
+                          <div className="h-6 w-6 rounded bg-white/20 flex items-center justify-center font-bold text-xs">DT</div>
+                          <span className="font-bold tracking-wide text-sm opacity-90">ORDER SUMMARY</span>
+                       </div>
+                       <h3 className="text-lg font-medium text-white/90">Checkout</h3>
+                   </div>
+               </div>
 
-              <h3 className="text-lg font-bold text-slate-800 mb-4">Order Summary</h3>
-
-              {/* Event Mini Details */}
-              <div className="mb-4 pb-4 border-b border-dashed border-slate-200">
-                  <div className="flex gap-3">
-                     <div className="h-12 w-12 rounded-lg bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0">
-                        <span className="text-xl">🎟️</span>
-                     </div>
-                     <div>
-                        <p className="text-sm font-semibold text-slate-900 line-clamp-1">Developer Explorer Summit</p>
-                        <p className="text-xs text-slate-500">
+               <div className="p-6 relative">
+                 {/* Ticket Item */}
+                 <div className="flex gap-4 pb-6 border-b border-dashed border-slate-200">
+                    <div className="h-16 w-16 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex flex-col items-center justify-center text-white shadow-lg shadow-blue-200">
+                        <span className="text-xs font-medium opacity-80">FEB</span>
+                        <span className="text-xl font-bold">06</span>
+                    </div>
+                    <div className="flex-1">
+                        <h4 className="font-bold text-slate-800 leading-tight">Developer Explorer Summit '25</h4>
+                        <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                            <Ticket size={12}/> 
                             {ticketType === 'vip' ? 'VIP Access Pass' : ticketType === 'late' ? 'Late Comers Pass' : 'Standard Access Pass'}
                         </p>
-                     </div>
-                  </div>
-              </div>
+                    </div>
+                 </div>
 
-              <div className="space-y-3 text-sm">
-                <SummaryRow label="Ticket Price" value={inr(subtotal)} />
-                <SummaryRow label="Processing Fee" value={inr(0)} className="text-emerald-600" />
-                <SummaryRow label="Taxes" value="Included" className="text-slate-400" />
-                
-                <div className="pt-3 mt-3 border-t border-slate-200 flex items-center justify-between">
-                  <div className="flex flex-col">
-                     <span className="text-sm font-medium text-slate-600">Total Amount</span>
-                     <span className="text-[10px] text-slate-400">Including GST</span>
-                  </div>
-                  <span className="text-2xl font-bold text-slate-900 tracking-tight">{inr(total)}</span>
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <button
-                disabled={isProcessing}
-                onClick={handleProceed}
-                className={`group relative mt-6 w-full overflow-hidden rounded-xl py-3.5 text-sm font-bold text-white shadow-lg transition-all active:scale-[0.98] ${
-                  !isProcessing 
-                    ? "bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 shadow-sky-200 hover:shadow-sky-300" 
-                    : "bg-slate-300 cursor-not-allowed"
-                }`}
-              >
-                <div className="flex items-center justify-center gap-2 relative z-10">
-                    {isProcessing ? (
-                    <>
-                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        <span>Processing...</span>
-                    </>
+                 {/* Price Breakdown */}
+                 <div className="mt-6 space-y-3">
+                    <SummaryRow label="Ticket Price" value={inr(subtotal)} />
+                    <SummaryRow label="Convenience Fee" value={inr(0)} className="text-emerald-600" />
+                    <div className="pt-2 border-t border-slate-100 flex justify-between items-end mt-4">
+                        <div className="text-sm text-slate-500">Total Payable</div>
+                        <div className="text-3xl font-bold text-slate-900 tracking-tight">{inr(total)}</div>
+                    </div>
+                 </div>
+               </div>
+               
+               {/* Checkout Button */}
+               <div className="p-4 bg-slate-50 border-t border-slate-100">
+                <button
+                    disabled={isProcessing || bookingCount > 120}
+                    onClick={handleProceed}
+                    className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold text-white transition-all shadow-lg shadow-blue-200 active:scale-[0.98]
+                    ${!isProcessing && bookingCount <= 120 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'bg-slate-300 cursor-not-allowed'}
+                    `}
+                >
+                    {bookingCount > 120 ? (
+                        <> Registrations Closed </>
+                    ) : isProcessing ? (
+                        <> <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"/> Processing </>
                     ) : (
-                    <>
-                        <span>Proceed to Pay</span>
-                        <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
-                    </>
+                        <> Complete Booking <ChevronRight size={18}/> </>
                     )}
+                </button>
+                <div className="mt-3 flex items-center justify-center gap-2 text-[10px] text-slate-400 font-medium uppercase tracking-wide">
+                    <Lock size={10} /> 256-Bit SSL Encrypted
                 </div>
-              </button>
-
-              {/* Trust Badges */}
-              <div className="mt-4 flex items-center justify-center gap-2 text-[11px] font-medium text-slate-400 bg-slate-50 py-2 rounded-lg border border-slate-100">
-                <Lock size={12} className="text-slate-400" />
-                <span>256-bit SSL Secured Payment</span>
-              </div>
+               </div>
             </div>
 
-            {/* Help Text */}
-            <p className="mt-4 text-center text-xs text-slate-400 px-4">
-               By proceeding, you agree to our <a href="#" className="underline hover:text-sky-600">Terms</a> & <a href="#" className="underline hover:text-sky-600">Conditions</a>.
+            <p className="mt-6 text-center text-xs text-slate-400">
+               Need help? <a href="#" className="underline hover:text-blue-600">Contact Support</a>
             </p>
           </aside>
 
@@ -513,9 +615,10 @@ function SummaryRow({ label, value, className = "" }) {
 }
 
 // Utility class for inputs - Text-base ensures no zoom on iOS
+// Utility class for inputs - Text-base ensures no zoom on iOS
 const inputCls = (extra = "") =>
-  `h-11 w-full rounded-md border border-slate-300 bg-white px-3 text-base sm:text-sm placeholder:text-slate-400
+  `h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base placeholder:text-slate-400
    transition-all duration-200
-   focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-100 
+   focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 
    disabled:bg-slate-50 disabled:text-slate-500
    ${extra}`;
