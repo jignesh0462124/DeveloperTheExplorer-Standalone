@@ -112,7 +112,7 @@ function EventPoster() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                "Developer to Explorer" is not just another campus event – it’s experience. A 3-day, 2-night outdoor learning retreat...
+                "Developer The Explorer" is not just another campus event – it’s experience. A 3-day, 2-night outdoor learning retreat...
               </motion.p>
             </div>
 

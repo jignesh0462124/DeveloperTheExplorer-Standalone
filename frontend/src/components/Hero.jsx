@@ -67,9 +67,8 @@ function Hero() {
             className={`text-4xl sm:text-6xl lg:text-8xl font-black text-white leading-[1.1] tracking-tight mb-6 ${baseFade}`}
             style={{ transitionDelay: "200ms" }}
           >
-            Developers: <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-              The Explorers
+              Developer The Explorer
             </span>
           </h1>
 

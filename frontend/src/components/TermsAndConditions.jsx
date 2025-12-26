@@ -16,7 +16,7 @@ const TermsAndConditions = () => {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Agreement to Terms</h2>
               <p>
-                By accessing our website and participating in "Developers: The Explorers", you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not access the service.
+                By accessing our website and participating in "Developer The Explorer", you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not access the service.
               </p>
             </section>
 

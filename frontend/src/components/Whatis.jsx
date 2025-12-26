@@ -31,7 +31,7 @@ function Whatis() {
     <section id="about" ref={whatisRef} className="w-full  relative w-full pb-20 px-4 z-10">
       <div className="max-w-7xl mx-auto">
         <h2 className={`whatis-title text-4xl lg:text-5xl text-center font-bold text-gray-900 mb-16 ${fadeUp}`}>
-          What is Developers: The Explorers?
+          What is Developer The Explorer?
         </h2>
 
         <div className="bg-whit/20 w-full  rounded-3xl p-8 lg:p-12 mb-12 shadow-lg">
@@ -42,7 +42,7 @@ function Whatis() {
                 A Dynamic Tech Campaign
               </h3>
               <p className={`whatis-content text-gray-600 leading-relaxed ${fadeUp}`} style={fadeIn(80)}>
-                Developers: The Explorers is an innovative tech campaign celebrating exploration, learning, and collaboration across AI, Cloud, Web, and Mobile technologies. It's where curiosity meets execution, and ideas transform into reality.
+                Developer The Explorer is an innovative tech campaign celebrating exploration, learning, and collaboration across AI, Cloud, Web, and Mobile technologies. It's where curiosity meets execution, and ideas transform into reality.
               </p>
               <p className={`whatis-content text-gray-600 leading-relaxed ${fadeUp}`} style={fadeIn(140)}>
                 This flagship event brings together passionate developers, innovators, and tech enthusiasts for an immersive experience of knowledge sharing, hands-on building, and community networking.

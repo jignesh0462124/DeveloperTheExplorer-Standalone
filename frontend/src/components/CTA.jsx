@@ -24,7 +24,7 @@ function CTA() {
           Ready to explore, build, and collaborate?
         </h2>
         <p className={`cta-desc text-xl text-gray-600 mb-10 ${fadeUp}`} style={{ transitionDelay: "120ms" }}>
-          Join Developers: The Explorers and experience a tech campaign where curiosity meets execution
+          Join Developer The Explorer and experience a tech campaign where curiosity meets execution
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button className={`cta-button px-10 py-4 bg-blue-500 text-white text-lg font-medium rounded-full hover:bg-blue-600 shadow-lg hover:shadow-xl transition ${fadeUp}`} style={{ transitionDelay: "180ms" }}>

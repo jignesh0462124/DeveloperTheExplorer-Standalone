@@ -185,123 +185,124 @@ export default function Bookslot() {
   const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
 
   async function handleProceed() {
-    // Mark all as touched to show errors
-    if (!formValid) {
-      setTouched({
-        name: true,
-        email: true,
-        phone: true,
-        college: true,
-      });
-      // Scroll to top error
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Mark all as touched to show errors
+  if (!formValid) {
+    setTouched({
+      name: true,
+      email: true,
+      phone: true,
+      college: true,
+    });
+    // Scroll to top error
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  setIsProcessing(true);
+
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      alert("Please login first");
+      setIsProcessing(false);
       return;
     }
-    setIsProcessing(true);
 
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
+    // ✅ SECURE: Send only ticket_type, backend calculates price
+    const { data, error } = await supabase.functions.invoke("create-order", {
+      body: {
+        user_id: user.id,
+        full_name: name,
+        email,
+        phone: `${cc} ${phone}`,
+        college,
+        gender,
+        ticket_type: ticketType, // ✅ Send: 'early', 'regular', 'late', 'vip'
+      },
+    });
 
-      if (!user) {
-        alert("Please login first");
-        setIsProcessing(false);
-        return;
-      }
-
-      // Create Order
-      const { data, error } = await supabase.functions.invoke("create-order", {
-        body: {
-          user_id: user.id,
-          full_name: name,
-          email,
-          phone: `${cc} ${phone}`,
-          college,
-          gender,
-          amount: total.toFixed(2),
-          ticket_type: ticketLabel,
-        },
-      });
-
-      if (error) {
-        console.error(error);
-        alert(error.message ?? "Error creating order.");
-        setIsProcessing(false);
-        return;
-      }
-
-      const { key, order, booking_id } = data;
-
-      const options = {
-        key,
-        amount: order.amount,
-        currency: "INR",
-        name: "Developer The Explorer",
-        description: "Event Slot Booking",
-        order_id: order.id,
-        prefill: { name, email, contact: phone },
-        theme: { color: "#3B82F6" }, 
-
-        handler: async function (response) {
-          try {
-            setIsProcessing(true); // Keep processing state true
-            setIsPaymentSuccess(true); // Trigger loading screen
-
-            // Update booking status
-            await supabase
-              .from("bookings")
-              .update({
-                payment_status: "success",
-                payment_id: response.razorpay_payment_id,
-              })
-              .eq("id", booking_id);
-
-            // Send confirmation email
-            await supabase.functions.invoke("send-booking-confirmation", {
-              body: {
-                email,
-                full_name: name,
-                booking_id,
-                amount: total.toFixed(2),
-                phone: `${cc} ${phone}`,
-                college,
-                gender,
-                ticket_type: ticketLabel,
-              },
-            });
-
-            // Delay navigation slightly to show success state
-            setTimeout(() => {
-                navigate("/event");
-            }, 2000);
-            
-          } catch (error) {
-            console.error("Error in payment handler:", error);
-            navigate("/event");
-            setIsPaymentSuccess(false);
-          } finally {
-             // We don't turn off isProcessing here to prevent UI flash before nav
-          }
-        },
-
-        modal: {
-          ondismiss: async () => {
-            await supabase
-              .from("bookings")
-              .update({ payment_status: "cancelled" })
-              .eq("id", booking_id);
-            setIsProcessing(false);
-          },
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (err) {
-      console.error(err);
+    if (error) {
+      console.error(error);
+      alert(error.message ?? "Error creating order.");
       setIsProcessing(false);
-      alert("An unexpected error occurred. Please try again.");
+      return;
     }
+
+    // ✅ Backend now returns the calculated amount and label
+    const { key, order, booking_id, amount, ticket_label } = data;
+
+    const options = {
+      key,
+      amount: order.amount,
+      currency: "INR",
+      name: "Developer The Explorer",
+      description: "Event Slot Booking",
+      order_id: order.id,
+      prefill: {
+        name,
+        email,
+        contact: phone
+      },
+      theme: {
+        color: "#3B82F6"
+      },
+      handler: async function (response) {
+        try {
+          setIsProcessing(true);
+          setIsPaymentSuccess(true);
+
+          // Update booking status
+          await supabase
+            .from("bookings")
+            .update({
+              payment_status: "success",
+              payment_id: response.razorpay_payment_id,
+            })
+            .eq("id", booking_id);
+
+          // ✅ Send confirmation email with backend-calculated data
+          await supabase.functions.invoke("send-booking-confirmation", {
+            body: {
+              email,
+              full_name: name,
+              booking_id,
+              amount: amount, // ✅ Use amount from backend
+              phone: `${cc} ${phone}`,
+              college,
+              gender,
+              ticket_type: ticket_label, // ✅ Use label from backend
+            },
+          });
+
+          // Delay navigation slightly to show success state
+          setTimeout(() => {
+            navigate("/event");
+          }, 2000);
+        } catch (error) {
+          console.error("Error in payment handler:", error);
+          navigate("/event");
+          setIsPaymentSuccess(false);
+        }
+      },
+      modal: {
+        ondismiss: async () => {
+          await supabase
+            .from("bookings")
+            .update({ payment_status: "cancelled" })
+            .eq("id", booking_id);
+          setIsProcessing(false);
+        },
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (err) {
+    console.error(err);
+    setIsProcessing(false);
+    alert("An unexpected error occurred. Please try again.");
   }
+}
 
   if (isLoading) {
     return (

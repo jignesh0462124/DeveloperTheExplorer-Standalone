@@ -10,7 +10,7 @@ function Sponser() {
               <span className="text-xs font-medium text-gray-600">For Sponsors</span>
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8">
-              Why Partner with Developers: The Explorers?
+              Why Partner with Developer The Explorer?
             </h2>
           </div>
 
@@ -18,7 +18,7 @@ function Sponser() {
             {/* Left Content */}
             <div className="space-y-6">
               <p className="text-lg text-gray-600 leading-relaxed">
-                Connect with 250+ passionate developers, innovators, tech enthusiasts, and emerging technocrats who are shaping the future of technology. Developers: The Explorers is more than just an event—it's a celebration of innovation, learning, and collaboration.
+                Connect with 250+ passionate developers, innovators, tech enthusiasts, and emerging technocrats who are shaping the future of technology. Developer The Explorer is more than just an event—it's a celebration of innovation, learning, and collaboration.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed">
                 Your sponsorship helps empower aspiring technologists and bridges the gap between academia and industry. Partner with us to make a lasting impact on the next generation of developers.

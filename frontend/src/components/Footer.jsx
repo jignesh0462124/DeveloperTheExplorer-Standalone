@@ -23,7 +23,7 @@ function Footer() {
              
              <div className="space-y-1">
                  <h4 className="font-bold text-slate-800 text-sm">Contact Us</h4>
-                 <p className="text-sm text-slate-500 hover:text-blue-600 transition-colors cursor-pointer">contact@developertheexplorer.com</p>
+                 <p className="text-sm text-slate-500 hover:text-blue-600 transition-colors cursor-pointer">gdgocghrce@gmail.com</p>
                  {/* <p className="text-sm text-slate-500">+91 000 000 0000</p> */}
              </div>
           </div>

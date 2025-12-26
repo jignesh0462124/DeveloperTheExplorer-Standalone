@@ -6,7 +6,7 @@ function Checkout() {
       key: import.meta.env.VITE_TEST_API_KEY,
       amount: 50000, 
       currency: "INR",
-      name: "Developer to Explorer",
+      name: "Developer The Explorer",
       description: "Test Payment",
       image: "https://razorpay.com/favicon.png",
       handler: function (response) {
