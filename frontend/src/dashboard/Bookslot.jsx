@@ -11,7 +11,7 @@ import {
   Building2,
   Ticket,
   ShieldCheck,
-  Zap
+  Zap,
 } from "lucide-react";
 
 // --- REAL IMPORTS (Uncomment these in your project) ---
@@ -45,9 +45,33 @@ export default function Bookslot() {
   });
 
   // Ticket Types State
-  const [ticketType, setTicketType] = useState('standard');
+  // Types: 'early', 'regular', 'late', 'vip'
+  const [ticketType, setTicketType] = useState('early'); 
   const [bookingCount, setBookingCount] = useState(0);
   const [vipCount, setVipCount] = useState(0);
+
+  // Derived Counts
+  const gaCount = bookingCount - vipCount;
+  
+  // Determine Logic Tier
+  // Early Bird: < 15 GA
+  // Regular: >= 15 GA && < 90 GA
+  // Late: >= 90 GA
+  let currentGATier = 'early';
+  if (gaCount >= 90) currentGATier = 'late';
+  else if (gaCount >= 15) currentGATier = 'regular';
+
+  // Sync ticketType with reality once counts load
+  useEffect(() => {
+    // If currently selected is a GA type but not the VALID one, switch it.
+    // e.g. User defaults to 'early', but we are in 'regular'.
+    if (['early', 'regular', 'late'].includes(ticketType)) {
+        if (ticketType !== currentGATier) {
+            setTicketType(currentGATier);
+        }
+    }
+  }, [currentGATier, ticketType]);
+
 
   useEffect(() => {
     async function checkExistingBooking() {
@@ -105,7 +129,7 @@ export default function Bookslot() {
     fetchBookingCount();
   }, [navigate]);
 
-  // Prefill data if profile loads (Optional enhancement)
+  // Prefill data if profile loads
   useEffect(() => {
     if (profile?.name && !name) setName(profile.name);
     if (profile?.email && !email) setEmail(profile.email);
@@ -140,15 +164,21 @@ export default function Bookslot() {
   };
 
 
-  const getTicketPrice = (type) => {
+  const getTicketDetails = (type) => {
     switch(type) {
-      case 'vip': return 1300;
-      case 'late': return 1500;
-      case 'standard': default: return 2.0;
+      case 'vip': 
+        return { price: 1700, label: 'VIP Pass' };
+      case 'late': 
+        return { price: 1500, label: 'Late Comers Pass' };
+      case 'regular':
+        return { price: 1300, label: 'Regular Pass' };
+      case 'early':
+      default: 
+        return { price: 999, label: 'Early Bird Pass' };
     }
   };
 
-  const subtotal = getTicketPrice(ticketType);
+  const { price: subtotal, label: ticketLabel } = getTicketDetails(ticketType);
   const total = subtotal;
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -188,7 +218,7 @@ export default function Bookslot() {
           college,
           gender,
           amount: total.toFixed(2),
-          ticket_type: ticketType === 'vip' ? 'VIP Pass' : ticketType === 'late' ? 'Late Comers Pass' : 'Standard Pass',
+          ticket_type: ticketLabel,
         },
       });
 
@@ -235,7 +265,7 @@ export default function Bookslot() {
                 phone: `${cc} ${phone}`,
                 college,
                 gender,
-                ticket_type: ticketType === 'vip' ? 'VIP Pass' : ticketType === 'late' ? 'Late Comers Pass' : 'Standard Pass',
+                ticket_type: ticketLabel,
               },
             });
 
@@ -342,77 +372,76 @@ export default function Bookslot() {
               {/* Ticket Type Selection */}
               <Field label="Select your Experience">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {bookingCount < 80 ? (
-                    <>
-                      {/* Standard Pass */}
-                      <div 
-                        onClick={() => setTicketType('standard')}
-                        className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${ticketType === 'standard' ? 'border-blue-500 bg-blue-50/50 shadow-md ring-1 ring-blue-500/20' : 'border-slate-200 hover:border-blue-300 hover:shadow-sm'}`}
-                      >
-                         <div className="flex justify-between items-start mb-2">
-                             <div className="flex items-center gap-2">
-                                <span className={`p-1.5 rounded-lg ${ticketType === 'standard' ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-500'}`}><Ticket size={16}/></span>
-                                <span className="font-bold text-slate-900">Standard</span>
-                             </div>
-                             {ticketType === 'standard' && <CheckCircle2 size={20} className="text-blue-600" />}
-                         </div>
-                         <div className="mt-2 space-y-1">
-                             <div className="text-2xl font-bold text-slate-900">₹2.0</div>
-                             <div className="text-xs text-slate-500 font-medium">Full event access</div>
-                         </div>
-                         <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
-                             <p>✓ All Sessions & Labs</p>
-                             <p>✓ Lunch & Refreshments</p>
-                         </div>
-                      </div>
+                  {/* General Admission Card (Dynamic) */}
+                  <div 
+                    onClick={() => setTicketType(currentGATier)}
+                    className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 
+                        ${ticketType === currentGATier ? 
+                            (currentGATier === 'late' ? 'border-rose-500 bg-rose-50/50 shadow-md ring-1 ring-rose-500/20' : 'border-blue-500 bg-blue-50/50 shadow-md ring-1 ring-blue-500/20')
+                            : 'border-slate-200 hover:border-slate-300'
+                        }`}
+                  >
 
 
-                      {/* VIP Pass - Only show if count < 20 */}
-                      {vipCount < 20 && (
-                        <div 
-                            onClick={() => setTicketType('vip')}
-                            className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${ticketType === 'vip' ? 'border-amber-500 bg-amber-50/50 shadow-md ring-1 ring-amber-500/20' : 'border-slate-200 hover:border-amber-300 hover:shadow-sm'}`}
-                        >
-                            <div className="absolute -top-3 left-6 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-                                {20 - vipCount <= 5 ? `ONLY ${20 - vipCount} LEFT!` : "MOST POPULAR"}
+                     <div className="flex justify-between items-start mb-2">
+                         <div className="flex items-center gap-2">
+                            <span className={`p-1.5 rounded-lg ${ticketType === currentGATier ? 'bg-white shadow-sm' : 'bg-slate-100 text-slate-500'}`}>
+                                <Ticket size={16} className={ticketType === currentGATier ? (currentGATier === 'late' ? "text-rose-500" : "text-blue-500") : ""}/>
+                            </span>
+                            <span className="font-bold text-slate-900">
+                                {currentGATier === 'early' ? "Early Bird" : currentGATier === 'late' ? "Late Comers" : "Regular Pass"}
+                            </span>
+                         </div>
+                         {ticketType === currentGATier && <CheckCircle2 size={20} className={currentGATier === 'late' ? "text-rose-600" : "text-blue-600"} />}
+                     </div>
+                     <div className="mt-2 space-y-1">
+                         <div className="text-2xl font-bold text-slate-900">
+                            {currentGATier === 'early' ? "₹999" : currentGATier === 'late' ? "₹1,500" : "₹1,300"}
+                         </div>
+                         <div className="text-xs text-slate-500 font-medium">Full event access</div>
+                     </div>
+                     <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
+                         <p>✓ All Sessions & Labs</p>
+                         <p>✓ Lunch & Refreshments</p>
+                     </div>
+                  </div>
+
+
+                  {/* VIP Pass - Only show if count < 20 */}
+                  {vipCount < 20 ? (
+                    <div 
+                        onClick={() => setTicketType('vip')}
+                        className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${ticketType === 'vip' ? 'border-amber-500 bg-amber-50/50 shadow-md ring-1 ring-amber-500/20' : 'border-slate-200 hover:border-amber-300 hover:shadow-sm'}`}
+                    >
+
+                        <div className="flex justify-between items-start mb-2">
+                            <div className="flex items-center gap-2">
+                                <span className={`p-1.5 rounded-lg ${ticketType === 'vip' ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-500'}`}><Zap size={16}/></span>
+                                <span className="font-bold text-slate-900">VIP Access</span>
                             </div>
-                            <div className="flex justify-between items-start mb-2">
-                                <div className="flex items-center gap-2">
-                                    <span className={`p-1.5 rounded-lg ${ticketType === 'vip' ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-500'}`}><Zap size={16}/></span>
-                                    <span className="font-bold text-slate-900">VIP Access</span>
-                                </div>
-                                {ticketType === 'vip' && <CheckCircle2 size={20} className="text-amber-600" />}
-                            </div>
-                            <div className="mt-2 space-y-1">
-                                <div className="text-2xl font-bold text-slate-900">₹1,300</div>
-                                <div className="text-xs text-slate-500 font-medium">Priority Experience</div>
-                            </div>
-                            <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
-                                <p>✓ Front Row Seating</p>
-                                <p>✓ Exclusive Swag Kit</p>
-                            </div>
+                            {ticketType === 'vip' && <CheckCircle2 size={20} className="text-amber-600" />}
                         </div>
-                      )}
-                    </>
-                  ) : (
-                    /* Late Comers Pass Active - Hides others */
-                    <div className="col-span-2">
-                        <div 
-                            onClick={() => setTicketType('late')}
-                            className="relative flex items-center justify-between p-6 rounded-2xl border-2 border-rose-500 bg-rose-50/50 cursor-pointer shadow-sm"
-                        >
-                            <div>
-                                <span className="inline-flex items-center gap-2 text-rose-700 font-bold mb-1">
-                                    <AlertCircle size={16} /> Late Comer Pass
-                                </span>
-                                <div className="text-3xl font-bold text-slate-900">₹1,500</div>
-                                <p className="text-sm text-slate-600 mt-2">Standard & VIP Sold Out. Last few spots!</p>
-                            </div>
-                            <div className="h-12 w-12 rounded-full bg-rose-500 flex items-center justify-center text-white">
-                                <CheckCircle2 size={24} />
-                            </div>
+                        <div className="mt-2 space-y-1">
+                            <div className="text-2xl font-bold text-slate-900">₹1,700</div>
+                            <div className="text-xs text-slate-500 font-medium">Priority Experience</div>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
+                            <p>✓ Front Row Seating</p>
+                            <p>✓ Exclusive Swag Kit</p>
                         </div>
                     </div>
+                  ) : (
+                     /* VIP SOLD OUT STATE */
+                     <div className="flex flex-col p-5 rounded-2xl border border-slate-200 bg-slate-50 opacity-60 grayscale cursor-not-allowed">
+                         <div className="flex justify-between items-start mb-2">
+                            <div className="flex items-center gap-2">
+                                <span className="p-1.5 rounded-lg bg-slate-200 text-slate-500"><Zap size={16}/></span>
+                                <span className="font-bold text-slate-700">VIP Access</span>
+                            </div>
+                            <span className="text-[10px] font-bold bg-slate-200 text-slate-600 px-2 py-1 rounded-full">SOLD OUT</span>
+                        </div>
+                        <div className="mt-2 text-xl font-bold text-slate-500">₹1,700</div>
+                     </div>
                   )}
                 </div>
               </Field>
@@ -533,7 +562,7 @@ export default function Bookslot() {
                         <h4 className="font-bold text-slate-800 leading-tight">Developer Explorer Summit '25</h4>
                         <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
                             <Ticket size={12}/> 
-                            {ticketType === 'vip' ? 'VIP Access Pass' : ticketType === 'late' ? 'Late Comers Pass' : 'Standard Access Pass'}
+                            {ticketLabel}
                         </p>
                     </div>
                  </div>
@@ -614,7 +643,6 @@ function SummaryRow({ label, value, className = "" }) {
   );
 }
 
-// Utility class for inputs - Text-base ensures no zoom on iOS
 // Utility class for inputs - Text-base ensures no zoom on iOS
 const inputCls = (extra = "") =>
   `h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base placeholder:text-slate-400

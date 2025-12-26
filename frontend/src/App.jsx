@@ -18,7 +18,8 @@ const UpdatePassword = lazy(() => import("./dashboard/UpdatePassword"));
 function App() {
   const [isAuthProcessing, setIsAuthProcessing] = useState(
     window.location.hash.includes("access_token") ||
-      window.location.hash.includes("type=recovery")
+      window.location.hash.includes("type=recovery") ||
+      window.location.search.includes("code=") // PKCE flow uses query params
   );
 
   useEffect(() => {
@@ -31,15 +32,16 @@ function App() {
         event === "PASSWORD_RECOVERY" ||
         event === "SIGNED_OUT"
       ) {
-        // If we have a hash with token, clear it now that Supabase has likely processed it
+        // If we have a hash with token or query params with code, clear it now that Supabase has processed it
         if (
           window.location.hash.includes("access_token") ||
-          window.location.hash.includes("type=recovery")
+          window.location.hash.includes("type=recovery") ||
+          window.location.search.includes("code=")
         ) {
           window.history.replaceState(
             null,
             "",
-            window.location.pathname + window.location.search
+            window.location.pathname
           );
         }
         // Small delay to ensure UI doesn't flash

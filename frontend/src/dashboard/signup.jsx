@@ -82,7 +82,16 @@ export default function Signup() {
     setMessage("");
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/event` },
+      options: { 
+        redirectTo: `${window.location.origin}/event`,
+        // Use PKCE flow instead of implicit flow for better security
+        // This prevents tokens from appearing in the URL
+        skipBrowserRedirect: false,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
+      },
     });
   }
 

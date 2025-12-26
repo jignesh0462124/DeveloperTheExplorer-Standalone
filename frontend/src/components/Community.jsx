@@ -14,7 +14,7 @@ function Community() {
     <section
       ref={communityRef}
       id="community"
-      className="relative  pb-20 px-4  "
+      className="relative  pb-20 px-4 md:mt-16 "
     >
 
       <div className=" max-w-7xl mx-auto">
