@@ -32,7 +32,49 @@ const TermsAndConditions = () => {
             {/* 2 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                2. Payment Services
+                2. Services Provided
+              </h2>
+              <p>
+                We provide an online ticketing platform for a professional
+                developer-focused event titled <strong>“Developer The Explorer”</strong>.
+                This event is conducted in a camp-style environment where
+                professional developers, engineers, and technology enthusiasts
+                gather to network, collaborate, and share industry knowledge.
+              </p>
+
+              <p>
+                The platform allows users to purchase event access tickets under
+                the following categories, subject to availability:
+              </p>
+
+              <ul className="list-disc pl-5 mt-3 space-y-2">
+                <li>
+                  <strong>Early Bird</strong> – ₹1299 (Limited to 15 tickets)
+                </li>
+                <li>
+                  <strong>Regular</strong> – ₹1499 (Limited to 70 tickets)
+                </li>
+                <li>
+                  <strong>Late Fee</strong> – ₹1799 (Limited to 10 tickets)
+                </li>
+                <li>
+                  <strong>VIP</strong> – ₹1999 (Limited to 25 tickets)
+                </li>
+              </ul>
+
+              <p>
+                Each ticket grants entry to the event as per the category
+                purchased. Ticket benefits, access level, and privileges may
+                vary based on the ticket type. All tickets are issued on a
+                first-come, first-served basis and are subject to availability
+                at the time of purchase.
+              </p>
+            </section>
+
+            {/* 3 */}
+            <section>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">
+                3. Payment Services
               </h2>
               <p>
                 Payments on this platform are processed using PhonePe as a
@@ -42,10 +84,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 3 */}
+            {/* 4 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                3. User Responsibilities
+                4. User Responsibilities
               </h2>
               <p>
                 You agree to provide accurate payment and personal information
@@ -55,10 +97,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 4 */}
+            {/* 5 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                4. Transaction Authorization
+                5. Transaction Authorization
               </h2>
               <p>
                 All transactions initiated through PhonePe are considered final
@@ -68,10 +110,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 5 */}
+            {/* 6 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                5. Refunds and Chargebacks
+                6. Refunds and Chargebacks
               </h2>
               <p>
                 Refunds, if applicable, will be processed back to the original
@@ -81,10 +123,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 6 */}
+            {/* 7 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                6. Failed or Delayed Transactions
+                7. Failed or Delayed Transactions
               </h2>
               <p>
                 We shall not be held responsible for transaction failures caused
@@ -94,10 +136,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 7 */}
+            {/* 8 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                7. Compliance and KYC
+                8. Compliance and KYC
               </h2>
               <p>
                 PhonePe may require users or merchants to complete KYC
@@ -107,10 +149,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 8 */}
+            {/* 9 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                8. Limitation of Liability
+                9. Limitation of Liability
               </h2>
               <p>
                 We and PhonePe shall not be liable for any indirect, incidental,
@@ -119,10 +161,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 9 */}
+            {/* 10 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                9. Modifications to Terms
+                10. Modifications to Terms
               </h2>
               <p>
                 These Terms may be updated periodically to reflect changes in
@@ -131,10 +173,10 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 10 */}
+            {/* 11 */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                10. Governing Law
+                11. Governing Law
               </h2>
               <p>
                 These Terms and Conditions shall be governed and interpreted in
