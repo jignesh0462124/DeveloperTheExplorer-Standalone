@@ -1,4 +1,5 @@
 import React ,{useMemo}from 'react';
+import { Link } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 
 function CTA() {
@@ -21,18 +22,20 @@ function CTA() {
 
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <h2 className={`cta-title text-4xl lg:text-5xl font-bold text-gray-900 mb-6 ${fadeUp}`}>
-          Ready to explore, build, and collaborate?
+          Secure YOUR Spot Now !!!
         </h2>
         <p className={`cta-desc text-xl text-gray-600 mb-10 ${fadeUp}`} style={{ transitionDelay: "120ms" }}>
-          Join Developer The Explorer and experience a tech campaign where curiosity meets execution
+          Don't miss the chance to be part of this 3-day tech-adventure.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className={`cta-button px-10 py-4 bg-blue-500 text-white text-lg font-medium rounded-full hover:bg-blue-600 shadow-lg hover:shadow-xl transition ${fadeUp}`} style={{ transitionDelay: "180ms" }}>
-            Coming Soon
-          </button>
+          <Link to="/login">
+            <button className={`cta-button px-10 py-4 bg-blue-600 text-white text-lg font-medium rounded-full hover:bg-blue-700 shadow-lg hover:shadow-xl transition ${fadeUp}`} style={{ transitionDelay: "180ms" }}>
+              Register Now
+            </button>
+          </Link>
           <a 
             href="https://chat.whatsapp.com/GD6YhOOBpFZFtZNW9dblhS?mode=wwt"
-            className={`cta-button px-10 py-4 bg-white text-blue-500 text-lg font-medium rounded-full hover:bg-gray-50 shadow-lg hover:shadow-xl transition border-2 border-blue-500 ${fadeUp}`}
+            className={`cta-button px-10 py-4 bg-white text-blue-600 text-lg font-medium rounded-full hover:bg-gray-50 shadow-lg hover:shadow-xl transition border-2 border-blue-600 ${fadeUp}`}
             style={{ transitionDelay: "220ms" }}
           >
             Connect with us on Whatsapp

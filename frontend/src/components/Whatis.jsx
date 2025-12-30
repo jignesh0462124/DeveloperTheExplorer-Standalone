@@ -1,10 +1,5 @@
 import React,{useMemo} from "react";
-import {
-  Lightbulb,
-  Code,
-  Users,
-  Rocket,
-} from "lucide-react";
+import { Quote } from "lucide-react";
 import { useReveal } from "../hooks/useReveal";
 
 function Whatis() {
@@ -20,101 +15,63 @@ function Whatis() {
     transitionDelay: `${delay}ms`,
   });
 
-  const steps = [
-    { title: "Step 1: Inspire", desc: "Speaker sessions with industry experts", color: "blue", icon: Lightbulb },
-    { title: "Step 2: Jam", desc: "Hands-on codelabs and workshops", color: "yellow", icon: Code },
-    { title: "Step 3: Build", desc: "Projects & problem-solving", color: "green", icon: Rocket },
-    { title: "Step 4: Connect", desc: "Networking & mentorship", color: "red", icon: Users },
-  ];
-
   return (
-    <section id="about" ref={whatisRef} className="w-full  relative w-full pb-20 px-4 z-10">
-      <div className="max-w-7xl mx-auto">
-        <h2 className={`whatis-title text-4xl lg:text-5xl text-center font-bold text-gray-900 mb-16 ${fadeUp}`}>
-          What is Developer The Explorer?
-        </h2>
+    <section id="about" ref={whatisRef} className="w-full relative py-24 px-4 overflow-hidden">
+      {/* Decorative Background Blobs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-10 left-10 w-96 h-96 bg-blue-200/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+          <div className="absolute top-10 right-10 w-96 h-96 bg-purple-200/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-32 left-1/2 w-96 h-96 bg-pink-200/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+      </div>
 
-        <div className="bg-whit/20 w-full  rounded-3xl p-8 lg:p-12 mb-12 shadow-lg">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Left Column */}
-            <div className="space-y-6">
-              <h3 className={`whatis-content text-2xl font-semibold text-gray-900 ${fadeUp}`}>
-                A Dynamic Tech Campaign
-              </h3>
-              <p className={`whatis-content text-gray-600 leading-relaxed ${fadeUp}`} style={fadeIn(80)}>
-                Developer The Explorer is an innovative tech campaign celebrating exploration, learning, and collaboration across AI, Cloud, Web, and Mobile technologies. It's where curiosity meets execution, and ideas transform into reality.
-              </p>
-              <p className={`whatis-content text-gray-600 leading-relaxed ${fadeUp}`} style={fadeIn(140)}>
-                This flagship event brings together passionate developers, innovators, and tech enthusiasts for an immersive experience of knowledge sharing, hands-on building, and community networking.
-              </p>
-            </div>
-          
-            {/* Right Column - Key Highlights */}
-            <div className=" rounded-2xl p-8">
-              <h4 className={`whatis-content text-xl font-semibold text-gray-900 mb-6 ${fadeUp}`}>
-                Key Highlights
-              </h4>
-              <div className="space-y-4">
-                {[
-                  "Immersive tech sessions & jamming",
-                  "Inspiring talks by developers & innovators",
-                  "Real-time brainstorming and building",
-                  "Community networking & fun activities"
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className={`whatis-highlight flex items-start space-x-3 ${fadeUp}`}
-                    style={fadeIn(180 + index * 80)}
-                  >
-                    <div className="w-5 h-5 rounded bg-green-500 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-700">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+            <h2 className={`whatis-title text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 ${fadeUp}`}>
+            Why This Event Matters?
+            </h2>
+            <div className={`w-24 h-1.5 bg-blue-500 mx-auto rounded-full ${fadeUp}`} />
         </div>
 
-        <div className="bg-white/10 rounded-3xl shadow-xl p-8 lg:p-12">
-          <h3 className={`whatis-flow-title text-2xl font-semibold text-gray-900 text-center mb-12 ${fadeUp}`}>
-            Campaign Flow
-          </h3>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={`whatis-step text-center transition-all duration-700 ease-out ${
-                  isRevealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                }`}
-                style={fadeIn(220 + index * 120)}
-              >
-                <div
-                  className={`w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${
-                    step.color === "blue" ? "from-blue-400 to-blue-600" :
-                    step.color === "yellow" ? "from-yellow-400 to-yellow-600" :
-                    step.color === "green" ? "from-green-400 to-green-600" :
-                    "from-red-400 to-red-600"
-                  } flex items-center justify-center`}
+        <div className="grid md:grid-cols-3 gap-8">
+            {[
+                { text: "Because curiosity deserves space to grow.", color: "blue", delay: 100 },
+                { text: "Because learning shouldn’t end with lectures or notes.", color: "purple", delay: 200 },
+                { text: "Because innovation happens when thinkers, builders, and dreamers come together.", color: "pink", delay: 300 }
+            ].map((item, idx) => (
+                <div 
+                    key={idx} 
+                    className={`group relative bg-white/60 backdrop-blur-md rounded-3xl p-8 shadow-lg hover:shadow-2xl border border-white/50 transition-all duration-500 hover:-translate-y-2 ${fadeUp}`} 
+                    style={fadeIn(item.delay)}
                 >
-                  <step.icon className="w-10 h-10 text-white" />
+                    <div className={`absolute top-0 left-0 w-full h-1.5 rounded-t-3xl bg-gradient-to-r ${
+                        item.color === 'blue' ? 'from-blue-400 to-blue-600' :
+                        item.color === 'purple' ? 'from-purple-400 to-purple-600' :
+                        'from-pink-400 to-pink-600'
+                    }`} />
+                    
+                    <Quote className={`w-10 h-10 mb-6 transform transition-transform duration-500 group-hover:scale-110 ${
+                        item.color === 'blue' ? 'text-blue-500' :
+                        item.color === 'purple' ? 'text-purple-500' :
+                        'text-pink-500'
+                    }`} />
+                    
+                    <p className="text-xl font-medium text-gray-800 leading-relaxed">
+                      {item.text}
+                    </p>
                 </div>
-
-                <div
-                  className={`w-16 h-1 mx-auto mb-3 ${
-                    step.color === "blue" ? "bg-blue-500" :
-                    step.color === "yellow" ? "bg-yellow-500" :
-                    step.color === "green" ? "bg-green-500" :
-                    "bg-red-500"
-                  }`}
-                />
-
-                <h4 className="font-semibold text-gray-900 mb-2">{step.title}</h4>
-                <p className="text-sm text-gray-600">{step.desc}</p>
-              </div>
             ))}
-          </div>
         </div>
+
+        <div className={`mt-32 relative rounded-3xl p-8 sm:p-12 shadow-2xl border border-white/40 overflow-hidden text-center group ${fadeUp}`} style={fadeIn(400)}>
+            {/* Glass Background Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl z-0 transition-opacity duration-500 group-hover:opacity-90" />
+            
+            {/* Content */}
+            <p className="relative z-10 text-xl sm:text-2xl text-gray-800 leading-relaxed font-semibold">
+              This kind of event exists to turn curiosity into action — where exploration becomes collaboration, ideas evolve into solutions, and learning transforms into a shared experience of creation.
+            </p>
+        </div>
+
       </div>
     </section>
   );

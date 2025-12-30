@@ -19,62 +19,73 @@ function HighLights() {
       className="w-full py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-20 lg:ms-12"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Heading */}
-        <div className="text-center mb-10 sm:mb-14 lg:mb-16">
+        
+        {/* WHO ARE WE Section */}
+        <div className="mb-20 text-center max-w-4xl mx-auto">
+             <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 ${fadeUp}`}>
+                The Minds Behind the Journey
+             </h2>
+             <p className={`text-lg sm:text-xl text-gray-600 leading-relaxed mb-6 ${fadeUp}`} style={{ transitionDelay: "100ms" }}>
+                <span className="font-semibold text-blue-600">GDG on Campus (GDGoC) – GHRCE</span> is a student-led developer community that started as a small group of learners who believed technology should be explored, not memorized.
+             </p>
+             <p className={`text-lg sm:text-xl text-gray-600 leading-relaxed ${fadeUp}`} style={{ transitionDelay: "150ms" }}>
+                Over time, this belief evolved into a vibrant space where workshops turn into late-night brainstorming sessions, ideas move beyond classrooms into real-world problem solving, and teammates grow into long-term collaborators who build, experiment, and learn together as a unified community.
+             </p>
+
+             <div className={`mt-10 rounded-3xl overflow-hidden shadow-2xl ${fadeUp}`} style={{ transitionDelay: "200ms" }}>
+                <img 
+                  src="images/team.jpg" 
+                  alt="GDG Team" 
+                  className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
+                />
+             </div>
+        </div>
+
+
+        {/* Heading for Journey */}
+        <div className="text-center mb-10 sm:mb-14 lg:mb-16 border-t border-gray-200 pt-16">
           <h2
-            className={`highlights-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 ${fadeUp}`}
+            className={`highlights-title text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 uppercase tracking-wide ${fadeUp}`}
           >
-            Highlights from Our Journey
+            Our Journey So Far
           </h2>
           <p
             className={`highlights-subtitle text-sm sm:text-base md:text-lg text-gray-600 ${fadeUp}`}
             style={{ transitionDelay: "120ms" }}
           >
-            A legacy of impactful tech events by GDGOC / GDSC GHRCE
+            A Legacy of Impactful Tech Experiences
           </p>
         </div>
 
-        {/* Past Events */}
+        {/* Past Tenure Events */}
         <div className="mb-12">
           <div
             className={`highlights-badge inline-block px-5 sm:px-6 py-2 bg-gray-200 rounded-full mb-6 sm:mb-8 ${fadeUp}`}
             style={{ transitionDelay: "160ms" }}
           >
             <span className="text-xs sm:text-sm font-medium text-gray-700">
-              Past Tenure Events
+              Past Initiatives
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
             {[
               {
-                tag: "Design",
-                color: "blue",
+                tag: "Oct 21, 2023",
+                color: "pink",
                 title: "Figma Lifestyle",
                 desc: [
-                  "A creative event celebrating design thinking and",
-                  "community collaboration, bringing together designers",
-                  "to explore Figma's potential.",
+                  "Central Nagpur’s biggest UI/UX exploration hosted on Oct 21st, 2023.",
+                  "A vibrant celebration of design and digital artistry that created lasting connections for every participant."
                 ],
               },
               {
-                tag: "Tech Festival",
-                color: "green",
+                tag: "Apr 21, 2024",
+                color: "orange",
                 title: "Techotsav 2024",
                 desc: [
-                  "A comprehensive tech festival featuring AI workshops,",
-                  "cybersecurity sessions, and job readiness programs",
-                  "for students.",
-                ],
-              },
-              {
-                tag: "AI Workshop",
-                color: "red",
-                title: "Build with AI",
-                desc: [
-                  "Hands-on sessions exploring AI tools and frameworks,",
-                  "empowering students to build intelligent",
-                  "applications.",
+                  "Central Nagpur's premier tech festival with 100+ participants.",
+                  "Featured industry-led sessions on AI & Cybersecurity, diverse panels, and a dedicated Placement Training track."
                 ],
               },
             ].map((event, index) => (
@@ -90,11 +101,9 @@ function HighLights() {
                 <div className="flex items-center space-x-2 mb-3 sm:mb-4">
                   <div
                     className={`w-3 h-3 rounded-full ${
-                      event.color === "blue"
-                        ? "bg-blue-500"
-                        : event.color === "green"
-                        ? "bg-green-500"
-                        : "bg-red-500"
+                      event.color === "pink"
+                        ? "bg-pink-500"
+                        : "bg-orange-500"
                     }`}
                   />
                   <span className="text-[11px] sm:text-xs font-medium text-gray-600">
@@ -117,46 +126,66 @@ function HighLights() {
         {/* Current Events */}
         <div>
           <div
-            className={`highlights-badge inline-block px-5 sm:px-6 py-2 bg-blue-500 rounded-full mb-6 sm:mb-8 mt-14 sm:mt-16 lg:mt-20 ${fadeUp}`}
+            className={`highlights-badge inline-block px-5 sm:px-6 py-2 bg-blue-600 rounded-full mb-6 sm:mb-8 mt-14 sm:mt-16 lg:mt-20 ${fadeUp}`}
             style={{ transitionDelay: "240ms" }}
           >
             <span className="text-xs sm:text-sm font-medium text-white">
-              Current Tenure Events
+              Current Tenure Highlights (2025)
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
             {[
               {
-                tag: "Hackathon Prep",
-                color: "yellow",
+                tag: "Sept 9, 2025",
+                color: "green",
                 title: "Crack SIH with GDGoC",
                 desc: [
-                  "Launch event and orientation for Smart India Hackathon,",
-                  "guiding students through the competition",
-                  "process.",
+                  "Equipped 600+ students with strategies",
+                  "to conquer Smart India Hackathon via",
+                  "expert-led decoding sessions."
                 ],
               },
               {
-                tag: "Hackathon",
-                color: "green",
+                tag: "Sept 20, 2025",
+                color: "emerald",
                 title: "SIH Internal Hackathon",
                 desc: [
-                  "National-level preparation with real problem",
-                  "statements, fostering innovation and",
-                  "teamwork.",
+                  "Hosted teams to solve real-world problems",
+                  "and shortlist top contenders for the",
+                  "National Level competition."
                 ],
               },
               {
-                tag: "Coding Challenge",
+                tag: "Sept 22-30, 2025",
                 color: "blue",
                 title: "9 Days of Coding",
                 desc: [
-                  "An intensive HackerRank challenge series to",
-                  "sharpen problem-solving and coding",
-                  "skills.",
+                   "A coding marathon on HackerRank sharpening",
+                   "DSA, logic, and analytical thinking with",
+                   "daily challenges and leaderboards."
                 ],
               },
+              {
+                 tag: "2025",
+                 color: "violet",
+                 title: "UXplore @ IIM Nagpur",
+                 desc: [
+                    "Delivered pro UI/UX sessions & AI/ML",
+                    "workshops to 100+ students at InFED,",
+                    "building practical industry skills."
+                 ]
+              },
+              {
+                 tag: "Dec 8-9, 2025",
+                 color: "rose",
+                 title: "SIH 2025 Grand Finale",
+                 desc: [
+                    "Exclusively hosted Nagpur's only SIH Grand",
+                    "Finals, managing 140+ participants as the",
+                    "technical backbone of the event."
+                 ]
+              }
             ].map((event, index) => (
               <div
                 key={index}
@@ -170,11 +199,11 @@ function HighLights() {
                 <div className="flex items-center space-x-2 mb-3 sm:mb-4">
                   <div
                     className={`w-3 h-3 rounded-full ${
-                      event.color === "blue"
-                        ? "bg-blue-500"
-                        : event.color === "green"
-                        ? "bg-green-500"
-                        : "bg-yellow-500"
+                      event.color === "green" ? "bg-green-500" :
+                      event.color === "emerald" ? "bg-emerald-500" :
+                      event.color === "blue" ? "bg-blue-500" :
+                      event.color === "violet" ? "bg-violet-500" :
+                      "bg-rose-500"
                     }`}
                   />
                   <span className="text-[11px] sm:text-xs font-medium text-gray-600">

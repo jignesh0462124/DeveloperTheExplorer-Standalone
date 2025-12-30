@@ -18,40 +18,46 @@ function Community() {
     >
 
       <div className=" max-w-7xl mx-auto">
-        <h2
-          className={`text-4xl  lg:text-5xl text-center font-bold text-gray-900 mb-8 community-title ${fadeUp}`}
+          <h2
+          className={`text-4xl mb-16  lg:text-5xl text-center font-bold text-gray-900 mb-8 community-title ${fadeUp}`}
         >
-              Who We Are
+              Who it’s for
             </h2>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text Section */}
           
           <div className="space-y-6 ms-4 ">
             
+            <ul className="space-y-4 text-gray-700 leading-relaxed mb-6 list-disc pl-5 marker:text-blue-500">
+              <li className={`community-text ${fadeUp}`} style={{ transitionDelay: "80ms" }}>
+                <span className="font-semibold text-gray-900">Professionals and developers</span> ready to turn ideas into real-world innovation.
+              </li>
+              <li className={`community-text ${fadeUp}`} style={{ transitionDelay: "120ms" }}>
+                <span className="font-semibold text-gray-900">Students and beginners</span> eager to explore tech beyond books and tutorials.
+              </li>
+              <li className={`community-text ${fadeUp}`} style={{ transitionDelay: "160ms" }}>
+                <span className="font-semibold text-gray-900">Creators and thinkers</span> merging design, code, and imagination to build something new.
+              </li>
+              <li className={`community-text ${fadeUp}`} style={{ transitionDelay: "200ms" }}>
+                <span className="font-semibold text-gray-900">Curious minds</span> driven by ambition, collaboration, and the courage to explore.
+              </li>
+            </ul>
 
-            <div className="space-y-4 text-gray-600 leading-relaxed mb-8">
-              <p className={`community-text ${fadeUp}`} style={{ transitionDelay: "80ms" }}>
-                GDGOC GHRCE is a vibrant student developer community that bridges the gap between
-                theory and practice. We empower aspiring technologists through workshops,
-                hackathons, speaker sessions, and real-world projects.
-              </p>
-              <p className={`community-text ${fadeUp}`} style={{ transitionDelay: "160ms" }}>
-                Our mission is to create an inclusive learning environment where students can
-                explore cutting-edge technologies, collaborate with peers, and build solutions that
-                matter. From AI to Cloud, Web to Mobile, we cover the full spectrum of modern
-                development.
-              </p>
+            <div className={`mt-6 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl ${fadeUp}`} style={{ transitionDelay: "240ms" }}>
+               <p className="text-xl font-medium text-blue-900 italic">
+                 "No barriers. No titles. No experience required — just the spark to create and the will to begin."
+               </p>
             </div>
 
             <div className="flex flex-wrap gap-3 pt-4">
-              <span className={`px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium community-badge ${fadeUp}`} style={{ transitionDelay: "200ms" }}>
-                Learn
+              <span className={`px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium community-badge ${fadeUp}`} style={{ transitionDelay: "280ms" }}>
+                Passion
               </span>
-              <span className={`px-4 py-2 bg-green-100 text-green-600 rounded-full text-sm font-medium community-badge ${fadeUp}`} style={{ transitionDelay: "240ms" }}>
-                Build
+              <span className={`px-4 py-2 bg-green-100 text-green-600 rounded-full text-sm font-medium community-badge ${fadeUp}`} style={{ transitionDelay: "320ms" }}>
+                Innovation
               </span>
-              <span className={`px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium community-badge ${fadeUp}`} style={{ transitionDelay: "280ms" }}>
-                Grow
+              <span className={`px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium community-badge ${fadeUp}`} style={{ transitionDelay: "360ms" }}>
+                Courage
               </span>
             </div>
           </div>

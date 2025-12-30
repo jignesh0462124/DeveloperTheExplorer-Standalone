@@ -23,7 +23,7 @@ function Footer() {
              
              <div className="space-y-1">
                  <h4 className="font-bold text-slate-800 text-sm">Contact Us</h4>
-                 <p className="text-sm text-slate-500 hover:text-blue-600 transition-colors cursor-pointer">gdgocghrce@gmail.com</p>
+                 <p className="text-sm text-slate-500 hover:text-blue-600 transition-colors cursor-pointer">support@gdgocghrce.in</p>
                  {/* <p className="text-sm text-slate-500">+91 000 000 0000</p> */}
              </div>
           </div>
@@ -35,7 +35,6 @@ function Footer() {
               <li><a href="#about" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">About</a></li>
               <li><a href="#highlights" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Highlights</a></li>
               <li><a href="#campaign" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Campaign Modules</a></li>
-              <li><a href="#sponsors" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Sponsors</a></li>
             </ul>
           </div>
 

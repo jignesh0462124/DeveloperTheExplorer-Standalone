@@ -37,12 +37,7 @@ const Navigation = () => {
             >
               Community
             </a>
-            <a
-              href="#sponsors"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              Sponsors
-            </a>
+
 
           </div>
 
@@ -95,12 +90,7 @@ const Navigation = () => {
             >
               Community
             </a>
-            <a
-              href="#sponsors"
-              className="block text-sm text-gray-600 hover:text-gray-900"
-            >
-              Sponsors
-            </a>
+
 
             <Link to="/login">
               <button className="w-full md:w-auto mt-2 px-6 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition shadow-md shadow-blue-200">
