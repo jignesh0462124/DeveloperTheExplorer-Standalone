@@ -12,41 +12,20 @@ const Navigation = () => {
             <img src="images/logo.png" className="w-45 h-35 mt-4"></img>
           </div>
 
-          <div className="hidden md:flex items-center md:space-x-4 ms-0">
-            <a
-              href="#about"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              About
-            </a>
-            <a
-              href="#highlights"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              Highlights
-            </a>
-            <a
-              href="#campaign"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              Campaign
-            </a>
-            <a
-              href="#community"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              Community
-            </a>
 
-
-          </div>
-
-          {/* CTA Button */}
-          <Link to="/login">
-            <button className="hidden md:block px-6 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition shadow-md shadow-blue-200">
-              Login
-            </button>
-          </Link>
+       <Link to="/login" className="hidden md:inline-block">
+  <button className="
+    px-12 py-4 
+    bg-blue-600 text-white 
+    text-lg font-bold uppercase tracking-wider 
+    rounded-full shadow-lg shadow-blue-200
+    transition-all duration-300 ease-in-out
+    hover:bg-blue-700 hover:scale-105 hover:shadow-blue-300
+    active:scale-95
+  ">
+    Login
+  </button>
+</Link>
 
           {/* Mobile Menu Button */}
           <button

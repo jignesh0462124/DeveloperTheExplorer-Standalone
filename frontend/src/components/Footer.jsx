@@ -40,14 +40,30 @@ function Footer() {
 
           {/* Community */}
           <div>
-            <h3 className="font-bold text-slate-900 mb-4">Community</h3>
-            <ul className="space-y-2.5">
-              <li><a href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">GDGoC GHRCE</a></li>
-              <li><a href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">GitHub</a></li>
-              <li><a href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">LinkedIn</a></li>
-              <li><a href="#" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Instagram</a></li>
-            </ul>
-          </div>
+  <h3 className="font-bold text-slate-900 mb-4">Community</h3>
+  <ul className="space-y-2.5">
+    <li>
+      <a 
+        href="https://www.linkedin.com/company/gdgoc-ghrce/" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="text-sm text-slate-500 hover:text-orange-600 transition-colors"
+      >
+        LinkedIn
+      </a>
+    </li>
+    <li>
+      <a 
+        href="https://www.instagram.com/gdg.ghrce?igsh=MTBrZjBkZzdwcmQw" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="text-sm text-slate-500 hover:text-orange-600 transition-colors"
+      >
+        Instagram
+      </a>
+    </li>
+  </ul>
+</div>
 
           {/* Legal */}
           <div>
