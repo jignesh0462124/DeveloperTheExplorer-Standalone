@@ -47,9 +47,9 @@ const Navigation = () => {
           </div>
 
           {/* CTA Button */}
-          <Link to="/signup">
-            <button className="hidden md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
-              Registration
+          <Link to="/login">
+            <button className="hidden md:block px-6 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition shadow-md shadow-blue-200">
+              Login
             </button>
           </Link>
 
@@ -102,9 +102,9 @@ const Navigation = () => {
               Sponsors
             </a>
 
-            <Link to="/signup">
-              <button className=" md:block px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition lg:ms[10rem]">
-                Registration
+            <Link to="/login">
+              <button className="w-full md:w-auto mt-2 px-6 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition shadow-md shadow-blue-200">
+                Login
               </button>
             </Link>
           </div>

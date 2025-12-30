@@ -27,7 +27,7 @@ export default function UpdatePassword() {
 
       setMessage({ type: "success", text: "Password updated successfully!" });
       setTimeout(() => {
-        navigate("/signup"); // Redirect to login
+        navigate("/login"); // Redirect to login
       }, 2000);
     } catch (error) {
       setMessage({ type: "error", text: error.message });

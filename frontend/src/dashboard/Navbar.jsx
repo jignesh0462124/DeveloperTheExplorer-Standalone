@@ -25,7 +25,7 @@ export default function Navbar({ breadcrumbs }) {
     try {
       setIsSigningOut(true);
       await supabase.auth.signOut();
-      navigate("/signup");
+      navigate("/login");
     } catch (error) {
       console.error("Failed to sign out:", error);
       setIsSigningOut(false);

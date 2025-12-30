@@ -7,7 +7,7 @@ import NotFound from "./components/404.jsx";
 import { supabase } from "../supabase/supabase.js";
 
 const LandingPage = lazy(() => import("./components/LandingPage"));
-const Signup = lazy(() => import("./dashboard/signup"));
+const Login = lazy(() => import("./dashboard/signup"));
 const Event = lazy(() => import("./dashboard/Event"));
 const Bookslot = lazy(() => import("./dashboard/Bookslot"));
 const TermsAndConditions = lazy(() => import("./components/TermsAndConditions"));
@@ -80,7 +80,7 @@ function App() {
         
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/event" element={<Event />} />
             <Route path="/bookslot" element={<Bookslot />} />
 

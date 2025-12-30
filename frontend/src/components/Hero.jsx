@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   Users,
   Lightbulb,
@@ -110,9 +111,11 @@ function Hero() {
             className={`mt-12 flex items-center gap-6 ${animate()}`}
             style={{ transitionDelay: "800ms" }}
           >
-            <button className="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 transition text-white font-bold shadow-xl shadow-blue-600/30">
-              Register Now
-            </button>
+            <Link to="/login">
+              <button className="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 transition text-white font-bold shadow-xl shadow-blue-600/30">
+                Register Now
+              </button>
+            </Link>
             <span className="text-sm text-gray-400">
               Limited seats · Early access
             </span>

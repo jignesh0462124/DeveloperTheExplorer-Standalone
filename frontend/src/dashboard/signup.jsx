@@ -1,17 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { supabase } from "../../supabase/supabase.js";
 
-export default function Signup() {
-  // ----- mode toggle -----
-  const [mode, setMode] = useState("signup"); // "signup" | "login"
-
+export default function Login() {
   // ----- form state -----
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [showPw, setShowPw] = useState(false);
-  const [agree, setAgree] = useState(false);
-  const [updates, setUpdates] = useState(false);
 
   // ----- ui state -----
   const [message, setMessage] = useState("");
@@ -19,12 +13,6 @@ export default function Signup() {
 
   // ----- validators -----
   const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v);
-  const pwOk = (v) => v.length >= 8;
-
-  const validSignup = useMemo(
-    () => name.trim() && isEmail(email) && pwOk(pw) && agree,
-    [name, email, pw, agree]
-  );
 
   const validLogin = useMemo(
     () => isEmail(email) && pw.length > 0,
@@ -36,45 +24,20 @@ export default function Signup() {
     e.preventDefault();
     setMessage("");
 
-    if (mode === "signup") {
-      if (!validSignup) return;
-      setLoading(true);
+    if (!validLogin) return;
+    setLoading(true);
 
-      const { error } = await supabase.auth.signUp({
-        email,
-        password: pw,
-        options: {
-          emailRedirectTo: `${window.location.origin}/event`,
-          data: {
-            full_name: name,
-            marketing_updates: updates,
-            source: "Developer The Explorer",
-          },
-        },
-      });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: pw,
+    });
 
-      setLoading(false);
-      if (error) setMessage(error.message);
-      else
-        setMessage(
-          "Signup successful! Check your email to confirm your account."
-        );
-    } else {
-      if (!validLogin) return;
-      setLoading(true);
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password: pw,
-      });
-
-      setLoading(false);
-      if (error) setMessage(error.message);
-      else {
-        setMessage("Welcome back! Redirecting…");
-        // go straight to the event hub
-        window.location.href = "/event";
-      }
+    setLoading(false);
+    if (error) setMessage(error.message);
+    else {
+      setMessage("Welcome back! Redirecting…");
+      // go straight to the event hub
+      window.location.href = "/event";
     }
   }
 
@@ -95,31 +58,12 @@ export default function Signup() {
     });
   }
 
-  async function handleForgot(e) {
-    e.preventDefault();
-    if (!isEmail(email)) {
-      setMessage("Please enter a valid email address in the field above to receive a reset link.");
-      return;
-    }
-    setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/update-password`,
-    });
-    setLoading(false);
-    setMessage(
-      error ? error.message : "Password reset link sent! Please check your inbox."
-    );
-  }
-
   // ----- right-card meta -----
   const meta = {
     dates: "Feb 6-8, 2025",
     venue: "Jungle Retreat (GDGoC-GHRCE)",
     community: "Developer The Explorer Camp",
   };
-
-  const isSignup = mode === "signup";
-  const formValid = isSignup ? validSignup : validLogin;
 
   return (
     <div className="min-h-screen bg-[#F6F7FB] text-gray-900 antialiased">
@@ -142,52 +86,13 @@ export default function Signup() {
           {/* LEFT: Auth card */}
           <div className="relative">
             <div className="rounded-xl sm:rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-6 sm:p-8">
-              {/* Mode switcher */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-[12px] font-medium text-gray-700 w-fit">
-                  <span className="block h-2 w-2 rounded-full bg-[#4285F4]" />
-                  {isSignup ? "Create your event account" : "Welcome back"}
-                </div>
-
-                <div className="inline-flex rounded-full bg-gray-100 p-1 text-sm self-start sm:self-auto">
-                  <button
-                    onClick={() => setMode("signup")}
-                    className={`px-6 py-2 rounded-full transition whitespace-nowrap ${
-                      isSignup
-                        ? "bg-white shadow text-gray-900"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    Sign up
-                  </button>
-                  <button
-                    onClick={() => setMode("login")}
-                    className={`px-6 py-2 rounded-full transition whitespace-nowrap ${
-                      !isSignup
-                        ? "bg-white shadow text-gray-900"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    Log in
-                  </button>
-                </div>
-              </div>
-
+              
               <h1 className="mt-4 text-3xl sm:text-[34px] font-semibold leading-tight">
-                {isSignup ? (
-                  <>
-                    Sign up for{" "}
-                    <span className="font-bold">Developer The Explorer</span>
-                  </>
-                ) : (
-                  "Log in to your account"
-                )}
+                Log in to your account
               </h1>
 
               <p className="mt-2 text-[15px] text-gray-600">
-                {isSignup
-                  ? "Register once to manage your ticket and updates."
-                  : "Access your ticket, manage your booking, and see updates."}
+                Access your ticket, manage your booking, and see updates.
               </p>
 
               {/* Google OAuth */}
@@ -198,7 +103,7 @@ export default function Signup() {
                   className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   <GoogleIcon className="h-5 w-5" />
-                  {isSignup ? "Continue with Google" : "Log in with Google"}
+                  Log in with Google
                 </button>
 
                 <div className="mt-4 flex items-center gap-3">
@@ -214,31 +119,10 @@ export default function Signup() {
                 onSubmit={handleSubmit}
                 noValidate
               >
-                {isSignup && (
-                  <>
-                    <Field
-                      label="Full name"
-                      htmlFor="name"
-                      helper="As on your ID/certificate."
-                    >
-                      <input
-                        id="name"
-                        type="text"
-                        placeholder="Your full name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className={inputCls()}
-                        required
-                      />
-                    </Field>
-                  </>
-                )}
-
                 {/* Email */}
                 <Field
                   label="Email"
                   htmlFor="email"
-                  helper={isSignup ? "For confirmation & ticket." : ""}
                   error={email ? !isEmail(email) : false}
                   errorText="Enter a valid email."
                 >
@@ -259,9 +143,7 @@ export default function Signup() {
                     <input
                       id="pw"
                       type={showPw ? "text" : "password"}
-                      placeholder={
-                        isSignup ? "Create a strong password" : "Your password"
-                      }
+                      placeholder="Your password"
                       value={pw}
                       onChange={(e) => setPw(e.target.value)}
                       className={inputCls("pr-12")}
@@ -276,86 +158,22 @@ export default function Signup() {
                       {showPw ? <EyeOffIcon /> : <EyeIcon />}
                     </button>
                   </div>
-                  {isSignup ? (
-                    <div className="mt-2 flex items-center gap-2">
-                      <StrengthBar
-                        value={Math.min(4, Math.floor(pw.length / 3))}
-                      />
-                      <span className="text-xs text-gray-500">
-                        {pw.length < 8 ? "Use 8+ characters" : "Looks good"}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="mt-2">
-                      <button
-                        type="button"
-                        className="text-xs text-[#1A73E8] hover:underline"
-                        onClick={handleForgot}
-                      >
-                        Forgot password?
-                      </button>
-                    </div>
-                  )}
                 </Field>
-
-                {/* Consents (signup only) */}
-                {isSignup && (
-                  <div className="space-y-2 pt-2">
-                    <label className="flex items-start gap-3 text-[14px] text-gray-700">
-                      <input
-                        type="checkbox"
-                        className="mt-0.5 h-[18px] w-[18px] accent-[#4285F4]"
-                        checked={agree}
-                        onChange={(e) => setAgree(e.target.checked)}
-                        required
-                      />
-                      <span>
-                        I agree to the{" "}
-                        <a className="text-[#1A73E8] hover:underline" href="#">
-                          Terms
-                        </a>
-                        ,{" "}
-                        <a className="text-[#1A73E8] hover:underline" href="#">
-                          Privacy Policy
-                        </a>{" "}
-                        and{" "}
-                        <a className="text-[#1A73E8] hover:underline" href="#">
-                          Code of Conduct
-                        </a>
-                        .
-                      </span>
-                    </label>
-
-                    <label className="flex items-start gap-3 text-[14px] text-gray-700">
-                      <input
-                        type="checkbox"
-                        className="mt-0.5 h-[18px] w-[18px] accent-[#4285F4]"
-                        checked={updates}
-                        onChange={(e) => setUpdates(e.target.checked)}
-                      />
-                      <span>Send me important event updates on email/SMS.</span>
-                    </label>
-                  </div>
-                )}
 
                 {/* Submit */}
                 <button
                   type="submit"
-                  disabled={!formValid || loading}
+                  disabled={!validLogin || loading}
                   className={`mt-2 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-[15px] font-semibold text-white transition
                     ${
-                      formValid && !loading
+                      validLogin && !loading
                         ? "bg-[#4285F4] hover:bg-[#3367D6]"
                         : "bg-gray-200 text-gray-500 cursor-not-allowed"
                     }
                   `}
                 >
                   {loading
-                    ? isSignup
-                      ? "Creating..."
-                      : "Signing in…"
-                    : isSignup
-                    ? "Create account"
+                    ? "Signing in…"
                     : "Log in"}
                 </button>
 
@@ -422,7 +240,7 @@ export default function Signup() {
               <hr className="my-5 border-gray-200" />
 
               <p className="text-sm font-medium text-gray-700 mb-2">
-                Why sign up?
+                Event Benefits
               </p>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-center gap-2">
@@ -499,21 +317,6 @@ function Badge({ color = "#4285F4", children }) {
       style={{ backgroundColor: `${color}1A`, color }}
     >
       <div className="scale-90">{children}</div>
-    </div>
-  );
-}
-
-function StrengthBar({ value = 0 }) {
-  return (
-    <div className="flex items-center gap-1">
-      {[0, 1, 2, 3].map((i) => (
-        <span
-          key={i}
-          className={`block h-1.5 w-10 rounded-full ${
-            i < value ? "bg-[#34A853]" : "bg-gray-300"
-          }`}
-        />
-      ))}
     </div>
   );
 }

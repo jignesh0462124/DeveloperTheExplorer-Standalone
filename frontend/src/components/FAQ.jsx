@@ -20,52 +20,31 @@ function FAQ() {
 
   const faqs = [
     {
-      question: "What is 'Developer: The Explorer'?",
-      answer: "This is a 3-day 2-night outdoor tech track organized by GDG GHRCE – adventure and innovation combined. Participants will explore nature, attend mentor sessions, take part in quizzes, and collaborate on creative developer challenges, all while camping.",
+      question: "What is Developer-The-Explorer?",
+      answer: "A 3-day, 2-night outdoor tech-adventure camp where innovation meets adventure.",
     },
     {
       question: "Who can participate?",
-      answer: "Any student or developer passionate about learning, coding, and networking is welcome! You don't need to be an expert – just bring curiosity, enthusiasm, and a willingness to explore.",
+      answer: "Any student or developer passionate about learning and exploration.",
     },
     {
-      question: "Where will the event take place?",
-      answer: "The event will be hosted at a forest campsite or eco-retreat zone.",
+      question: "Where will Developer-The-Explorer take place?",
+      answer: "At a forest campsite offering a peaceful, immersive learning environment.",
     },
     {
-      question: "What are the event dates?",
-      answer: "It's a 3-day, 2-night event. Final dates will be announced soon",
+      question: "What will I gain from attending?",
+      answer: `• Hands-on project experience (build real prototypes)
+• Deeper technical mastery in emerging tech
+• Industry connections + global developer network
+• Leadership/teamwork skills through live collaboration
+• Sense of belonging to GDGoC GHRCE community`,
     },
     {
-      question: "What kind of activities are planned?",
-      answer: `Expect a mix of:
-▪️ Tech quizzes and coding challenges
-▪️ Mentor-led sessions and fireside talks
-▪️ Team-building and creative workshops
-▪️ Camping, fun games, and nature exploration`,
-    },
-    {
-      question: "Is accommodation and food included?",
-      answer: "Yes. Camping tents and all meals (breakfast, lunch, dinner, and snacks) are included in the participation fee. We'll also ensure basic hygiene and medical facilities are available.",
-    },
-    {
-      question: "What should participants bring?",
-      answer: "Bring essentials like your laptop and charger (for tech sessions), comfortable clothes and shoes, personal hygiene items, and a positive, adventurous mindset. Other items will be mentioned in the registration form.",
-    },
-    {
-      question: "Is it safe?",
-      answer: "Yes. The campsite will have security staff, medical assistance, and mentors present throughout. Participants will be supervised and guided during all activities.",
-    },
-    {
-      question: "How can I register?",
-      answer: "Registrations will open soon on the official GDG GHRCE website or via the provided registration link. Spots are limited, so keep an eye out!",
-    },
-    {
-      question: "Can non-coders join?",
-      answer: "Absolutely. This event is about exploring tech, teamwork, and creativity – not just coding. Designers, tech enthusiasts, and innovators are all welcome.",
-    },
-    {
-      question: "Is there any participation fee?",
-      answer: "Yes, a nominal fee will be charged to cover logistics, food, and accommodation. Details will be shared in the registration form.",
+      question: "How do I register?",
+      answer: `• Fill the interest form
+• Shortlisted candidates receive login credentials via email
+• Secure spot by paying ticket fee within 24-48 hours
+• Limited seats - Non-payment = spot offered to waitlist`,
     },
   ];
 

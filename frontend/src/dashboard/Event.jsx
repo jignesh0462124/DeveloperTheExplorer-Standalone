@@ -13,7 +13,7 @@ export default function Event() {
   const [totalBookings, setTotalBookings] = useState(0);
 
   // useUserProfile removed, handled in Navbar
-  const { isLoading: authLoading } = useAuthGuard("/signup");
+  const { isLoading: authLoading } = useAuthGuard("/login");
 
   // Event Details (Static for now, could be passed as props)
   const event = {

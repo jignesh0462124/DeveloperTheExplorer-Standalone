@@ -26,7 +26,7 @@ const inr = (v) =>
 
 export default function Bookslot() {
   const navigate = useNavigate();
-  const { isLoading } = useAuthGuard("/signup");
+  const { isLoading } = useAuthGuard("/login");
   const { profile } = useUserProfile();
 
   // Form State
