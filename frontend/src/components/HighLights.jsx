@@ -24,7 +24,7 @@ function HighLights() {
         "A vibrant celebration of design and digital artistry that created lasting connections for every participant."
       ],
       details: "Figma Lifestyle was more than just a workshop; it was a movement to bring design thinking to the forefront of development. With over 150 participants, we explored the depths of UI/UX, from wireframing to high-fidelity prototyping. The event featured live design battles, expert portfolio reviews, and hands-on sessions that transformed beginners into confident designers.",
-      gallery: ["images/team.jpg"] // Placeholder, can be replaced with specific event photos
+      gallery: ["images/FL4.png"] // Placeholder, can be replaced with specific event photos
     },
     {
       tag: "Apr 21, 2024",
@@ -35,7 +35,7 @@ function HighLights() {
         "Featured industry-led sessions on AI & Cybersecurity, diverse panels, and a dedicated Placement Training track."
       ],
       details: "Techotsav 2024 brought together the brightest minds for a day of innovation. The event included three parallel tracks: a Hackathon, a Capture The Flag (CTF) cybersecurity challenge, and a specialized placement training bootcamp. Industry leaders from top firms conducted mock interviews and resume building sessions.",
-      gallery: ["images/hero.png"]
+      gallery: ["images/tech.JPG","images/tech2.JPG"]
     },
   ];
 
@@ -51,7 +51,7 @@ function HighLights() {
       ],
       details: `In GHRCE's energetic hall on September 9, 2025, GDGoC GHRCE was officially launched, hosting "Crack SIH with GDGoC", an event that equipped 600+ students with battle-tested strategies to conquer the Smart India Hackathon. Expert-led sessions featured Aman Tiwari (Former GDSC Lead), Aman Khapre (SIH 2024 Grand Finalist & World Robotics Championship Winner), and Sailee Gathibandhe (Pixellkey Director). They decoded real-world problem statements, solution pathways, and confidence-building tactics, turning aspiring coders into SIH-ready powerhouses.
 `,
-      gallery: ["images/team.jpg"]
+      gallery: ["images/crack3.svg","images/crack2.jpg"]
     },
     {
       tag: "Sept 20, 2025",
@@ -87,7 +87,7 @@ function HighLights() {
         "building practical industry skills."
       ],
       details: "Collaborating with IIM Nagpur's InFED was a highlight of the year. We brought technical expertise to management students, bridging the gap between business logic and product design. The sessions covered rapid prototyping and AI integration in business tools.",
-      gallery: ["images/team.jpg"]
+      gallery: ["images/uxplore.JPG","images/uxplore2.JPG"]
     },
     {
       tag: "Dec 8-9, 2025",
@@ -99,7 +99,7 @@ function HighLights() {
         "technical backbone of the event."
       ],
       details: "A milestone achievement for GDGoC GHRCE. Hosting the Grand Finale put us on the national map. We managed the entire technical infrastructure, logistics, and hospitality for teams from across India, ensuring a glitch-free 36-hour hackathon.",
-      gallery: ["images/team.jpg"]
+      gallery: ["images/grand.jpeg","images/grand2.jpeg"]
     }
   ];
 
