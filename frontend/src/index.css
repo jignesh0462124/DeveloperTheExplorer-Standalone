@@ -19,3 +19,19 @@ body {
 .animate-gentle-bounce {
   animation: gentle-bounce 3s ease-in-out infinite;
 }
+
+@keyframes modal-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-modal-up {
+  animation: modal-up 0.3s ease-out forwards;
+}

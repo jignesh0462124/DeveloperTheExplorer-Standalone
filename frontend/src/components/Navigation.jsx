@@ -14,18 +14,10 @@ const Navigation = () => {
 
 
        <Link to="/login" className="hidden md:inline-block">
-  <button className="
-    px-12 py-4 
-    bg-blue-600 text-white 
-    text-lg font-bold uppercase tracking-wider 
-    rounded-full shadow-lg shadow-blue-200
-    transition-all duration-300 ease-in-out
-    hover:bg-blue-700 hover:scale-105 hover:shadow-blue-300
-    active:scale-95
-  ">
-    Login
-  </button>
-</Link>
+            <button className="px-8 py-3 bg-blue-600 text-white text-base font-semibold rounded-full hover:bg-blue-700 transition shadow-md shadow-blue-200">
+              Login
+            </button>
+       </Link>
 
           {/* Mobile Menu Button */}
           <button

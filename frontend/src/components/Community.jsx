@@ -21,7 +21,7 @@ function Community() {
           <h2
           className={`text-4xl mb-16  lg:text-5xl text-center font-bold text-gray-900 mb-8 community-title ${fadeUp}`}
         >
-              Who it’s for
+              Whom it’s for
             </h2>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text Section */}
