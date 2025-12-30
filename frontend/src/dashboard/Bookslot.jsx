@@ -251,28 +251,6 @@ export default function Bookslot() {
           setIsProcessing(true);
           setIsPaymentSuccess(true);
 
-          // Update booking status
-          await supabase
-            .from("bookings")
-            .update({
-              payment_status: "success",
-              payment_id: response.razorpay_payment_id,
-            })
-            .eq("id", booking_id);
-
-          // ✅ Send confirmation email with backend-calculated data
-          await supabase.functions.invoke("send-booking-confirmation", {
-            body: {
-              email,
-              full_name: name,
-              booking_id,
-              amount: amount, // ✅ Use amount from backend
-              phone: `${cc} ${phone}`,
-              college,
-              gender,
-              ticket_type: ticket_label, // ✅ Use label from backend
-            },
-          });
 
           // Delay navigation slightly to show success state
           setTimeout(() => {

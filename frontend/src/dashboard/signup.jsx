@@ -41,22 +41,7 @@ export default function Login() {
     }
   }
 
-  async function handleGoogle() {
-    setMessage("");
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { 
-        redirectTo: `${window.location.origin}/event`,
-        // Use PKCE flow instead of implicit flow for better security
-        // This prevents tokens from appearing in the URL
-        skipBrowserRedirect: false,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        }
-      },
-    });
-  }
+
 
   // ----- right-card meta -----
   const meta = {
@@ -85,7 +70,7 @@ export default function Login() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8">
           {/* LEFT: Auth card */}
           <div className="relative">
-            <div className="rounded-xl sm:rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-6 sm:p-8">
+            <div className="rounded-xl sm:rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-8 sm:p-12">
               
               <h1 className="mt-4 text-3xl sm:text-[34px] font-semibold leading-tight">
                 Log in to your account
@@ -96,26 +81,11 @@ export default function Login() {
               </p>
 
               {/* Google OAuth */}
-              <div className="mt-6">
-                <button
-                  type="button"
-                  onClick={handleGoogle}
-                  className="group inline-flex w-full items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  <GoogleIcon className="h-5 w-5" />
-                  Log in with Google
-                </button>
 
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-gray-200" />
-                  <span className="text-xs text-gray-500">or</span>
-                  <div className="h-px flex-1 bg-gray-200" />
-                </div>
-              </div>
 
               {/* FORM */}
               <form
-                className="mt-4 space-y-4"
+                className="mt-6 space-y-6"
                 onSubmit={handleSubmit}
                 noValidate
               >
@@ -164,7 +134,7 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={!validLogin || loading}
-                  className={`mt-2 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-[15px] font-semibold text-white transition
+                  className={`mt-4 inline-flex w-full items-center justify-center rounded-full px-6 py-4 text-lg font-semibold text-white transition
                     ${
                       validLogin && !loading
                         ? "bg-[#4285F4] hover:bg-[#3367D6]"
@@ -285,7 +255,7 @@ export default function Login() {
 /* ---------- helpers / small components ---------- */
 
 const inputCls = (extra = "") =>
-  `h-11 w-full rounded-md border border-gray-300 bg-white px-3 text-[15px] placeholder:text-gray-400
+  `h-14 w-full rounded-md border border-gray-300 bg-white px-4 text-base placeholder:text-gray-400
    focus:outline-none focus:ring-4 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8] ${extra}`;
 
 function Field({ label, htmlFor, helper, error, errorText, children }) {
@@ -322,28 +292,7 @@ function Badge({ color = "#4285F4", children }) {
 }
 
 /* ---------- Icons ---------- */
-function GoogleIcon({ className = "" }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path
-        fill="#4285F4"
-        d="M23.766 12.277c0-.851-.075-1.67-.213-2.456H12v4.651h6.652a5.692 5.692 0 0 1-2.466 3.73v3.102h3.982c2.332-2.149 3.598-5.312 3.598-9.027z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 24c3.24 0 5.956-1.075 7.941-2.917l-3.982-3.102c-1.108.747-2.526 1.183-3.959 1.183-3.041 0-5.613-2.053-6.53-4.807H1.356v3.183C3.333 21.082 7.333 24 12 24z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.47 14.357a7.213 7.213 0 0 1-.38-2.357c0-.817.14-1.614.38-2.357V6.46H1.356A11.99 11.99 0 0 0 0 12c0 1.973.492 3.82 1.356 5.541l4.114-3.184z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 4.782c1.764 0 3.347.606 4.596 1.794l3.44-3.44C17.951 1.263 15.235 0 12 0 7.333 0 3.333 2.918 1.356 6.459L5.47 9.643C6.391 6.835 8.959 4.782 12 4.782z"
-      />
-    </svg>
-  );
-}
+
 function CalendarIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">

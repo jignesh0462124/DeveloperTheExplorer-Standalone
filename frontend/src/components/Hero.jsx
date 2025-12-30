@@ -61,7 +61,7 @@ function Hero() {
       </div>
 
       {/* ================= CONTENT ================= */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-16 pt-20 pb-12">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-16 pt-10 pb-32">
         <div className="max-w-4xl">
           <h1
             className={`text-4xl sm:text-6xl lg:text-[82px] font-extrabold leading-[1.1] tracking-tight text-white ${animate(
