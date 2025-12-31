@@ -21,7 +21,7 @@ function Community() {
           <h2
           className={`text-4xl mb-16  lg:text-5xl text-center font-bold text-gray-900 mb-8 community-title ${fadeUp}`}
         >
-              Whom it’s for
+              Whom it's for
             </h2>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text Section */}
@@ -45,7 +45,7 @@ function Community() {
 
             <div className={`mt-6 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl ${fadeUp}`} style={{ transitionDelay: "240ms" }}>
                <p className="text-xl font-medium text-blue-900 italic">
-                 "No barriers. No titles. No experience required — just the spark to create and the will to begin."
+                 "No barriers. No titles. No experience required - just the spark to create and the will to begin."
                </p>
             </div>
 

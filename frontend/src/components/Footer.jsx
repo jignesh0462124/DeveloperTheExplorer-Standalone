@@ -18,7 +18,7 @@ function Footer() {
                </span>
              </div>
              <p className="text-sm text-slate-500 leading-relaxed mb-6 max-w-xs">
-               A flagship tech campaign by GDGoC GHRCE celebrating innovation, learning, and collaboration.
+               A flagship tech camp by GDGoC GHRCE celebrating innovation, learning, and collaboration.
              </p>
              
              <div className="space-y-1">
@@ -32,9 +32,11 @@ function Footer() {
           <div>
             <h3 className="font-bold text-slate-900 mb-4">Quick Links</h3>
             <ul className="space-y-2.5">
-              <li><a href="#about" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">About</a></li>
-              <li><a href="#highlights" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Highlights</a></li>
-              <li><a href="#campaign" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Campaign Modules</a></li>
+              <li><a href="/" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Home</a></li>
+              <li><a href="/#about" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">About</a></li>
+              <li><a href="/#highlights" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Highlights</a></li>
+              <li><a href="/#campaign" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">Campaign Modules</a></li>
+              <li><a href="/#faq" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">FAQs</a></li>
             </ul>
           </div>
 

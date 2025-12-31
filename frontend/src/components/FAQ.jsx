@@ -20,24 +20,22 @@ function FAQ() {
 
   const faqs = [
     {
-      question: "What is Developer-The-Explorer?",
-      answer: "A 3-day, 2-night outdoor tech-adventure camp where innovation meets adventure.",
+      question: "What is Developer The Explorer?",
+      answer: "A 3 day, 2 night outdoor tech adventure camp where innovation meets adventure.",
     },
     {
       question: "Who can participate?",
       answer: "Any student or developer passionate about learning and exploration.",
     },
     {
-      question: "Where will Developer-The-Explorer take place?",
-      answer: "At a forest campsite offering a peaceful, immersive learning environment.",
+      question: "Where will Developer The Explorer take place?",
+      answer: "At a campsite offering a peaceful, immersive learning environment, near Nagpur.",
     },
     {
       question: "What will I gain from attending?",
-      answer: `• Hands-on project experience (build real prototypes)
-• Deeper technical mastery in emerging tech
-• Industry connections + global developer network
-• Leadership/teamwork skills through live collaboration
-• Sense of belonging to GDGoC GHRCE community`,
+      answer: `Premium Networking - Connect with industry pros and global developers
+Industry-Level Sessions - Gain insights from real-world innovators
+Ecosystem Belonging - Join the exclusive GDGoC GHRCE community`,
     },
     {
       question: "How do I register?",
@@ -48,15 +46,15 @@ function FAQ() {
     },
     {
       question: "Do I need prior technical experience or specific skills to attend?",
-      answer: "No experience required - just bring your enthusiasm and curiosity to learn.",
+      answer: "No experience required just bring your enthusiasm and curiosity to learn.",
     },
   ];
 
   return (
-    <section ref={faqRef} className="w-full relative py-20 px-4 sm:px-6 lg:px-20">
+    <section id="faq" ref={faqRef} className="w-full relative py-20 px-4 sm:px-6 lg:px-20">
       <div className="max-w-4xl mx-auto">
         <h2 className={`faq-title text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16 ${fadeUp}`}>
-          Developer: The Explorer – FAQs
+          Developer-The-Explorer : FAQs
         </h2>
 
         <div className="space-y-4">

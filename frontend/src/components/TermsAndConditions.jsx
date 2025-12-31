@@ -45,8 +45,8 @@ const TermsAndConditions = () => {
               </h2>
               <p>
                 We provide an online ticketing platform for a professional
-                developer-focused event titled <strong>“Developer The Explorer”</strong>.
-                This event is conducted in a camp-style environment where
+                developer focused event titled <strong>“Developer The Explorer”</strong>.
+                This event is conducted in a camp style environment where
                 professional developers, engineers, and technology enthusiasts
                 gather to network, collaborate, and share industry knowledge.
               </p>
@@ -58,16 +58,16 @@ const TermsAndConditions = () => {
 
               <ul className="list-disc pl-5 mt-3 space-y-2">
                 <li>
-                  <strong>Early Bird</strong> – ₹1299 (Limited to 15 tickets)
+                  <strong>Early Bird</strong> ₹1299 (Limited to 15 tickets)
                 </li>
                 <li>
-                  <strong>Regular</strong> – ₹1499 (Limited to 70 tickets)
+                  <strong>Regular</strong> ₹1499 (Limited to 70 tickets)
                 </li>
                 <li>
-                  <strong>Late Fee</strong> – ₹1799 (Limited to 10 tickets)
+                  <strong>Late Fee</strong> ₹1799 (Limited to 10 tickets)
                 </li>
                 <li>
-                  <strong>VIP</strong> – ₹1999 (Limited to 25 tickets)
+                  <strong>VIP</strong> ₹1999 (Limited to 25 tickets)
                 </li>
               </ul>
 
@@ -75,7 +75,7 @@ const TermsAndConditions = () => {
                 Each ticket grants entry to the event as per the category
                 purchased. Ticket benefits, access level, and privileges may
                 vary based on the ticket type. All tickets are issued on a
-                first-come, first-served basis and are subject to availability
+                first come, first served basis and are subject to availability
                 at the time of purchase.
               </p>
             </section>
@@ -87,7 +87,7 @@ const TermsAndConditions = () => {
               </h2>
               <p>
                 Payments on this platform are processed using PhonePe as a
-                third-party payment service provider. We do not store or process
+                third party payment service provider. We do not store or process
                 sensitive payment information such as UPI PINs, card numbers, or
                 banking credentials.
               </p>
@@ -166,7 +166,7 @@ const TermsAndConditions = () => {
               <p>
                 We and PhonePe shall not be liable for any indirect, incidental,
                 consequential, or punitive damages arising from payment failures,
-                unauthorized access, or third-party service interruptions.
+                unauthorized access, or third party service interruptions.
               </p>
             </section>
 

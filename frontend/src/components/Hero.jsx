@@ -89,7 +89,7 @@ function Hero() {
             )}`}
             style={{ transitionDelay: "600ms" }}
           >
-            It began with a question—a spark of curiosity that pushed beyond classrooms
+            It began with a question-a spark of curiosity that pushed beyond classrooms
             and comfort zones. Join a journey where learning comes alive through dialogue,
             creativity, and the power to turn ideas into reality.
           </p>
@@ -116,7 +116,7 @@ function Hero() {
             <Meta
               icon={<Users />}
               label="Organized By"
-              value="Google Developer Groups on Campus – GHRCE"
+              value="Google Developer Groups on Campus - GHRCE"
             />
           </div>
         </div>

@@ -20,10 +20,10 @@ function HighLights() {
       color: "pink",
       title: "Figma Lifestyle",
       desc: [
-        "Central Nagpur’s biggest UI/UX exploration hosted on Oct 21st, 2023.",
+        "Central Nagpur's biggest UI/UX exploration hosted on Oct 21st, 2023.",
         "A vibrant celebration of design and digital artistry that created lasting connections for every participant."
       ],
-      details: `In the heart of Central Nagpur, GDSC - GHRCE organized Figma Lifestyle on October 21, 2023, a vibrant get‑together that became the biggest celebration of design and digital artistry. The event brought around 100+ participants together through live interactions, where attendees not only created moments but also built long‑lasting connections. It delivered unforgettable memories and celebrated creativity, making every participant’s journey truly remarkable.`,
+      details: `In the heart of Central Nagpur, GDSC GHRCE organized Figma Lifestyle on October 21, 2023, a vibrant get together that became the biggest celebration of design and digital artistry. The event brought around 100+ participants together through live interactions, where attendees not only created moments but also built long lasting connections. It delivered unforgettable memories and celebrated creativity, making every participant's journey truly remarkable.`,
       gallery: ["images/FL1.svg","images/FL2.svg"] // Placeholder, can be replaced with specific event photos
     },
     {
@@ -32,9 +32,9 @@ function HighLights() {
       title: "Techotsav 2024",
       desc: [
         "Central Nagpur's premier tech festival with 100+ participants.",
-        "Featured industry-led sessions on AI & Cybersecurity, diverse panels, and a dedicated Placement Training track."
+        "Featured industry led sessions on AI & Cybersecurity, diverse panels, and a dedicated Placement Training track."
       ],
-      details: `Techotsav 2024, held on April 21, 2024, by GDSC at GHRCE, featured founders and co-founders of prominent companies delivering thought-provoking sessions on "The Role of Artificial Intelligence in Bridging the Industry-Academic Gap," "Cybersecurity," and a panel discussion on "Generative AI in Industry and Academic Research." The event also included a Placement Training Session that equipped participants with essential tips, tools, and strategies to enhance their employability skills. Over 100+ participants actively engaged in the sessions, making the event a grand success.
+      details: `Techotsav 2024, held on April 21, 2024, by GDSC at GHRCE, featured founders and co founders of prominent companies delivering thought provoking sessions on "The Role of Artificial Intelligence in Bridging the Industry Academic Gap," "Cybersecurity," and a panel discussion on "Generative AI in Industry and Academic Research." The event also included a Placement Training Session that equipped participants with essential tips, tools, and strategies to enhance their employability skills. Over 100+ participants actively engaged in the sessions, making the event a grand success.
 `,
       gallery: ["images/tech.JPG","images/tech2.JPG"]
     },
@@ -48,9 +48,9 @@ function HighLights() {
       desc: [
         "Equipped 600+ students with strategies",
         "to conquer Smart India Hackathon via",
-        "expert-led decoding sessions."
+        "expert led decoding sessions."
       ],
-      details: `In GHRCE's energetic hall on September 9, 2025, GDGoC GHRCE was officially launched, hosting "Crack SIH with GDGoC", an event that equipped 600+ students with battle-tested strategies to conquer the Smart India Hackathon. Expert-led sessions featured Aman Tiwari (Former GDSC Lead), Aman Khapre (SIH 2024 Grand Finalist & World Robotics Championship Winner), and Sailee Gathibandhe (Pixellkey Director). They decoded real-world problem statements, solution pathways, and confidence-building tactics, turning aspiring coders into SIH-ready powerhouses.
+      details: `In GHRCE's energetic hall on September 9, 2025, GDGoC GHRCE was officially launched, hosting "Crack SIH with GDGoC", an event that equipped 600+ students with battle tested strategies to conquer the Smart India Hackathon. Expert led sessions featured Aman Tiwari (Former GDSC Lead), Aman Khapre (SIH 2024 Grand Finalist & World Robotics Championship Winner), and Sailee Gathibandhe (Pixellkey Director). They decoded real world problem statements, solution pathways, and confidence building tactics, turning aspiring coders into SIH ready powerhouses.
 `,
       gallery: ["images/crack3.svg","images/crack2.jpg"]
     },
@@ -59,11 +59,11 @@ function HighLights() {
       color: "emerald",
       title: "SIH Internal Hackathon",
       desc: [
-        "Hosted teams to solve real-world problems",
+        "Hosted teams to solve real world problems",
         "and shortlist top contenders for the",
         "National Level competition."
       ],
-      details: `GDGoC‑GHRCE hosted the SIH Internal Hackathon 2025 on September 20, 2025, at G H  Raisoni College of Engineering, Nagpur, with 75+ teams comprising more than 450+ participants. The event fostered innovation, teamwork, and rapid prototyping, serving as a gateway to the Smart India Hackathon 2025 Grand Finals. Guided by the GDGoC technical team’s smooth digital operations, top teams were shortlisted to proudly represent GHRCE at the national level.`,
+      details: `GDGoC GHRCE hosted the SIH Internal Hackathon 2025 on September 20, 2025, at G H  Raisoni College of Engineering, Nagpur, with 75+ teams comprising more than 450+ participants. The event fostered innovation, teamwork, and rapid prototyping, serving as a gateway to the Smart India Hackathon 2025 Grand Finals. Guided by the GDGoC technical team’s smooth digital operations, top teams were shortlisted to proudly represent GHRCE at the national level.`,
       gallery: ["images/internal.jpeg","images/internal2.jpeg"]
     },
     {
@@ -71,27 +71,27 @@ function HighLights() {
       color: "blue",
       title: "Ask Us Anything: Bridging the Gap",
       desc: [
-        "A hybrid peer-led workshop connecting students",
+        "A hybrid peer led workshop connecting students",
         "across diverse tech domains through open",
-        "discussion, guidance, and real-world insights."
+        "discussion, guidance, and real world insights."
       ],
-      details: `GDGoC GHRCE hosted "Ask Us Anything: Bridging the Gap," a hybrid workshop on October 17, 2025, connecting students with peers across tech domains through open discussions and practical guidance. Speakers included Nandini Jaiswal (Cloud Computing), Sarvar Sheikh (Web Development), Eshank Ryshabh (AI/ML & Robotics), Aniket Tiwari (Cybersecurity), Sanika Wazarkar (UI/UX Design), Devanshu Sarode (Video Editing), and Kunal Nibrad (DSA). The session excelled in cross-domain exposure, honest peer insights, hands-on experience sharing, and building community collaboration, advancing GDGoC's goal of collective learning.`,
+      details: `GDGoC GHRCE hosted "Ask Us Anything: Bridging the Gap," a hybrid workshop on October 17, 2025, connecting students with peers across tech domains through open discussions and practical guidance. Speakers included Nandini Jaiswal (Cloud Computing), Sarvar Sheikh (Web Development), Eshank Ryshabh (AI/ML & Robotics), Aniket Tiwari (Cybersecurity), Sanika Wazarkar (UI/UX Design), Devanshu Sarode (Video Editing), and Kunal Nibrad (DSA). The session excelled in cross domain exposure, honest peer insights, hands on experience sharing, and building community collaboration, advancing GDGoC's goal of collective learning.`,
       gallery: ["images/ask.jpeg","images/ask2.svg"]
     },
     {
       tag: "Nov 22,2025",
       color: "violet",
-      title: "UXplore @ IIM Nagpur",
+      title: "UXplore @ InFED IIM Nagpur",
       desc: [
         "Delivered pro UI/UX sessions & AI/ML",
         "workshops to 100+ students at InFED,",
         "building practical industry skills."
       ],
-      details: `UXplore 2025 brought together creativity, technology, and innovation under one dynamic roof at InFED, IIM Nagpur. The event featured a masterclass on UI/UX by Mr. Swapnil and Mrs. Sailee Gathibandhe from PixellKey, simplifying complex design concepts into human-centered learning. It was followed by an engaging AI/ML and Robotics workshop by Mr. Yogesh Mene, connecting futuristic ideas to real-world applications. With 100+ enthusiastic attendees, UXplore 2025 empowered participants with hands-on experience and inspired them to imagine, design, and build the technologies of tomorrow.`,
+      details: `UXplore 2025 brought together creativity, technology, and innovation under one dynamic roof at InFED, IIM Nagpur. The event featured a masterclass on UI/UX by Mr. Swapnil, Founder of Pixellkey and Mrs. Sailee Gathibandhe, Director at PixellKey, simplifying complex design concepts into human-centered learning. It was followed by an engaging AI/ML and Robotics workshop by Mr. Yogesh Mene, connecting futuristic ideas to real-world applications. With 100+ enthusiastic attendees, UXplore 2025 empowered participants with hands-on experience and inspired them to imagine, design, and build the technologies of tomorrow.`,
       gallery: ["images/Uxplore.jpeg","images/uxplore2.JPG"]
     },
     {
-      tag: "Dec 8-9, 2025",
+      tag: "Dec 8 9, 2025",
       color: "rose",
       title: "SIH 2025 Grand Finale",
       desc: [
@@ -99,7 +99,7 @@ function HighLights() {
         "Finals, managing 140+ participants as the",
         "technical backbone of the event."
       ],
-      details: `GDGoC GHRCE proudly served as part of the SIH 2025 Hosting Committee at G. H. Raisoni College of Engineering, Nagpur, on December 8–9, 2025. Managing 120+ participants, the team ensured seamless coordination, logistics, and real-time support across every phase of the national-level hackathon. GDGoC played a vital role in cross-team collaboration, decision-making, and maintaining high-scale operations — embodying teamwork, leadership, and innovation. The experience showcased GDGoC GHRCE’s commitment to empowering talent, enabling impactful solutions, and driving community-led execution at scale.`,
+      details: `GDGoC GHRCE proudly served as part of the SIH 2025 Hosting Committee at G. H. Raisoni College of Engineering, Nagpur, on December 8 9, 2025. Managing 120+ participants, the team ensured seamless coordination, logistics, and real-time support across every phase of the national level hackathon. GDGoC played a vital role in cross team collaboration, decision making, and maintaining high scale operations — embodying teamwork, leadership, and innovation. The experience showcased GDGoC GHRCE’s commitment to empowering talent, enabling impactful solutions, and driving community led execution at scale.`,
       gallery: ["images/grand.jpeg","images/grand2.jpeg"]
     }
   ];
@@ -119,7 +119,7 @@ function HighLights() {
                   The Minds Behind the Journey
                </h2>
                <p className={`text-lg sm:text-xl text-gray-600 leading-relaxed mb-6 ${fadeUp}`} style={{ transitionDelay: "100ms" }}>
-                  <span className="font-semibold text-blue-600">GDG on Campus (GDGoC) – GHRCE</span> is a student-led developer community that started as a small group of learners who believed technology should be explored, not memorized.
+                  <span className="font-semibold text-blue-600">GDGoC GHRCE</span> is a student-led developer community that started as a small group of learners who believed technology should be explored, not memorized.
                </p>
                <p className={`text-lg sm:text-xl text-gray-600 leading-relaxed ${fadeUp}`} style={{ transitionDelay: "150ms" }}>
                   Over time, this belief evolved into a vibrant space where workshops turn into late-night brainstorming sessions, ideas move beyond classrooms into real-world problem solving, and teammates grow into long-term collaborators who build, experiment, and learn together as a unified community.

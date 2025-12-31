@@ -17,7 +17,7 @@ function Whatsin() {
                 { 
                     icon: BookOpen, 
                     text: "Stronger technical foundations", 
-                    sub: "Deeper technical mastery in emerging technologies like AI, Cloud, and Web.",
+                    sub: "Deeper technical mastery in emerging technologies.",
                     color: "blue" 
                 },
                 { 

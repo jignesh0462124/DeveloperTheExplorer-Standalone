@@ -45,8 +45,8 @@ export default function Login() {
 
   // ----- right-card meta -----
   const meta = {
-    dates: "Feb 6-8, 2025",
-    venue: "Jungle Retreat (GDGoC-GHRCE)",
+    dates: "Feb 6 8, 2025",
+    venue: "Jungle Retreat (GDGoC GHRCE)",
     community: "Developer The Explorer Camp",
   };
 
@@ -171,21 +171,21 @@ export default function Login() {
             <div className="sticky top-8 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 p-6 sm:p-7">
               
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Developer-The-Explorer</h2>
+                <h2 className="text-xl font-bold text-gray-900">Developer The Explorer</h2>
                 <p className="text-sm text-blue-600 font-medium mt-1">Explore Beyond What You Already Know</p>
                 <div className="mt-4 space-y-3 text-sm text-gray-600">
                     <div className="flex items-start gap-3">
                         <Badge color="#4285F4"><CalendarIcon /></Badge>
                         <div>
                             <p className="font-medium text-gray-900">Feb 6-8, 2025</p>
-                            <p className="text-xs">3-Day, 2-Night Tech-Adventure Camp</p>
+                            <p className="text-xs">3 Day, 2 Night Tech Adventure Camp</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-3">
                          <Badge color="#EA4335"><PinIcon /></Badge>
                          <div>
                             <p className="font-medium text-gray-900">Campsite near Nagpur, India</p>
-                            <p className="text-xs">Organized by Google Developer Groups on Campus – GHRCE</p>
+                            <p className="text-xs">Organized by Google Developer Groups on Campus GHRCE</p>
                          </div>
                     </div>
                 </div>

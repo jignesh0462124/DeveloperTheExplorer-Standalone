@@ -41,7 +41,7 @@ function Campaign() {
               Unveiling Developer-The-Explorer
             </h2>
             <p className={`text-lg sm:text-xl text-gray-600 leading-relaxed mb-4 ${fadeUp}`} style={{ transitionDelay: "100ms" }}>
-                This is not a conference. It’s not a workshop either. It’s an expedition — into the unknown corners of technology, collaboration, and creativity.
+                This is not a conference. It's not a workshop either. It's an expedition - into the unknown corners of technology, collaboration, and creativity.
             </p>
             <p className={`text-lg sm:text-xl text-gray-600 leading-relaxed ${fadeUp}`} style={{ transitionDelay: "150ms" }}>
                 Developer-The-Explorer was designed to break the pattern of passive learning. No stages that separate speakers from the audience. No monologues that end in slides. Here, knowledge flows in every direction — through hands-on sessions, spontaneous discussions, and shared experiments.
@@ -64,13 +64,13 @@ function Campaign() {
             {[
                 {
                     title: "Immersive Tech Sessions",
-                    desc: "Build, break, and create through hands-on sessions that turn ideas into real projects using today’s most powerful technologies.",
+                    desc: "Build, break, and create through sessions that turn ideas into real projects using today's most powerful technologies.",
                     icon: Code,
                     gradient: "from-blue-400 to-blue-600"
                 },
                 {
                     title: "Expert Talks & Insights",
-                    desc: "Hear directly from innovators and industry leaders redefining the tech landscape — real stories, real lessons, zero fluff.",
+                    desc: "Hear directly from innovators and industry leaders redefining the tech landscape - real stories, real lessons, zero fluff.",
                     icon: Brain,
                      gradient: "from-purple-400 to-purple-600"
                 },

@@ -26,8 +26,8 @@ export default function NotFound() {
           </h3>
 
           <p className="text-gray-500 mt-4 max-w-md">
-            The page you’re looking for doesn’t exist or might have been moved.
-            Let’s help you find your way back.
+            The page you're looking for doesn't exist or might have been moved.
+            Let's help you find your way back.
           </p>
 
           <button
