@@ -5,7 +5,7 @@ import { useReveal } from "../hooks/useReveal";
 function FAQ() {
   const { ref: faqRef, isRevealed } = useReveal({ threshold: 0.2 });
   const [openFaq, setOpenFaq] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(5);
+
   const fadeUp = useMemo(
     () =>
       `transition-all duration-700 ease-out ${
@@ -46,6 +46,10 @@ function FAQ() {
 • Secure spot by paying ticket fee within 24-48 hours
 • Limited seats - Non-payment = spot offered to waitlist`,
     },
+    {
+      question: "Do I need prior technical experience or specific skills to attend?",
+      answer: "No experience required - just bring your enthusiasm and curiosity to learn.",
+    },
   ];
 
   return (
@@ -56,7 +60,7 @@ function FAQ() {
         </h2>
 
         <div className="space-y-4">
-          {faqs.slice(0, visibleCount).map((faq, index) => (
+          {faqs.map((faq, index) => (
             <div
               key={index}
               className={`faq-item bg-white/40 rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden ${fadeUp}`}
@@ -86,16 +90,7 @@ function FAQ() {
           ))}
         </div>
 
-        {visibleCount < faqs.length && (
-          <div className="text-center mt-8">
-            <button
-              onClick={() => setVisibleCount((prev) => prev + 5)}
-              className="px-6 mt-10 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition"
-            >
-              Load More
-            </button>
-          </div>
-        )}
+
       </div>
     </section>
   );

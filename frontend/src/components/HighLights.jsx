@@ -23,8 +23,8 @@ function HighLights() {
         "Central Nagpur’s biggest UI/UX exploration hosted on Oct 21st, 2023.",
         "A vibrant celebration of design and digital artistry that created lasting connections for every participant."
       ],
-      details: "Figma Lifestyle was more than just a workshop; it was a movement to bring design thinking to the forefront of development. With over 150 participants, we explored the depths of UI/UX, from wireframing to high-fidelity prototyping. The event featured live design battles, expert portfolio reviews, and hands-on sessions that transformed beginners into confident designers.",
-      gallery: ["images/FL4.png"] // Placeholder, can be replaced with specific event photos
+      details: `In the heart of Central Nagpur, GDSC - GHRCE organized Figma Lifestyle on October 21, 2023, a vibrant get‑together that became the biggest celebration of design and digital artistry. The event brought around 100+ participants together through live interactions, where attendees not only created moments but also built long‑lasting connections. It delivered unforgettable memories and celebrated creativity, making every participant’s journey truly remarkable.`,
+      gallery: ["images/FL1.svg","images/FL2.svg"] // Placeholder, can be replaced with specific event photos
     },
     {
       tag: "Apr 21, 2024",
@@ -34,7 +34,8 @@ function HighLights() {
         "Central Nagpur's premier tech festival with 100+ participants.",
         "Featured industry-led sessions on AI & Cybersecurity, diverse panels, and a dedicated Placement Training track."
       ],
-      details: "Techotsav 2024 brought together the brightest minds for a day of innovation. The event included three parallel tracks: a Hackathon, a Capture The Flag (CTF) cybersecurity challenge, and a specialized placement training bootcamp. Industry leaders from top firms conducted mock interviews and resume building sessions.",
+      details: `Techotsav 2024, held on April 21, 2024, by GDSC at GHRCE, featured founders and co-founders of prominent companies delivering thought-provoking sessions on "The Role of Artificial Intelligence in Bridging the Industry-Academic Gap," "Cybersecurity," and a panel discussion on "Generative AI in Industry and Academic Research." The event also included a Placement Training Session that equipped participants with essential tips, tools, and strategies to enhance their employability skills. Over 100+ participants actively engaged in the sessions, making the event a grand success.
+`,
       gallery: ["images/tech.JPG","images/tech2.JPG"]
     },
   ];
@@ -62,23 +63,23 @@ function HighLights() {
         "and shortlist top contenders for the",
         "National Level competition."
       ],
-      details: "Continuing with creativity GDGoC - GHRCE proudly hosted SIH Internal Hackathon 2025 on 20th September 2025 at G H Raisoni College of Engineering, Nagpur. Teams shortlisted through this got an opportunity to move ahead and compete at the National Level, representing GHRCE. ",
-      gallery: ["images/team.jpg","images/Hero.png"]
+      details: `GDGoC‑GHRCE hosted the SIH Internal Hackathon 2025 on September 20, 2025, at G H  Raisoni College of Engineering, Nagpur, with 75+ teams comprising more than 450+ participants. The event fostered innovation, teamwork, and rapid prototyping, serving as a gateway to the Smart India Hackathon 2025 Grand Finals. Guided by the GDGoC technical team’s smooth digital operations, top teams were shortlisted to proudly represent GHRCE at the national level.`,
+      gallery: ["images/internal.jpeg","images/internal2.jpeg"]
     },
     {
-      tag: "Sept 22-30, 2025",
+      tag: "Oct 17, 2025",
       color: "blue",
-      title: "9 Days of Coding",
+      title: "Ask Us Anything: Bridging the Gap",
       desc: [
-        "A coding marathon on HackerRank sharpening",
-        "DSA, logic, and analytical thinking with",
-        "daily challenges and leaderboards."
+        "A hybrid peer-led workshop connecting students",
+        "across diverse tech domains through open",
+        "discussion, guidance, and real-world insights."
       ],
-      details: "Consistenty is key. 9 Days of Coding was designed to build a daily coding habit. With problem difficulty ramping up each day, participants tackled everything from basic arrays to complex dynamic programming challenges. The leaderboard kept the competitive spirit alive!",
-      gallery: ["images/team.jpg"]
+      details: `GDGoC GHRCE hosted "Ask Us Anything: Bridging the Gap," a hybrid workshop on October 17, 2025, connecting students with peers across tech domains through open discussions and practical guidance. Speakers included Nandini Jaiswal (Cloud Computing), Sarvar Sheikh (Web Development), Eshank Ryshabh (AI/ML & Robotics), Aniket Tiwari (Cybersecurity), Sanika Wazarkar (UI/UX Design), Devanshu Sarode (Video Editing), and Kunal Nibrad (DSA). The session excelled in cross-domain exposure, honest peer insights, hands-on experience sharing, and building community collaboration, advancing GDGoC's goal of collective learning.`,
+      gallery: ["images/ask.jpeg","images/ask2.svg"]
     },
     {
-      tag: "2025",
+      tag: "Nov 22,2025",
       color: "violet",
       title: "UXplore @ IIM Nagpur",
       desc: [
@@ -86,8 +87,8 @@ function HighLights() {
         "workshops to 100+ students at InFED,",
         "building practical industry skills."
       ],
-      details: "Collaborating with IIM Nagpur's InFED was a highlight of the year. We brought technical expertise to management students, bridging the gap between business logic and product design. The sessions covered rapid prototyping and AI integration in business tools.",
-      gallery: ["images/uxplore.JPG","images/uxplore2.JPG"]
+      details: `UXplore 2025 brought together creativity, technology, and innovation under one dynamic roof at InFED, IIM Nagpur. The event featured a masterclass on UI/UX by Mr. Swapnil and Mrs. Sailee Gathibandhe from PixellKey, simplifying complex design concepts into human-centered learning. It was followed by an engaging AI/ML and Robotics workshop by Mr. Yogesh Mene, connecting futuristic ideas to real-world applications. With 100+ enthusiastic attendees, UXplore 2025 empowered participants with hands-on experience and inspired them to imagine, design, and build the technologies of tomorrow.`,
+      gallery: ["images/Uxplore.jpeg","images/uxplore2.JPG"]
     },
     {
       tag: "Dec 8-9, 2025",
@@ -98,7 +99,7 @@ function HighLights() {
         "Finals, managing 140+ participants as the",
         "technical backbone of the event."
       ],
-      details: "A milestone achievement for GDGoC GHRCE. Hosting the Grand Finale put us on the national map. We managed the entire technical infrastructure, logistics, and hospitality for teams from across India, ensuring a glitch-free 36-hour hackathon.",
+      details: `GDGoC GHRCE proudly served as part of the SIH 2025 Hosting Committee at G. H. Raisoni College of Engineering, Nagpur, on December 8–9, 2025. Managing 120+ participants, the team ensured seamless coordination, logistics, and real-time support across every phase of the national-level hackathon. GDGoC played a vital role in cross-team collaboration, decision-making, and maintaining high-scale operations — embodying teamwork, leadership, and innovation. The experience showcased GDGoC GHRCE’s commitment to empowering talent, enabling impactful solutions, and driving community-led execution at scale.`,
       gallery: ["images/grand.jpeg","images/grand2.jpeg"]
     }
   ];
@@ -314,14 +315,7 @@ function HighLights() {
                 <p className="text-lg text-gray-700 leading-relaxed font-medium">
                    {selectedEvent.details}
                 </p>
-                <div className="mt-6 p-6 bg-blue-50 rounded-2xl border border-blue-100">
-                   <h4 className="font-bold text-blue-900 mb-2">Key Takeaways</h4>
-                   <ul className="list-disc list-inside space-y-2 text-gray-700">
-                      {selectedEvent.desc.map((line, i) => (
-                        <li key={i}>{line}</li>
-                      ))}
-                   </ul>
-                </div>
+
               </div>
             </div>
 

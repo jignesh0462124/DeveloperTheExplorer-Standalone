@@ -169,65 +169,70 @@ export default function Login() {
           {/* RIGHT: Highlights */}
           <aside className="lg:block">
             <div className="sticky top-8 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 p-6 sm:p-7">
-              <h3 className="text-lg font-semibold">Event Highlights</h3>
-
-              <ul className="mt-4 space-y-4 text-[15px]">
-                <li className="flex items-start gap-3">
-                  <Badge color="#4285F4">
-                    <CalendarIcon />
-                  </Badge>
-                  <div>
-                    <div className="font-medium">{meta.dates}</div>
-                    <div className="text-gray-600 text-sm">
-                      3-Day Adventure Camp
+              
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-gray-900">Developer-The-Explorer</h2>
+                <p className="text-sm text-blue-600 font-medium mt-1">Explore Beyond What You Already Know</p>
+                <div className="mt-4 space-y-3 text-sm text-gray-600">
+                    <div className="flex items-start gap-3">
+                        <Badge color="#4285F4"><CalendarIcon /></Badge>
+                        <div>
+                            <p className="font-medium text-gray-900">Feb 6-8, 2025</p>
+                            <p className="text-xs">3-Day, 2-Night Tech-Adventure Camp</p>
+                        </div>
                     </div>
-                  </div>
-                </li>
-
-                <li className="flex items-start gap-3">
-                  <Badge color="#EA4335">
-                    <PinIcon />
-                  </Badge>
-                  <div>
-                    <div className="font-medium">{meta.venue}</div>
-                    <div className="text-gray-600 text-sm">Wild Tech Retreat</div>
-                  </div>
-                </li>
-
-                <li className="flex items-start gap-3">
-                  <Badge color="#34A853">
-                    <UsersIcon />
-                  </Badge>
-                  <div>
-                    <div className="font-medium">{meta.community}</div>
-                    <div className="text-gray-600 text-sm">
-                      Exclusive Cohort
+                    <div className="flex items-start gap-3">
+                         <Badge color="#EA4335"><PinIcon /></Badge>
+                         <div>
+                            <p className="font-medium text-gray-900">Campsite near Nagpur, India</p>
+                            <p className="text-xs">Organized by Google Developer Groups on Campus – GHRCE</p>
+                         </div>
                     </div>
-                  </div>
-                </li>
+                </div>
+
+                <a 
+                  href="#" 
+                  target="_blank"
+                  className="mt-6 block w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 text-center text-sm font-bold text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                >
+                  Register Now
+                </a>
+              </div>
+
+              <hr className="my-5 border-gray-200" />
+
+              <h3 className="text-base font-semibold text-gray-900 mb-3">Event Highlights</h3>
+              <ul className="space-y-3 text-[14px] text-gray-600 mb-6">
+                 <li className="flex gap-2">
+                    <span className="text-blue-500 mt-1">●</span>
+                    <span>Wild Tech Retreat in nature's classroom</span>
+                 </li>
+                 
+                 <li className="flex gap-2">
+                    <span className="text-blue-500 mt-1">●</span>
+                    <span>For students, pros, creators—no experience needed, just curiosity</span>
+                 </li>
+                 <li className="flex gap-2">
+                    <span className="text-blue-500 mt-1">●</span>
+                    <span>Turn ideas into reality through dialogue, experiments, and shared innovation</span>
+                 </li>
               </ul>
 
               <hr className="my-5 border-gray-200" />
 
-              <p className="text-sm font-medium text-gray-700 mb-2">
-                Event Benefits
-              </p>
+              <h3 className="text-base font-semibold text-gray-900 mb-3">Login & Exclusive Benefits</h3>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-center gap-2">
-                  <CheckIcon className="text-[#34A853]" /> Save your ticket
-                  securely
+                  <CheckIcon className="text-[#34A853]" /> Save your ticket securely
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckIcon className="text-[#34A853]" /> Quick check-in at the
-                  venue
+                  <CheckIcon className="text-[#34A853]" /> Quick check-in at the venue
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckIcon className="text-[#34A853]" /> Get schedule
-                  reminders
+                  <CheckIcon className="text-[#34A853]" /> Get schedule reminders
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckIcon className="text-[#34A853]" /> Access exclusive
-                  content
+                  <CheckIcon className="text-[#34A853]" /> Access exclusive content
                 </li>
               </ul>
             </div>

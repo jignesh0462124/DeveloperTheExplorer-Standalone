@@ -112,7 +112,7 @@ function Hero() {
             style={{ transitionDelay: "1000ms" }}
           >
             <Meta icon={<Calendar />} label="Event Date" value="To be announced" />
-            <Meta icon={<MapPin />} label="Location" value="Forest campsite, Nagpur" />
+            <Meta icon={<MapPin />} label="Location" value="Campsite near Nagpur, India​" />
             <Meta
               icon={<Users />}
               label="Organized By"
