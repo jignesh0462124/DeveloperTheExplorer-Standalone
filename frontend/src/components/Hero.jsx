@@ -34,7 +34,7 @@ function Hero() {
           src={heroVideo}
           className="
             absolute top-1/2 left-1/2
-            w-[120vw] h-[120vh]
+            w-auto min-w-[100vw] h-[160vh] sm:w-[120vw] sm:h-[120vh]
             -translate-x-1/2 -translate-y-1/2
             object-cover
           "
