@@ -28,7 +28,6 @@ function Footer() {
              </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="font-bold text-slate-900 mb-4">Quick Links</h3>
             <ul className="space-y-2.5">
@@ -39,6 +38,7 @@ function Footer() {
               <li><a href="/#faq" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">FAQs</a></li>
             </ul>
           </div>
+          {/* Quick Links */}
 
           {/* Community */}
           <div>
