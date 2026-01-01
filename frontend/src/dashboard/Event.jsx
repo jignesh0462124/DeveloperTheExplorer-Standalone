@@ -131,21 +131,30 @@ export default function Event() {
               <Dot color="#6366F1" /> Upcoming Event
             </span>
 
-            <h1 className="mt-6 text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.1] text-slate-900">
+            <h1 className="mt-6 text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 drop-shadow-sm">
               {event.title}
             </h1>
-            <p className="mt-4 text-lg text-slate-600 max-w-xl leading-relaxed">
-              Hands-on Google-tech sessions, jamming labs & community networking.
-              <br className="hidden sm:block"/>
-              {event.summary}
+            <p className="mt-6 text-lg text-slate-600 max-w-xl leading-relaxed space-y-4">
+              <span className="block font-semibold text-slate-800">
+                Get ready for Developer-The-Explorer : Explore Beyond What You Already Know
+              </span>
+              <span className="block mt-2">
+                Join us this February 6 - 8, 2025 in a tech-adventure retreat: 3-days, 2-nights of pure innovation.
+              </span>
+              <span className="block mt-2">
+                At a stunning campsite near Nagpur, India, hosted by Google Developer Groups on Campus – GHRCE.
+              </span>
+              <span className="block mt-2">
+                Ignite breakthroughs under open skies with industrial sessions, networking, and epic collaborations!
+              </span>
             </p>
 
             {/* Metadata List */}
-            <ul className="mt-8 space-y-3">
+            {/* <ul className="mt-8 space-y-3">
               <MetaItem icon={<CalendarIcon />} label={event.dateLabel} />
               <MetaItem icon={<PinIcon />} label={event.venue} />
               <MetaItem icon={<StackIcon />} label={event.tracks.join(" · ")} />
-            </ul>
+            </ul> */}
 
             {/* Action Buttons & Like */}
             <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -164,34 +173,34 @@ export default function Event() {
                 ) : isBooked ? (
                   <div className="w-full sm:max-w-md">
                     {ticketDetails && (
-                        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-md w-full animate-in fade-in slide-in-from-top-2 relative overflow-hidden">
+                        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-emerald-100 p-6 shadow-xl shadow-emerald-100/50 w-full animate-in fade-in slide-in-from-top-2 relative overflow-hidden group">
                              {/* Decorative bg element */}
-                             <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-50 to-transparent -mr-6 -mt-6 rounded-bl-full opacity-50 pointer-events-none"></div>
+                             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-100 to-transparent -mr-8 -mt-8 rounded-bl-full opacity-60 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
 
                              <div className="flex items-center justify-between mb-4 relative z-10">
                                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">YOUR PASS</div>
-                                 <div className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm ring-1 ring-emerald-100">
-                                    <CheckIcon size={12} /> CONFIRMED
+                                 <div className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm ring-1 ring-emerald-200">
+                                    <CheckIcon size={12} strokeWidth={4} /> CONFIRMED
                                  </div>
                              </div>
                              
                              <div className="relative z-10">
-                                <h3 className="text-2xl font-extrabold text-slate-900 mb-1 tracking-tight">{ticketDetails.ticket_type || "Standard Pass"}</h3>
+                                <h3 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">{ticketDetails.ticket_type || "Standard Pass"}</h3>
                                 <p className="text-sm text-slate-500 font-medium mb-5">Developer The Explorer Summit '25</p>
                              </div>
                              
                              <div className="space-y-3 pt-4 border-t border-slate-100 relative z-10">
                                 <div className="text-sm text-slate-600 flex items-center gap-3">
-                                    <div className="p-1 rounded bg-emerald-100 text-emerald-600"><CheckIcon size={14} /></div>
-                                    <span>Entry to all 3-day sessions & labs</span>
+                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                    <span className="font-medium">Entry to all 3-day sessions & labs</span>
                                 </div>
                                 <div className="text-sm text-slate-600 flex items-center gap-3">
-                                    <div className="p-1 rounded bg-emerald-100 text-emerald-600"><CheckIcon size={14} /></div>
-                                    <span>{ticketDetails.ticket_type === 'VIP Pass' ? 'Priority Seating, Premium Swag & Lunch' : 'Standard Swag Kit, Lunch & Refreshments'}</span>
+                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                    <span className="font-medium">{ticketDetails.ticket_type === 'VIP Pass' ? 'Priority Seating, Premium Swag & Lunch' : 'Standard Swag Kit, Lunch & Refreshments'}</span>
                                 </div>
                                 <div className="text-sm text-slate-600 flex items-center gap-3">
-                                    <div className="p-1 rounded bg-emerald-100 text-emerald-600"><CheckIcon size={14} /></div>
-                                    <span>Certificate of Participation</span>
+                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                    <span className="font-medium">Certificate of Participation</span>
                                 </div>
                              </div>
                         </div>
@@ -222,31 +231,33 @@ export default function Event() {
         {/* Info Grid */}
         <section className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           <InfoCard
-            icon={<InfoIcon className="text-sky-500" />}
+            theme="blue"
+            icon={<InfoIcon className="text-blue-600" />}
             title="About the event"
-            body="Developer The Explorer is a 3-day immersive tech retreat designed to pull students out of classrooms and into an environment where ideas grow naturally. Across adventure challenges, workshops, bonfire talks, and jamming labs — you learn by doing."
+            body="Developer The Explorer is not your normal tech event—it's a 3-day, 2-night immersive experience blending tech and adventure under the open sky, harmonizing with nature. Designed to unite professionals and students in an environment where ideas flourish naturally. Forget speaker stages and slide decks—ideas exchange dynamically via interactive workshops, outdoor challenges, and campfire chats."
           />
           <InfoCard
-            icon={<StarIcon className="text-emerald-500" />}
-            title="Why attend?"
+            theme="emerald"
+            icon={<StarIcon className="text-emerald-600" />}
+            title="Why Attend Developer The Explorer?"
             list={[
-              "Hands-on labs with real projects & mentorship",
-              "Adventure-based tech challenges",
-              "Sessions by industry mentors & sponsors",
-              "Bonfires, talks, jamming nights",
-              "Certificate from GDGoC GHRCE",
-              "A rare, high-energy environment"
+              "Adventure Tech Challenges – Blend coding with outdoor excitement",
+              "Industry Mentor Sessions – Insights from pros and sponsors",
+              "Bonfires & Jamming Nights – Unwind, connect, and spark ideas",
+              "Rare High-Energy Vibe – Immersive escape like no other tech event"
             ]}
           />
           <InfoCard
-            icon={<LockerIcon className="text-amber-500" />}
+            theme="amber"
+            icon={<LockerIcon className="text-amber-600" />}
             title="What to bring"
             list={[
-                "Laptop + Charger (Mandatory)", 
-                "Student ID", 
+                "Laptop + Charger (Mandatory)",
+                "Student ID",
                 "Water Bottle",
                 "Comfortable outdoor clothing",
-                "Essentials for 2-night stay"
+                "Essentials for 2-night stay (toiletries, sleeping bag, torch)",
+                "Most Important: Your Energy - Bring your enthusiasm to explore!",
             ]}
           />
         </section>
@@ -266,51 +277,93 @@ export default function Event() {
                 <div className="absolute left-[39px] sm:left-[43px] top-4 bottom-4 w-0.5 bg-slate-100 -z-10 hidden sm:block"></div>
                 
                 {/* DAY 1 */}
-                <div>
-                     <div className="flex items-center gap-3 mb-6 bg-slate-50 p-2 rounded-lg w-fit pr-4">
-                        <span className="bg-sky-100 text-sky-700 font-bold px-3 py-1 rounded-md text-sm">Day 1</span>
-                        <span className="text-sm font-semibold text-slate-600">6 Feb 2025</span>
+                <div className="relative pl-8 sm:pl-10 space-y-12">
+                     {/* Daily Track Line */}
+                     <div className="absolute left-3 top-2 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-indigo-500 to-transparent"></div>
+
+                     <div>
+                         <div className="relative flex items-center gap-4 mb-8">
+                            <div className="absolute -left-[35px] sm:-left-[43px] w-8 h-8 rounded-full border-4 border-white bg-blue-600 shadow-md z-10 grid place-items-center">
+                                <span className="text-[10px] font-bold text-white">D1</span>
+                            </div>
+                            <div className="bg-blue-50/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-blue-100 shadow-sm">
+                                <h3 className="text-lg font-bold text-blue-900">Day 1 — Feb 6</h3>
+                            </div>
+                         </div>
+                         <div className="space-y-0">
+                            <RailwayItem time="01:00 PM" title="Reporting" desc="Gear Up & Check-in" color="bg-blue-500" />
+                            <RailwayItem time="02:00 PM" title="Departure" desc="Leaving for Ramtek" color="bg-indigo-500" />
+                            <RailwayItem time="03:30 PM" title="Arrival" desc="Reaching Basecamp" color="bg-violet-500" />
+                            <RailwayItem time="05:00 PM" title="Accommodation" desc="High Tea & Settlement" color="bg-fuchsia-500" />
+                            <RailwayItem time="05:30 PM" title="Kickoff" desc="Activity & Introduction" color="bg-pink-500" />
+                            <RailwayItem time="08:00 PM" title="Dinner" desc="Community Feast" color="bg-rose-500" />
+                            <RailwayItem time="09:00 PM" title="Rest" desc="Networking / Night Prep" color="bg-slate-500" />
+                            <RailwayItem time="10:00 PM" title="Product Designing" desc="Technical Workshop 01" color="bg-indigo-600" isLast={true} />
+                         </div>
                      </div>
-                     <ul className="space-y-8">
-                        <AgendaItem time="07:00" color="#3B82F6" title="Pickup & Reporting" desc="Arrival at pickup points, attendance, and seating coordination." />
-                        <AgendaItem time="09:30" color="#6366F1" title="Venue Arrival & Check-in" desc="Welcome kits, room/tent allocation, and orientation." />
-                        <AgendaItem time="10:00" color="#F59E0B" title="Treasure Hunt (Tech + Cultural)" desc="A high-energy exploration challenge to spark collaboration." />
-                        <AgendaItem time="02:30" color="#10B981" title="Session 1: Workshop" desc="Hands-on workshop with expert guidance." />
-                        <AgendaItem time="09:30" color="#8B5CF6" title="Talks & Stand-up Night" desc="Engaging speaker insights + open-mic comedy night." />
-                     </ul>
                 </div>
 
                 {/* DAY 2 */}
-                <div>
-                     <div className="flex items-center gap-3 mb-6 bg-slate-50 p-2 rounded-lg w-fit pr-4 mt-8">
-                        <span className="bg-emerald-100 text-emerald-700 font-bold px-3 py-1 rounded-md text-sm">Day 2</span>
-                        <span className="text-sm font-semibold text-slate-600">7 Feb 2025</span>
+                <div className="relative pl-8 sm:pl-10 space-y-12 mt-16 text-left">
+                     <div className="absolute left-3 top-2 bottom-0 w-0.5 bg-gradient-to-b from-emerald-500 via-teal-500 to-transparent"></div>
+
+                     <div>
+                         <div className="relative flex items-center gap-4 mb-8">
+                            <div className="absolute -left-[35px] sm:-left-[43px] w-8 h-8 rounded-full border-4 border-white bg-emerald-600 shadow-md z-10 grid place-items-center">
+                                <span className="text-[10px] font-bold text-white">D2</span>
+                            </div>
+                            <div className="bg-emerald-50/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-emerald-100 shadow-sm">
+                                <h3 className="text-lg font-bold text-emerald-900">Day 2 — Feb 7</h3>
+                            </div>
+                         </div>
+                         <div className="space-y-0">
+                            <RailwayItem time="12:00 AM" title="Rest" desc="Recharge for the day ahead" color="bg-slate-400" />
+                            <RailwayItem time="06:30 AM" title="Fresh" desc="Morning routine" color="bg-cyan-500" />
+                            <RailwayItem time="07:00 AM" title="Breakfast" desc="Morning Fuel" color="bg-orange-500" />
+                            <RailwayItem time="08:00 AM" title="App Security" desc="Technical Workshop 02" color="bg-red-500" />
+                            <RailwayItem time="11:00 AM" title="Among Us" desc="Strategic Game Session" color="bg-purple-500" />
+                            <RailwayItem time="01:00 PM" title="Lunch" desc="Mid-day Break" color="bg-orange-500" />
+                            <RailwayItem time="02:00 PM" title="Rest" desc="Industry Connections" color="bg-slate-500" />
+                            <RailwayItem time="04:00 PM" title="Fintech" desc="Technical Workshop 03" color="bg-green-600" />
+                            <RailwayItem time="07:00 PM" title="Product/Sponsor" desc="Unplugged & Social" color="bg-pink-600" />
+                            <RailwayItem time="08:00 PM" title="Dinner" desc="Evening Fuel" color="bg-rose-500" />
+                            <RailwayItem time="09:00 PM" title="Jamming" desc="Late Night Huddle" color="bg-violet-600" isLast={true} />
+                            <RailwayItem time="10:00 PM" title="Buffer Time" desc="Session Activity" color="bg-indigo-400" />
+                         </div>
                      </div>
-                     <ul className="space-y-8">
-                        <AgendaItem time="05:30" color="#F43F5E" title="Yoga & Warm-up" desc="Guided relaxation and stretching to start the day right." />
-                        <AgendaItem time="10:00" color="#F59E0B" title="Challenge Activity" desc="Challenge-based outdoor activity." />
-                        <AgendaItem time="02:00" color="#3B82F6" title="Session 2: Deep Dive" desc="Deep-dive tech workshop across tracks." />
-                        <AgendaItem time="09:30" color="#8B5CF6" title="Jamming Sessions" desc="Team improvisations, open coding, music jam, networking." />
-                     </ul>
                 </div>
 
                 {/* DAY 3 */}
-                <div>
-                     <div className="flex items-center gap-3 mb-6 bg-slate-50 p-2 rounded-lg w-fit pr-4 mt-8">
-                        <span className="bg-amber-100 text-amber-700 font-bold px-3 py-1 rounded-md text-sm">Day 3</span>
-                        <span className="text-sm font-semibold text-slate-600">8 Feb 2025</span>
+                <div className="relative pl-8 sm:pl-10 space-y-12 mt-16 text-left">
+                     <div className="absolute left-3 top-2 bottom-0 w-0.5 bg-gradient-to-b from-amber-500 via-orange-500 to-transparent"></div>
+
+                     <div>
+                         <div className="relative flex items-center gap-4 mb-8">
+                            <div className="absolute -left-[35px] sm:-left-[43px] w-8 h-8 rounded-full border-4 border-white bg-amber-600 shadow-md z-10 grid place-items-center">
+                                <span className="text-[10px] font-bold text-white">D3</span>
+                            </div>
+                            <div className="bg-amber-50/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-amber-100 shadow-sm">
+                                <h3 className="text-lg font-bold text-amber-900">Day 3 — Feb 8</h3>
+                            </div>
+                         </div>
+                         <div className="space-y-0">
+                            
+                            <RailwayItem time="12:00 AM" title="Bon Fire" desc="Night Watch & Stories" color="bg-orange-600" />
+                            <RailwayItem time="02:00 AM" title="Rest" desc="Sleep" color="bg-slate-400" />
+                            <RailwayItem time="07:00 AM" title="Breakfast" desc="Morning Fuel" color="bg-orange-500" />
+                            <RailwayItem time="08:00 AM" title="Final Showdown" desc="The Grand Conclusion" color="bg-emerald-600" />
+                            <RailwayItem time="10:00 AM" title="Packup" desc="Leaving for Home" color="bg-blue-500" />
+                            <RailwayItem time="12:00 PM" title="Departure" desc="End of the expedition" color="bg-red-500" isLast={true} />
+                         </div>
                      </div>
-                     <ul className="space-y-8">
-                        <AgendaItem time="09:30" color="#10B981" title="Closing Talks + RSVP" desc="Final address, reflection circle, and closing ceremony." />
-                        <AgendaItem time="12:00" color="#EF4444" title="Departure" desc="Heading back with memories and new skills." />
-                     </ul>
                 </div>
             </div>
           </div>
         </section>
 
         {/* Bottom CTA */}
-        <section className="mt-16 mb-8 text-center bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-8 sm:p-12 text-white shadow-2xl shadow-blue-300/40 relative overflow-hidden">
+        {!isBooked && (
+          <section className="mt-16 mb-8 text-center bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-8 sm:p-12 text-white shadow-2xl shadow-blue-300/40 relative overflow-hidden">
              
              {/* Decorative circles */}
              <div className="absolute top-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
@@ -326,7 +379,8 @@ export default function Event() {
               >
                 Book your slot <ChevronRight size={18} />
               </Link>
-        </section>
+          </section>
+        )}
       </main>
     </div>
   );
@@ -343,57 +397,131 @@ function MetaItem({ icon, label }) {
   );
 }
 
-function InfoCard({ icon, title, body, list }) {
+function InfoCard({ icon, title, body, list, theme = "slate" }) {
+  const themeStyles = {
+    blue: "bg-blue-50/50 border-blue-100 hover:border-blue-200",
+    emerald: "bg-emerald-50/50 border-emerald-100 hover:border-emerald-200",
+    amber: "bg-amber-50/50 border-amber-100 hover:border-amber-200",
+    slate: "bg-white border-slate-100 hover:border-slate-200"
+  };
+
+  const currentTheme = themeStyles[theme] || themeStyles.slate;
+
   return (
-    <div className="group rounded-2xl bg-white ring-1 ring-slate-900/5 shadow-sm hover:shadow-md transition-shadow p-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="h-10 w-10 grid place-items-center rounded-xl bg-slate-50 ring-1 ring-slate-900/5 group-hover:bg-white group-hover:scale-110 transition-all">
+    <div className={`group rounded-3xl ${currentTheme} border shadow-sm hover:shadow-lg transition-all duration-300 p-8 flex flex-col h-full`}>
+      <div className="flex items-center gap-4 mb-6">
+        <div className="h-12 w-12 grid place-items-center rounded-2xl bg-white shadow-sm ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-300">
           {icon}
         </div>
-        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
       </div>
-      {body && <p className="text-sm leading-relaxed text-slate-600">{body}</p>}
+      
+      {body && (
+        <p className="text-base leading-7 text-slate-600 font-medium opacity-90 mb-4">
+          {body}
+        </p>
+      )}
+
       {list && (
-        <ul className="space-y-2.5">
-          {list.map((item, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
-              <CheckIcon className="mt-0.5 text-emerald-500 shrink-0" /> 
-              <span>{item}</span>
-            </li>
-          ))}
+        <ul className="space-y-4">
+          {list.map((item, i) => {
+            // Check for "Most Important" highlight
+            const isImportant = item.toLowerCase().includes("most important");
+            
+            // Check for Title - Description pattern (using en-dash or hyphen)
+            // We look for the first occurrence of a dash that looks like a separator
+            const separatorRegex = / [–-] /;
+            const parts = item.split(separatorRegex);
+            const hasTitleDescription = parts.length > 1 && !isImportant;
+
+            if (isImportant) {
+               return (
+                  <li key={i} className="mt-6 bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-amber-200 shadow-sm text-amber-900 relative overflow-hidden group/item">
+                       <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+                       <div className="flex gap-3 relative z-10">
+                           <StarIcon className="w-5 h-5 text-amber-500 shrink-0 mt-0.5 fill-amber-500" />
+                           <div>
+                               <span className="block text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">Most Important</span>
+                               <span className="font-bold text-base block leading-tight">{item.replace(/Most Important:?/i, "").trim()}</span>
+                           </div>
+                       </div>
+                  </li>
+               );
+            }
+
+            return (
+              <li key={i} className="flex items-start gap-3 text-[15px] text-slate-700 font-medium">
+                <CheckIcon className={`mt-1 shrink-0 ${
+                    theme === 'blue' ? 'text-blue-500' :
+                    theme === 'emerald' ? 'text-emerald-500' :
+                    theme === 'amber' ? 'text-amber-500' : 'text-slate-500'
+                }`} /> 
+                
+                <div className="leading-snug">
+                   {hasTitleDescription ? (
+                       <>
+                         <span className={`block font-bold text-base mb-0.5 ${
+                             theme === 'blue' ? 'text-blue-900' :
+                             theme === 'emerald' ? 'text-emerald-900' :
+                             theme === 'amber' ? 'text-amber-900' : 'text-slate-900'
+                         }`}>
+                             {parts[0].trim()}
+                         </span>
+                         <span className="text-slate-600 text-[14px] leading-relaxed block">
+                             {parts.slice(1).join(" - ").trim()}
+                         </span>
+                       </>
+                   ) : (
+                       <span>{item}</span>
+                   )}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
   );
 }
 
-function AgendaItem({ time, color, title, desc }) {
+function RailwayItem({ time, title, desc, color, isLast }) {
   return (
-    <li className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6 bg-white sm:bg-transparent p-4 sm:p-0 rounded-xl border sm:border-0 border-slate-100">
-      <span
-        className="flex-shrink-0 inline-flex h-9 items-center justify-center rounded-full px-3 text-sm font-bold text-white shadow-sm w-fit"
-        style={{ backgroundColor: color }}
-      >
-        {time}
-      </span>
-      <div className="flex-1 pt-1">
-        <h4 className="text-lg font-semibold text-slate-900">{title}</h4>
-        <p className="mt-1 text-sm text-slate-600 leading-relaxed">{desc}</p>
-      </div>
-    </li>
+    <div className={`relative pl-8 py-4 ${!isLast ? 'border-l-0' : ''}`}>
+        {/* Connector Line Cover for spacing (optional tuning) */}
+        
+        {/* Station Dot */}
+        <div className={`absolute -left-[11px] top-6 w-5 h-5 rounded-full border-[3px] border-white shadow-sm z-10 ${color}`}></div>
+        
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 group">
+            <span className={`text-xs font-bold px-2 py-0.5 rounded-md w-fit ${color.replace('bg-', 'text-').replace('500','600').replace('600','700')} bg-opacity-10 bg-slate-100`}>
+                {time}
+            </span>
+            <div>
+                <h4 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                    {title}
+                </h4>
+                <p className="text-sm text-slate-500 font-medium">
+                    {desc}
+                </p>
+            </div>
+        </div>
+    </div>
   );
 }
 
 function HeroDashboardCard() {
   return (
-    <div className="rounded-3xl bg-white shadow-2xl shadow-slate-200/60 ring-1 ring-slate-900/5 p-6 sm:p-8 transform transition-transform hover:-translate-y-1 duration-500">
+    <div className="rounded-[2.5rem] bg-white/70 backdrop-blur-xl border border-white/50 shadow-2xl shadow-indigo-100/50 p-8 transform transition-transform hover:-translate-y-2 duration-700 relative overflow-hidden">
+      {/* Glossy gradient behind */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50/50 rounded-full blur-3xl -z-10 -translate-y-1/2 translate-x-1/2"></div>
+      
       {/* Search Header */}
-      <div className="flex items-center gap-4 mb-8">
+      <div className="flex items-center gap-5 mb-10">
         <div className="flex-1">
-           <h3 className="text-xl font-bold text-slate-900">Event Activities</h3>
-           <p className="text-sm text-slate-500 font-medium">Explore everything happening at the camp</p>
+           <h3 className="text-2xl font-black text-slate-900 tracking-tight">Event Activities</h3>
+           <p className="text-base text-slate-500 font-medium mt-1">Explore everything happening at the camp</p>
         </div>
-        <div className="h-10 w-10 rounded-full bg-indigo-600 shadow-lg shadow-indigo-200 grid place-items-center text-white">
+        <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 shadow-lg shadow-indigo-500/30 grid place-items-center text-white ring-4 ring-white">
             <CalendarIcon />
         </div>
       </div>

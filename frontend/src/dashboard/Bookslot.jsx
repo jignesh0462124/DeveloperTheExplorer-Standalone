@@ -28,6 +28,9 @@ export default function Bookslot() {
   const navigate = useNavigate();
   const { isLoading } = useAuthGuard("/login");
   const { profile } = useUserProfile();
+  
+  // Loading state for booking check
+  const [isCheckingBooking, setIsCheckingBooking] = useState(true);
 
   // Form State
   const [name, setName] = useState("");
@@ -125,6 +128,8 @@ export default function Bookslot() {
       if (!vipError && vip !== null) {
         setVipCount(vip);
       }
+      
+      setIsCheckingBooking(false);
     };
     fetchBookingCount();
   }, [navigate]);
@@ -282,12 +287,14 @@ export default function Bookslot() {
   }
 }
 
-  if (isLoading) {
+  if (isLoading || isCheckingBooking) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#F5F7FB]">
         <div className="flex flex-col items-center gap-3">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-sky-600"></div>
-          <p className="text-sm text-slate-500 font-medium">Verifying session...</p>
+          <p className="text-sm text-slate-500 font-medium">
+            {isLoading ? "Verifying session..." : "Checking booking status..."}
+          </p>
         </div>
       </div>
     );

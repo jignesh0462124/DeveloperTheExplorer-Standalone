@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
-import { X, Linkedin, ArrowUpRight } from "lucide-react";
+import { X, Linkedin, ArrowUpRight, Mic } from "lucide-react";
 
 function HighLights() {
   const { ref: highlightsRef, isRevealed } = useReveal({ threshold: 0.2 });
@@ -54,9 +54,9 @@ function HighLights() {
 `,
       gallery: ["images/crack3.svg","images/crack2.jpg"],
       speakers: [
-        { name: "Aman Tiwari", linkedin: "", image: "images/aman.jpg", designation: "Former GDSC Lead" },
-        { name: "Aman Khapre", linkedin: "", image: "images/khapre.jpeg", designation: "SIH Grand Finalist" },
-        { name: "Sailee Gathibandhe", linkedin: "", image: "images/sah.svg", designation: "Director, PixellKey" }
+        { name: "Aman Tiwari", linkedin: "https://www.linkedin.com/in/amantiwari2091/", image: "images/aman.jpg", designation: "Former GDSC Lead" },
+        { name: "Aman Khapre", linkedin: "https://www.linkedin.com/in/aman-khapre-8b34a1256/", image: "images/khapre.jpeg", designation: "SIH Grand Finalist" },
+        { name: "Sailee Gathibandhe", linkedin: "https://www.linkedin.com/in/sailee-gathibandhe-b5ab2519a/", image: "images/sah.svg", designation: "Director, PixellKey" }
       ]
     },
     {
@@ -83,13 +83,13 @@ function HighLights() {
       details: `GDGoC GHRCE hosted "Ask Us Anything: Bridging the Gap," a hybrid workshop on October 17, 2025, connecting students with peers across tech domains through open discussions and practical guidance. Speakers included Nandini Jaiswal (Cloud Computing), Sarvar Sheikh (Web Development), Eshank Ryshabh (AI/ML & Robotics), Aniket Tiwari (Cybersecurity), Sanika Wazarkar (UI/UX Design), Devanshu Sarode (Video Editing), and Kunal Nibrad (DSA). The session excelled in cross domain exposure, honest peer insights, hands on experience sharing, and building community collaboration, advancing GDGoC's goal of collective learning.`,
       gallery: ["images/ask.jpeg","images/ask2.svg"],
       speakers: [
-        { name: "Nandini Jaiswal", linkedin: "", image: "", designation: "Cloud Computing" },
-        { name: "Sarvar Sheikh", linkedin: "", image: "", designation: "Web Development" },
-        { name: "Eshank Ryshabh", linkedin: "", image: "", designation: "AI/ML & Robotics" },
-        { name: "Aniket Tiwari", linkedin: "", image: "", designation: "Cybersecurity" },
-        { name: "Sanika Wazarkar", linkedin: "", image: "", designation: "UI/UX Design" },
-        { name: "Devanshu Sarode", linkedin: "", image: "", designation: "Video Editing" },
-        { name: "Kunal Nibrad", linkedin: "", image: "", designation: "DSA" }
+        { name: "Nandini Jaiswal", linkedin: "https://www.linkedin.com/in/nandini-jaiswalll/", image: "images/nan.jpg", designation: "Orgniser GDGoC GHRCE" },
+        { name: "Sarvar Sheikh", linkedin: "https://www.linkedin.com/in/sarvar-sheikh-565064289/", image: "images/sar.jpg", designation: "Web Development" },
+        { name: "Eshank Ryshabh", linkedin: "https://www.linkedin.com/in/eshank-ryshabh-ba91382b3/", image: "images/esh.svg", designation: "AI/ML & Robotics" },
+        { name: "Aniket Tiwari", linkedin: "https://www.linkedin.com/in/aniket-tiwari-102289300/", image: "images/aniket.png", designation: "Cybersecurity" },
+        { name: "Sanika Wazarkar", linkedin: "https://www.linkedin.com/in/sanika-wazarkar-6a4448352/", image: "images/san.png", designation: "UI/UX Design" },
+        { name: "Devanshu Sarode", linkedin: "https://in.linkedin.com/in/devanshu-sarode-073a5227b", image: "images/dev.svg", designation: "Video Editing" },
+        { name: "Kunal Nibrad", linkedin: "https://www.linkedin.com/in/kunal-nibrad-734a09355/", image: "images/kun.jpeg", designation: "DSA" }
       ]
     },
     {
@@ -104,9 +104,9 @@ function HighLights() {
       details: `UXplore 2025 brought together creativity, technology, and innovation under one dynamic roof at InFED, IIM Nagpur. The event featured a masterclass on UI/UX by Mr. Swapnil, Founder of Pixellkey and Mrs. Sailee Gathibandhe, Director at PixellKey, simplifying complex design concepts into human-centered learning. It was followed by an engaging AI/ML and Robotics workshop by Mr. Yogesh Mene, connecting futuristic ideas to real-world applications. With 100+ enthusiastic attendees, UXplore 2025 empowered participants with hands-on experience and inspired them to imagine, design, and build the technologies of tomorrow.`,
       gallery: ["images/Uxplore.jpeg","images/uxplore2.JPG"],
       speakers: [
-        { name: "Swapnil Gathibandhe", linkedin: "", image: "images/swap.svg", designation: "Founder, PixellKey" },
-        { name: "Sailee Gathibandhe", linkedin: "", image: "images/sah.svg", designation: "Director, PixellKey" },
-        { name: "Yogesh Mene", linkedin: "", image: "images/yog.png", designation: "AI/ML Expert" }
+        { name: "Swapnil Gathibandhe", linkedin: "https://www.linkedin.com/in/swapnil-gathibandhe-82aaa4121/", image: "images/swap.svg", designation: "Founder, PixellKey" },
+        { name: "Sailee Gathibandhe", linkedin: "https://www.linkedin.com/in/sailee-gathibandhe-b5ab2519a/", image: "images/sah.svg", designation: "Director, PixellKey" },
+        { name: "Yogesh Mene", linkedin: "https://www.linkedin.com/in/yogesh-mene-875a7423a/", image: "images/yog.png", designation: "AI/ML Expert" }
       ]
     },
     {
@@ -341,7 +341,7 @@ function HighLights() {
                   <div className="mt-10 border-t border-gray-100 pt-8">
                     <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                        <span className="bg-blue-100 text-blue-600 p-2 rounded-lg">
-                          <Linkedin className="w-5 h-5" />
+                          <Mic className="w-5 h-5" />
                        </span>
                        Connect with Our Speakers
                     </h4>
@@ -375,9 +375,11 @@ function HighLights() {
                                     {s.designation}
                                  </p>
                                )}
-                               <p className="text-[10px] uppercase tracking-wide text-blue-600 font-bold mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                 View Profile
-                               </p>
+                               <div className="mt-3 flex justify-center">
+                                   <div className="bg-blue-100 p-1.5 rounded-full text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300">
+                                      <Linkedin className="w-4 h-4" />
+                                   </div>
+                               </div>
                           </div>
                         </a>
                       ))}
