@@ -185,7 +185,7 @@ export default function Login() {
                          <Badge color="#EA4335"><PinIcon /></Badge>
                          <div>
                             <p className="font-medium text-gray-900">Campsite near Nagpur, India</p>
-                            <p className="text-xs">Organized by Google Developer Groups on Campus GHRCE</p>
+                            <p className="text-xs">Organized by Google Developer Group on Campus GHRCE</p>
                          </div>
                     </div>
                 </div>

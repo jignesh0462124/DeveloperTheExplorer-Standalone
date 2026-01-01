@@ -27,12 +27,6 @@ function Whatsin() {
                     color: "green" 
                 },
                 { 
-                    icon: Wrench, 
-                    text: "Real-world project exposure", 
-                    sub: "Hands-on experience building prototypes and solving real-world problems.",
-                    color: "yellow" 
-                },
-                { 
                     icon: Globe, 
                     text: "Global Community", 
                     sub: "A sense of belonging to a global developer ecosystem and lasting connections.",

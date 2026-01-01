@@ -33,9 +33,9 @@ function FAQ() {
     },
     {
       question: "What will I gain from attending?",
-      answer: `Premium Networking - Connect with industry pros and global developers
-Industry-Level Sessions - Gain insights from real-world innovators
-Ecosystem Belonging - Join the exclusive GDGoC GHRCE community`,
+      answer: `• Premium Networking - Connect with industry pros and global developers
+• Industry-Level Sessions - Gain insights from real-world innovators
+• Ecosystem Belonging - Join the exclusive GDGoC GHRCE community`,
     },
     {
       question: "How do I register?",

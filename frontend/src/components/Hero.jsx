@@ -116,7 +116,7 @@ function Hero() {
             <Meta
               icon={<Users />}
               label="Organized By"
-              value="Google Developer Groups on Campus - GHRCE"
+              value="Google Developer Group on Campus - GHRCE"
             />
           </div>
         </div>

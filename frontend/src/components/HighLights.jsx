@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
-import { X } from "lucide-react";
+import { X, Linkedin, ArrowUpRight } from "lucide-react";
 
 function HighLights() {
   const { ref: highlightsRef, isRevealed } = useReveal({ threshold: 0.2 });
@@ -24,7 +24,7 @@ function HighLights() {
         "A vibrant celebration of design and digital artistry that created lasting connections for every participant."
       ],
       details: `In the heart of Central Nagpur, GDSC GHRCE organized Figma Lifestyle on October 21, 2023, a vibrant get together that became the biggest celebration of design and digital artistry. The event brought around 100+ participants together through live interactions, where attendees not only created moments but also built long lasting connections. It delivered unforgettable memories and celebrated creativity, making every participant's journey truly remarkable.`,
-      gallery: ["images/FL1.svg","images/FL2.svg"] // Placeholder, can be replaced with specific event photos
+      gallery: ["images/figmalife.png","images/FL2.png"] // Placeholder, can be replaced with specific event photos
     },
     {
       tag: "Apr 21, 2024",
@@ -52,7 +52,12 @@ function HighLights() {
       ],
       details: `In GHRCE's energetic hall on September 9, 2025, GDGoC GHRCE was officially launched, hosting "Crack SIH with GDGoC", an event that equipped 600+ students with battle tested strategies to conquer the Smart India Hackathon. Expert led sessions featured Aman Tiwari (Former GDSC Lead), Aman Khapre (SIH 2024 Grand Finalist & World Robotics Championship Winner), and Sailee Gathibandhe (Pixellkey Director). They decoded real world problem statements, solution pathways, and confidence building tactics, turning aspiring coders into SIH ready powerhouses.
 `,
-      gallery: ["images/crack3.svg","images/crack2.jpg"]
+      gallery: ["images/crack3.svg","images/crack2.jpg"],
+      speakers: [
+        { name: "Aman Tiwari", linkedin: "", image: "images/aman.jpg", designation: "Former GDSC Lead" },
+        { name: "Aman Khapre", linkedin: "", image: "images/khapre.jpeg", designation: "SIH Grand Finalist" },
+        { name: "Sailee Gathibandhe", linkedin: "", image: "images/sah.svg", designation: "Director, PixellKey" }
+      ]
     },
     {
       tag: "Sept 20, 2025",
@@ -76,7 +81,16 @@ function HighLights() {
         "discussion, guidance, and real world insights."
       ],
       details: `GDGoC GHRCE hosted "Ask Us Anything: Bridging the Gap," a hybrid workshop on October 17, 2025, connecting students with peers across tech domains through open discussions and practical guidance. Speakers included Nandini Jaiswal (Cloud Computing), Sarvar Sheikh (Web Development), Eshank Ryshabh (AI/ML & Robotics), Aniket Tiwari (Cybersecurity), Sanika Wazarkar (UI/UX Design), Devanshu Sarode (Video Editing), and Kunal Nibrad (DSA). The session excelled in cross domain exposure, honest peer insights, hands on experience sharing, and building community collaboration, advancing GDGoC's goal of collective learning.`,
-      gallery: ["images/ask.jpeg","images/ask2.svg"]
+      gallery: ["images/ask.jpeg","images/ask2.svg"],
+      speakers: [
+        { name: "Nandini Jaiswal", linkedin: "", image: "", designation: "Cloud Computing" },
+        { name: "Sarvar Sheikh", linkedin: "", image: "", designation: "Web Development" },
+        { name: "Eshank Ryshabh", linkedin: "", image: "", designation: "AI/ML & Robotics" },
+        { name: "Aniket Tiwari", linkedin: "", image: "", designation: "Cybersecurity" },
+        { name: "Sanika Wazarkar", linkedin: "", image: "", designation: "UI/UX Design" },
+        { name: "Devanshu Sarode", linkedin: "", image: "", designation: "Video Editing" },
+        { name: "Kunal Nibrad", linkedin: "", image: "", designation: "DSA" }
+      ]
     },
     {
       tag: "Nov 22,2025",
@@ -88,18 +102,23 @@ function HighLights() {
         "building practical industry skills."
       ],
       details: `UXplore 2025 brought together creativity, technology, and innovation under one dynamic roof at InFED, IIM Nagpur. The event featured a masterclass on UI/UX by Mr. Swapnil, Founder of Pixellkey and Mrs. Sailee Gathibandhe, Director at PixellKey, simplifying complex design concepts into human-centered learning. It was followed by an engaging AI/ML and Robotics workshop by Mr. Yogesh Mene, connecting futuristic ideas to real-world applications. With 100+ enthusiastic attendees, UXplore 2025 empowered participants with hands-on experience and inspired them to imagine, design, and build the technologies of tomorrow.`,
-      gallery: ["images/Uxplore.jpeg","images/uxplore2.JPG"]
+      gallery: ["images/Uxplore.jpeg","images/uxplore2.JPG"],
+      speakers: [
+        { name: "Swapnil Gathibandhe", linkedin: "", image: "images/swap.svg", designation: "Founder, PixellKey" },
+        { name: "Sailee Gathibandhe", linkedin: "", image: "images/sah.svg", designation: "Director, PixellKey" },
+        { name: "Yogesh Mene", linkedin: "", image: "images/yog.png", designation: "AI/ML Expert" }
+      ]
     },
     {
-      tag: "Dec 8 9, 2025",
+      tag: "Dec 8-9, 2025",
       color: "rose",
       title: "SIH 2025 Grand Finale",
       desc: [
         "Exclusively hosted Nagpur's only SIH Grand",
-        "Finals, managing 140+ participants as the",
+        "Finals, managing 120+ participants as the",
         "technical backbone of the event."
       ],
-      details: `GDGoC GHRCE proudly served as part of the SIH 2025 Hosting Committee at G. H. Raisoni College of Engineering, Nagpur, on December 8 9, 2025. Managing 120+ participants, the team ensured seamless coordination, logistics, and real-time support across every phase of the national level hackathon. GDGoC played a vital role in cross team collaboration, decision making, and maintaining high scale operations — embodying teamwork, leadership, and innovation. The experience showcased GDGoC GHRCE’s commitment to empowering talent, enabling impactful solutions, and driving community led execution at scale.`,
+      details: `GDGoC GHRCE proudly served as part of the SIH 2025 Hosting Committee at G. H. Raisoni College of Engineering, Nagpur, on December 8-9, 2025. Managing 120+ participants, the team ensured Seamless technical coordination, logistics, and real-time support across every phase of the national level hackathon. GDGoC played a vital role in Cross - functional cooperation, decision making, and maintaining high scale operations — embodying teamwork, leadership, and innovation. The experience showcased GDGoC GHRCE’s commitment to empowering talent, enabling impactful solutions, and driving community led execution at scale.`,
       gallery: ["images/grand.jpeg","images/grand2.jpeg"]
     }
   ];
@@ -315,6 +334,56 @@ function HighLights() {
                 <p className="text-lg text-gray-700 leading-relaxed font-medium">
                    {selectedEvent.details}
                 </p>
+
+                {/* Speakers Section */}
+                {/* Speakers Section */}
+                {selectedEvent.speakers && selectedEvent.speakers.length > 0 && (
+                  <div className="mt-10 border-t border-gray-100 pt-8">
+                    <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                       <span className="bg-blue-100 text-blue-600 p-2 rounded-lg">
+                          <Linkedin className="w-5 h-5" />
+                       </span>
+                       Connect with Our Speakers
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                      {selectedEvent.speakers.map((s, i) => (
+                        <a 
+                          key={i}
+                          href={s.linkedin || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group relative flex flex-col items-center justify-center p-5 rounded-2xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50/30 hover:shadow-lg transition-all duration-300 bg-gray-50/50"
+                        >
+                          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500">
+                             <ArrowUpRight className="w-4 h-4" />
+                          </div>
+
+                          <div className="w-20 h-20 mb-3 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 overflow-hidden shadow-sm ring-4 ring-white">
+                               {s.image ? (
+                                   <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
+                               ) : (
+                                   <span className="font-bold text-2xl">{s.name.charAt(0)}</span>
+                               )}
+                          </div>
+                          
+                          <div className="text-center">
+                               <p className="font-bold text-gray-900 group-hover:text-blue-700 transition-colors text-sm sm:text-base leading-tight">
+                                 {s.name}
+                               </p>
+                               {s.designation && (
+                                 <p className="text-xs text-gray-500 font-medium mt-1">
+                                    {s.designation}
+                                 </p>
+                               )}
+                               <p className="text-[10px] uppercase tracking-wide text-blue-600 font-bold mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                 View Profile
+                               </p>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
               </div>
             </div>
