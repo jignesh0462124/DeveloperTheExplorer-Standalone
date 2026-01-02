@@ -55,23 +55,23 @@ export default function Login() {
       <Curves />
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
-        
+
         {/* Back Link */}
         <div className="mb-6">
-            <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M19 12H5"/>
-                    <path d="M12 19l-7-7 7-7"/>
-                </svg>
-                Back to Home
-            </a>
+          <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+            Back to Home
+          </a>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8">
           {/* LEFT: Auth card */}
           <div className="relative">
             <div className="rounded-xl sm:rounded-2xl bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 p-8 sm:p-12">
-              
+
               <h1 className="mt-4 text-3xl sm:text-[34px] font-semibold leading-tight">
                 Log in to your account
               </h1>
@@ -135,10 +135,9 @@ export default function Login() {
                   type="submit"
                   disabled={!validLogin || loading}
                   className={`mt-4 inline-flex w-full items-center justify-center rounded-full px-6 py-4 text-lg font-semibold text-white transition
-                    ${
-                      validLogin && !loading
-                        ? "bg-[#4285F4] hover:bg-[#3367D6]"
-                        : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    ${validLogin && !loading
+                      ? "bg-[#4285F4] hover:bg-[#3367D6]"
+                      : "bg-gray-200 text-gray-500 cursor-not-allowed"
                     }
                   `}
                 >
@@ -148,15 +147,14 @@ export default function Login() {
                 </button>
 
                 {message && (
-                  <div className={`mt-4 p-3 rounded-lg flex items-start gap-2 text-sm ${
-                      message.toLowerCase().includes("success") || message.toLowerCase().includes("sent") || message.includes("Welcome")
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-100" 
-                      : "bg-red-50 text-red-600 border border-red-100"
-                  }`}>
+                  <div className={`mt-4 p-3 rounded-lg flex items-start gap-2 text-sm ${message.toLowerCase().includes("success") || message.toLowerCase().includes("sent") || message.includes("Welcome")
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                    : "bg-red-50 text-red-600 border border-red-100"
+                    }`}>
                     {message.toLowerCase().includes("success") || message.toLowerCase().includes("sent") || message.includes("Welcome") ? (
-                         <div className="mt-0.5 shrink-0">✅</div>
+                      <div className="mt-0.5 shrink-0">✅</div>
                     ) : (
-                         <div className="mt-0.5 shrink-0">⚠️</div>
+                      <div className="mt-0.5 shrink-0">⚠️</div>
                     )}
                     <span>{message}</span>
                   </div>
@@ -169,30 +167,31 @@ export default function Login() {
           {/* RIGHT: Highlights */}
           <aside className="lg:block">
             <div className="sticky top-8 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 p-6 sm:p-7">
-              
+
               <div className="mb-6">
                 <h2 className="text-xl font-bold text-gray-900">Developer The Explorer</h2>
                 <p className="text-sm text-blue-600 font-medium mt-1">Explore Beyond What You Already Know</p>
                 <div className="mt-4 space-y-3 text-sm text-gray-600">
-                    <div className="flex items-start gap-3">
-                        <Badge color="#4285F4"><CalendarIcon /></Badge>
-                        <div>
-                            <p className="font-medium text-gray-900">Feb 6-8, 2025</p>
-                            <p className="text-xs">3 Day, 2 Night Tech Adventure Camp</p>
-                        </div>
+                  <div className="flex items-start gap-3">
+                    <Badge color="#4285F4"><CalendarIcon /></Badge>
+                    <div>
+                      <p className="font-medium text-gray-900">Feb 6-8, 2025</p>
+                      <p className="text-xs">3 Day, 2 Night Tech Adventure Camp</p>
                     </div>
-                    <div className="flex items-start gap-3">
-                         <Badge color="#EA4335"><PinIcon /></Badge>
-                         <div>
-                            <p className="font-medium text-gray-900">Campsite near Nagpur, India</p>
-                            <p className="text-xs">Organized by Google Developer Group on Campus GHRCE</p>
-                         </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Badge color="#EA4335"><PinIcon /></Badge>
+                    <div>
+                      <p className="font-medium text-gray-900">Campsite near Nagpur, India</p>
+                      <p className="text-xs">Organized by Google Developer Group on Campus GHRCE</p>
                     </div>
+                  </div>
                 </div>
 
-                <a 
-                  href="#" 
+                <a
+                  href="https://forms.gle/Vb1PYqQDVQdYBrhp7"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-6 block w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 text-center text-sm font-bold text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                 >
                   Register Now
@@ -203,19 +202,19 @@ export default function Login() {
 
               <h3 className="text-base font-semibold text-gray-900 mb-3">Event Highlights</h3>
               <ul className="space-y-3 text-[14px] text-gray-600 mb-6">
-                 <li className="flex gap-2">
-                    <span className="text-blue-500 mt-1">●</span>
-                    <span>Wild Tech Retreat in nature's classroom</span>
-                 </li>
-                 
-                 <li className="flex gap-2">
-                    <span className="text-blue-500 mt-1">●</span>
-                    <span>For students, pros, creators—no experience needed, just curiosity</span>
-                 </li>
-                 <li className="flex gap-2">
-                    <span className="text-blue-500 mt-1">●</span>
-                    <span>Turn ideas into reality through dialogue, experiments, and shared innovation</span>
-                 </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-500 mt-1">●</span>
+                  <span>Wild Tech Retreat in nature's classroom</span>
+                </li>
+
+                <li className="flex gap-2">
+                  <span className="text-blue-500 mt-1">●</span>
+                  <span>For students, pros, creators—no experience needed, just curiosity</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-500 mt-1">●</span>
+                  <span>Turn ideas into reality through dialogue, experiments, and shared innovation</span>
+                </li>
               </ul>
 
               <hr className="my-5 border-gray-200" />
