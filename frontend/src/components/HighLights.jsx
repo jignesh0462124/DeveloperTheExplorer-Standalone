@@ -84,12 +84,12 @@ function HighLights() {
       gallery: ["images/ask.jpeg","images/ask2.svg"],
       speakers: [
         { name: "Nandini Jaiswal", linkedin: "https://www.linkedin.com/in/nandini-jaiswalll/", image: "images/nan.jpg", designation: "Orgniser GDGoC GHRCE" },
-        { name: "Sarvar Sheikh", linkedin: "https://www.linkedin.com/in/sarvar-sheikh-565064289/", image: "images/sar.jpg", designation: "Web Development" },
-        { name: "Eshank Ryshabh", linkedin: "https://www.linkedin.com/in/eshank-ryshabh-ba91382b3/", image: "images/esh.svg", designation: "AI/ML & Robotics" },
-        { name: "Aniket Tiwari", linkedin: "https://www.linkedin.com/in/aniket-tiwari-102289300/", image: "images/aniket.png", designation: "Cybersecurity" },
-        { name: "Sanika Wazarkar", linkedin: "https://www.linkedin.com/in/sanika-wazarkar-6a4448352/", image: "images/san.png", designation: "UI/UX Design" },
-        { name: "Devanshu Sarode", linkedin: "https://in.linkedin.com/in/devanshu-sarode-073a5227b", image: "images/dev.svg", designation: "Video Editing" },
-        { name: "Kunal Nibrad", linkedin: "https://www.linkedin.com/in/kunal-nibrad-734a09355/", image: "images/kun.jpeg", designation: "DSA" }
+        { name: "Sarvar Sheikh", linkedin: "https://www.linkedin.com/in/sarvar-sheikh-565064289/", image: "images/sar.jpg", designation: "Web Development Lead" },
+        { name: "Eshank Ryshabh", linkedin: "https://www.linkedin.com/in/eshank-ryshabh-ba91382b3/", image: "images/esh.svg", designation: "AI/ML & Robotics Lead" },
+        { name: "Aniket Tiwari", linkedin: "https://www.linkedin.com/in/aniket-tiwari-102289300/", image: "images/aniket.png", designation: "Cybersecurity Co-Lead" },
+        { name: "Sanika Wazarkar", linkedin: "https://www.linkedin.com/in/sanika-wazarkar-6a4448352/", image: "images/san.png", designation: "UI/UX Design Co-Lead" },
+        { name: "Devanshu Sarode", linkedin: "https://in.linkedin.com/in/devanshu-sarode-073a5227b", image: "images/dev.svg", designation: "Video Editing Co-Lead" },
+        { name: "Kunal Nibrad", linkedin: "https://www.linkedin.com/in/kunal-nibrad-734a09355/", image: "images/kun.jpeg", designation: "DSA Co-Lead" }
       ]
     },
     {
