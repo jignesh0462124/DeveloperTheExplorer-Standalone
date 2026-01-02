@@ -172,14 +172,14 @@ export default function Bookslot() {
   const getTicketDetails = (type) => {
     switch (type) {
       case 'vip':
-        return { price: 1700, label: 'VIP Pass' };
+        return { price: 1999, label: 'VIP Pass' };
       case 'late':
-        return { price: 1500, label: 'Late Comers Pass' };
+        return { price: 1799, label: 'Late Comers Pass' };
       case 'regular':
-        return { price: 1300, label: 'Regular Pass' };
+        return { price: 1499, label: 'Regular Pass' };
       case 'early':
       default:
-        return { price: 999, label: 'Early Bird Pass' };
+        return { price: 1299, label: 'Early Bird Pass' };
     }
   };
 
@@ -382,7 +382,7 @@ export default function Bookslot() {
                     </div>
                     <div className="mt-2 space-y-1">
                       <div className="text-2xl font-bold text-slate-900">
-                        {currentGATier === 'early' ? "₹999" : currentGATier === 'late' ? "₹1,500" : "₹1,300"}
+                        {currentGATier === 'early' ? "₹1,299" : currentGATier === 'late' ? "₹1,799" : "₹1,499"}
                       </div>
                       <div className="text-xs text-slate-500 font-medium">Full event access</div>
                     </div>
@@ -408,7 +408,7 @@ export default function Bookslot() {
                         {ticketType === 'vip' && <CheckCircle2 size={20} className="text-amber-600" />}
                       </div>
                       <div className="mt-2 space-y-1">
-                        <div className="text-2xl font-bold text-slate-900">₹1,700</div>
+                        <div className="text-2xl font-bold text-slate-900">₹1,999</div>
                         <div className="text-xs text-slate-500 font-medium">Priority Experience</div>
                       </div>
                       <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
@@ -426,7 +426,7 @@ export default function Bookslot() {
                         </div>
                         <span className="text-[10px] font-bold bg-slate-200 text-slate-600 px-2 py-1 rounded-full">SOLD OUT</span>
                       </div>
-                      <div className="mt-2 text-xl font-bold text-slate-500">₹1,700</div>
+                      <div className="mt-2 text-xl font-bold text-slate-500">₹1,999</div>
                     </div>
                   )}
                 </div>
