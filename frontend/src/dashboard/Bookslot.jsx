@@ -336,7 +336,7 @@ export default function Bookslot() {
             Confirm your attendance
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0">
-            Join the elite community of developers at the jungle retreat.
+            Join the elite community of developers at the tech-adventure retreat.
           </p>
         </section>
 
