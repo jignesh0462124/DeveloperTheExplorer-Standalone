@@ -89,20 +89,24 @@ function Hero() {
             )}`}
             style={{ transitionDelay: "600ms" }}
           >
-            It began with a question-a spark of curiosity that pushed beyond classrooms
-            and comfort zones. Join a journey where learning comes alive through dialogue,
-            creativity, and the power to turn ideas into reality.
+            It began with a question-a spark of curiosity that pushed beyond
+            classrooms and comfort zones. Join a journey where learning comes
+            alive through dialogue, creativity, and the power to turn ideas into
+            reality.
           </p>
 
           <div
             className={`mt-10 sm:mt-12 ${animate(isRevealed)}`}
             style={{ transitionDelay: "800ms" }}
           >
-            <Link to="/login">
-              <button className="px-10 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 hover:scale-105 active:scale-95 transition-all text-white font-bold shadow-2xl shadow-blue-600/40">
-                Register Now
-              </button>
-            </Link>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfodR6vUfWt0ynZ-v3eLGtXBVoazj7WUIS9e5sFQQvA90EDAA/viewform?pli=1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-10 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 hover:scale-105 active:scale-95 transition-all text-white font-bold shadow-2xl shadow-blue-600/40"
+            >
+              Register Now
+            </a>
           </div>
 
           <div
@@ -111,8 +115,16 @@ function Hero() {
             )}`}
             style={{ transitionDelay: "1000ms" }}
           >
-            <Meta icon={<Calendar />} label="Event Date" value="To be announced" />
-            <Meta icon={<MapPin />} label="Location" value="Campsite near Nagpur, India​" />
+            <Meta
+              icon={<Calendar />}
+              label="Event Date"
+              value="To be announced"
+            />
+            <Meta
+              icon={<MapPin />}
+              label="Location"
+              value="Campsite near Nagpur, India​"
+            />
             <Meta
               icon={<Users />}
               label="Organized By"
