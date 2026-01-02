@@ -142,7 +142,7 @@ export default function Event() {
                 Join us this February 6 - 8, 2025 in a tech-adventure retreat: 3-days, 2-nights of pure innovation.
               </span>
               <span className="block mt-2">
-                At a stunning campsite near Nagpur, India, hosted by Google Developer Groups on Campus – GHRCE.
+                At a stunning campsite near Nagpur, India, hosted by Google Developer Group on Campus – GHRCE.
               </span>
               <span className="block mt-2">
                 Ignite breakthroughs under open skies with industrial sessions, networking, and epic collaborations!
