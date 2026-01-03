@@ -223,7 +223,7 @@ export default function Event() {
           </div>
 
           {/* Right: Dashboard Card */}
-          <div className="order-first lg:order-none w-full">
+          <div className="w-full">
             <HeroDashboardCard />
           </div>
         </section>
