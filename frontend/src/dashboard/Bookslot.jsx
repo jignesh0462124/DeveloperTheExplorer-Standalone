@@ -213,7 +213,10 @@ export default function Bookslot() {
         return;
       }
 
-      // ✅ SECURE: Send only ticket_type, backend calculates price
+      // Determine ticket_code based on ticketType
+      const ticket_code = ticketType === 'vip' ? 'vip' : 'ga';
+
+      // ✅ SECURE: Send only ticket_code, backend calculates price
       const { data, error } = await supabase.functions.invoke("create-order", {
         body: {
           user_id: user.id,
@@ -222,7 +225,7 @@ export default function Bookslot() {
           phone: `${cc} ${phone}`,
           college,
           gender,
-          ticket_type: ticketType, // ✅ Send: 'early', 'regular', 'late', 'vip'
+          ticket_code, // ✅ Send: 'vip' or 'ga'
         },
       });
 
