@@ -45,7 +45,7 @@ export default function Login() {
 
   // ----- right-card meta -----
   const meta = {
-    dates: "Feb 6 8, 2025",
+    dates: "Feb 6-8, 2026",
     venue: "Jungle Retreat (GDGoC GHRCE)",
     community: "Developer The Explorer Camp",
   };
@@ -175,7 +175,7 @@ export default function Login() {
                   <div className="flex items-start gap-3">
                     <Badge color="#4285F4"><CalendarIcon /></Badge>
                     <div>
-                      <p className="font-medium text-gray-900">Feb 6-8, 2025</p>
+                      <p className="font-medium text-gray-900">Feb 6-8, 2026</p>
                       <p className="text-xs">3 Day, 2 Night Tech Adventure Camp</p>
                     </div>
                   </div>

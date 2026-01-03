@@ -79,7 +79,7 @@ function Footer() {
 
         <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-slate-400 text-center md:text-left">
-            © 2025 Developer The Explorer · Google Developer Group on Campus – GHRCE
+            © 2026 Developer The Explorer · Google Developer Group on Campus – GHRCE
           </p>
           <div className="flex items-center gap-4">
             {/* Simple social icons if really needed, else empty or small text links */}

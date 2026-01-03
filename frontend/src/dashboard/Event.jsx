@@ -17,11 +17,11 @@ export default function Event() {
 
   // Event Details (Static for now, could be passed as props)
   const event = {
-    slug: "developer-explorer-2025", 
+    slug: "developer-explorer-2026", 
     title: "Developer The Explorer",
     summary:
       "A 3-day tech adventure camp where learning meets exploration. Build, jam, discover, and innovate under the open sky.",
-    dateLabel: "6-8 Feb 2025 | Multi-day immersive camp",
+    dateLabel: "6-8 Feb 2026 | Multi-day immersive camp",
     venue: "Jungle Retreat (GDGoC-GHRCE)",
     tracks: ["Cloud", "Web", "Android", "AI/ML"],
     availability: "available",
@@ -139,7 +139,7 @@ export default function Event() {
                 Get ready for Developer-The-Explorer : Explore Beyond What You Already Know
               </span>
               <span className="block mt-2">
-                Join us this February 6 - 8, 2025 in a tech-adventure retreat: 3-days, 2-nights of pure innovation.
+                Join us this February 6 - 8, 2026 in a tech-adventure retreat: 3-days, 2-nights of pure innovation.
               </span>
               <span className="block mt-2">
                 At a stunning campsite near Nagpur, India, hosted by Google Developer Groups on Campus – GHRCE.
@@ -186,22 +186,41 @@ export default function Event() {
                              
                              <div className="relative z-10">
                                 <h3 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">{ticketDetails.ticket_type || "Standard Pass"}</h3>
-                                <p className="text-sm text-slate-500 font-medium mb-5">Developer The Explorer Summit '25</p>
+                                <p className="text-sm text-slate-500 font-medium mb-5">3-Day Experiential Tech Retreat</p>
                              </div>
                              
                              <div className="space-y-3 pt-4 border-t border-slate-100 relative z-10">
-                                <div className="text-sm text-slate-600 flex items-center gap-3">
-                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
-                                    <span className="font-medium">Entry to all 3-day sessions & labs</span>
-                                </div>
-                                <div className="text-sm text-slate-600 flex items-center gap-3">
-                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
-                                    <span className="font-medium">{ticketDetails.ticket_type === 'VIP Pass' ? 'Priority Seating, Premium Swag & Lunch' : 'Standard Swag Kit, Lunch & Refreshments'}</span>
-                                </div>
-                                <div className="text-sm text-slate-600 flex items-center gap-3">
-                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
-                                    <span className="font-medium">Certificate of Participation</span>
-                                </div>
+                               {ticketDetails.ticket_type === 'VIP Pass' ? (
+                                 <>
+                                   <div className="text-sm text-slate-600 flex items-center gap-3">
+                                     <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                     <span className="font-medium">Premium Swag Kit & Preferred Accommodation</span>
+                                   </div>
+                                   <div className="text-sm text-slate-600 flex items-center gap-3">
+                                     <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                     <span className="font-medium">Small-Group Mentor Access & Priority Q&A</span>
+                                   </div>
+                                   <div className="text-sm text-slate-600 flex items-center gap-3">
+                                     <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                     <span className="font-medium">Closed-Door Roundtables & Networking</span>
+                                   </div>
+                                 </>
+                               ) : (
+                                 <>
+                                   <div className="text-sm text-slate-600 flex items-center gap-3">
+                                     <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                     <span className="font-medium">Full Access to 3-Day Retreat & Workshops</span>
+                                   </div>
+                                   <div className="text-sm text-slate-600 flex items-center gap-3">
+                                     <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                     <span className="font-medium">Accommodation & All Buffet Meals</span>
+                                   </div>
+                                   <div className="text-sm text-slate-600 flex items-center gap-3">
+                                     <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                     <span className="font-medium">Official Event Welcome Kit</span>
+                                   </div>
+                                 </>
+                               )}
                              </div>
                         </div>
                     )}

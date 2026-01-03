@@ -370,15 +370,13 @@ export default function Bookslot() {
                         : 'border-slate-200 hover:border-slate-300'
                       }`}
                   >
-
-
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-2">
                         <span className={`p-1.5 rounded-lg ${ticketType === currentGATier ? 'bg-white shadow-sm' : 'bg-slate-100 text-slate-500'}`}>
                           <Ticket size={16} className={ticketType === currentGATier ? (currentGATier === 'late' ? "text-rose-500" : "text-blue-500") : ""} />
                         </span>
                         <span className="font-bold text-slate-900">
-                          {currentGATier === 'early' ? "Early Bird" : currentGATier === 'late' ? "Late Comers" : "Regular Pass"}
+                          {currentGATier === 'early' ? "Early Bird Pass" : currentGATier === 'late' ? "Late Comers Pass" : "Regular Pass"}
                         </span>
                       </div>
                       {ticketType === currentGATier && <CheckCircle2 size={20} className={currentGATier === 'late' ? "text-rose-600" : "text-blue-600"} />}
@@ -387,11 +385,26 @@ export default function Bookslot() {
                       <div className="text-2xl font-bold text-slate-900">
                         {currentGATier === 'early' ? "₹1,299" : currentGATier === 'late' ? "₹1,799" : "₹1,499"}
                       </div>
-                      <div className="text-xs text-slate-500 font-medium">Full event access</div>
+                      <div className="text-xs text-slate-500 font-medium">
+                        {currentGATier === 'early' ? "Best Value for Fast Movers" : "The Complete Core Experience"}
+                      </div>
                     </div>
-                    <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
-                      <p>✓ All Sessions & Labs</p>
-                      <p>✓ Lunch & Refreshments</p>
+                    <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1.5">
+                      {currentGATier === 'early' ? (
+                        <>
+                          <p>✓ Guaranteed Seat at Lowest Price</p>
+                          <p>✓ Exclusive Early Bird Swag Add-on</p>
+                          <p>✓ Priority Team Allocation</p>
+                          <p>✓ Early Access to Handbook</p>
+                        </>
+                      ) : (
+                        <>
+                          <p>✓ Full Access to 3-Day Retreat</p>
+                          <p>✓ Accommodation & All Buffet Meals</p>
+                          <p>✓ Workshops & Coding Missions</p>
+                          <p>✓ Official Event Welcome Kit</p>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -402,21 +415,22 @@ export default function Bookslot() {
                       onClick={() => setTicketType('vip')}
                       className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${ticketType === 'vip' ? 'border-amber-500 bg-amber-50/50 shadow-md ring-1 ring-amber-500/20' : 'border-slate-200 hover:border-amber-300 hover:shadow-sm'}`}
                     >
-
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex items-center gap-2">
                           <span className={`p-1.5 rounded-lg ${ticketType === 'vip' ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-500'}`}><Zap size={16} /></span>
-                          <span className="font-bold text-slate-900">VIP Access</span>
+                          <span className="font-bold text-slate-900">VIP Pass</span>
                         </div>
                         {ticketType === 'vip' && <CheckCircle2 size={20} className="text-amber-600" />}
                       </div>
                       <div className="mt-2 space-y-1">
                         <div className="text-2xl font-bold text-slate-900">₹1,999</div>
-                        <div className="text-xs text-slate-500 font-medium">Priority Experience</div>
+                        <div className="text-xs text-slate-500 font-medium">Limited | Curated Experience</div>
                       </div>
-                      <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
-                        <p>✓ Front Row Seating</p>
-                        <p>✓ Exclusive Swag Kit</p>
+                      <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1.5">
+                        <p>✓ Premium Swag Kit (VIP Edition)</p>
+                        <p>✓ Preferred Accommodation</p>
+                        <p>✓ Small-Group Mentor Access</p>
+                        <p>✓ Priority Q&A & Seating</p>
                       </div>
                     </div>
                   ) : (
@@ -425,11 +439,14 @@ export default function Bookslot() {
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex items-center gap-2">
                           <span className="p-1.5 rounded-lg bg-slate-200 text-slate-500"><Zap size={16} /></span>
-                          <span className="font-bold text-slate-700">VIP Access</span>
+                          <span className="font-bold text-slate-700">VIP Pass</span>
                         </div>
                         <span className="text-[10px] font-bold bg-slate-200 text-slate-600 px-2 py-1 rounded-full">SOLD OUT</span>
                       </div>
                       <div className="mt-2 text-xl font-bold text-slate-500">₹1,999</div>
+                      <div className="mt-4 pt-4 border-t border-dashed border-slate-200/60 text-xs text-slate-600 space-y-1">
+                        <p>Limited | Curated Experience</p>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -548,7 +565,7 @@ export default function Bookslot() {
                     <span className="text-xl font-bold">06</span>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-slate-800 leading-tight">Developer Explorer Summit '25</h4>
+                    <h4 className="font-bold text-slate-800 leading-tight">Developer Explorer Summit '26</h4>
                     <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
                       <Ticket size={12} />
                       {ticketLabel}
