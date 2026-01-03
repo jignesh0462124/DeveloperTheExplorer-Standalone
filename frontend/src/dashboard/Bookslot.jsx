@@ -58,10 +58,10 @@ export default function Bookslot() {
 
   // Determine Logic Tier
   // Early Bird: < 15 GA
-  // Regular: >= 15 GA && < 90 GA
-  // Late: >= 90 GA
+  // Regular: >= 15 GA && < 85 GA
+  // Late: >= 85 GA
   let currentGATier = 'early';
-  if (gaCount >= 90) currentGATier = 'late';
+  if (gaCount >= 85) currentGATier = 'late';
   else if (gaCount >= 15) currentGATier = 'regular';
 
   // Sync ticketType with reality once counts load
@@ -100,7 +100,7 @@ export default function Bookslot() {
         .select('*', { count: 'exact', head: true })
         .eq('payment_status', 'success');
 
-      if (count > 120) {
+      if (count >= 120) {
         alert("Registrations are closed!");
         navigate('/event');
       }
@@ -393,8 +393,8 @@ export default function Bookslot() {
                   </div>
 
 
-                  {/* VIP Pass - Only show if count < 20 */}
-                  {vipCount < 20 ? (
+                  {/* VIP Pass - Only show if count < 25 */}
+                  {vipCount < 25 ? (
                     <div
                       onClick={() => setTicketType('vip')}
                       className={`group relative flex flex-col p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${ticketType === 'vip' ? 'border-amber-500 bg-amber-50/50 shadow-md ring-1 ring-amber-500/20' : 'border-slate-200 hover:border-amber-300 hover:shadow-sm'}`}
