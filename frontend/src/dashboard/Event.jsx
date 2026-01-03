@@ -172,68 +172,39 @@ export default function Event() {
                   </button>
                 ) : isBooked ? (
                   <div className="w-full sm:max-w-md">
-                    {ticketDetails && (() => {
-                      const isVIP = ticketDetails.ticket_type?.toLowerCase().includes('vip');
-                      return (
-                        <div className={`backdrop-blur-md rounded-2xl border p-6 shadow-xl w-full animate-in fade-in slide-in-from-top-2 relative overflow-hidden group transition-all duration-500
-                          ${isVIP 
-                            ? "bg-slate-900 border-amber-500/30 shadow-amber-500/10 hover:shadow-amber-500/20" 
-                            : "bg-white/90 border-emerald-100 shadow-emerald-100/50"
-                          }`}
-                        >
-                          {/* Decorative bg element */}
-                          <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl rounded-bl-full opacity-60 pointer-events-none group-hover:scale-110 transition-transform duration-700
-                            ${isVIP ? "from-amber-600/20 to-transparent" : "from-emerald-100 to-transparent -mr-8 -mt-8"}`} 
-                          ></div>
+                    {ticketDetails && (
+                        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-emerald-100 p-6 shadow-xl shadow-emerald-100/50 w-full animate-in fade-in slide-in-from-top-2 relative overflow-hidden group">
+                             {/* Decorative bg element */}
+                             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-100 to-transparent -mr-8 -mt-8 rounded-bl-full opacity-60 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
 
-                          {isVIP && <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-amber-500/20 via-transparent to-amber-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>}
-
-                          <div className="flex items-center justify-between mb-6 relative z-10">
-                            <div className={`text-xs font-bold uppercase tracking-wider ${isVIP ? "text-amber-500" : "text-slate-400"}`}>
-                              {isVIP ? "VIP ACCESS" : "YOUR PASS"}
-                            </div>
-                            <div className={`text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm ring-1
-                              ${isVIP 
-                                ? "bg-amber-500 text-slate-900 ring-amber-400 scale-105" // stronger VIP badge
-                                : "bg-emerald-100 text-emerald-700 ring-emerald-200"}`
-                            }>
-                              {isVIP ? <Zap size={12} fill="currentColor" /> : <CheckIcon size={12} strokeWidth={4} />}
-                              {isVIP ? "VIP CONFIRMED" : "CONFIRMED"}
-                            </div>
-                          </div>
-
-                          <div className="relative z-10 mb-6">
-                            <h3 className={`text-3xl font-black mb-1 tracking-tight ${isVIP ? "text-white" : "text-slate-900"}`}>
-                              {ticketDetails.ticket_type || "Standard Pass"}
-                            </h3>
-                            <p className={`text-sm font-medium ${isVIP ? "text-amber-200/60" : "text-slate-500"}`}>
-                              Developer The Explorer Summit '25
-                            </p>
-                          </div>
-
-                          <div className={`space-y-4 pt-5 border-t relative z-10 ${isVIP ? "border-slate-800" : "border-slate-100"}`}>
-                            <div className={`text-sm flex items-center gap-3 ${isVIP ? "text-slate-300" : "text-slate-600"}`}>
-                              <div className={`p-1.5 rounded-full ${isVIP ? "bg-amber-500/20 text-amber-400" : "bg-emerald-100 text-emerald-600"}`}>
-                                <CheckIcon size={12} />
-                              </div>
-                              <span className="font-medium">Entry to all 3-day sessions & labs</span>
-                            </div>
-                            <div className={`text-sm flex items-center gap-3 ${isVIP ? "text-slate-300" : "text-slate-600"}`}>
-                              <div className={`p-1.5 rounded-full ${isVIP ? "bg-amber-500/20 text-amber-400" : "bg-emerald-100 text-emerald-600"}`}>
-                                 {isVIP ? <StarIcon size={12} fill="currentColor"/> : <CheckIcon size={12} />}
-                              </div>
-                              <span className="font-medium">{ticketDetails.ticket_type === 'VIP Pass' ? 'Priority Seating, Premium Swag & Lunch' : 'Standard Swag Kit, Lunch & Refreshments'}</span>
-                            </div>
-                            <div className={`text-sm flex items-center gap-3 ${isVIP ? "text-slate-300" : "text-slate-600"}`}>
-                              <div className={`p-1.5 rounded-full ${isVIP ? "bg-amber-500/20 text-amber-400" : "bg-emerald-100 text-emerald-600"}`}>
-                                <CheckIcon size={12} />
-                              </div>
-                              <span className="font-medium">Certificate of Participation</span>
-                            </div>
-                          </div>
+                             <div className="flex items-center justify-between mb-4 relative z-10">
+                                 <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">YOUR PASS</div>
+                                 <div className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm ring-1 ring-emerald-200">
+                                    <CheckIcon size={12} strokeWidth={4} /> CONFIRMED
+                                 </div>
+                             </div>
+                             
+                             <div className="relative z-10">
+                                <h3 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">{ticketDetails.ticket_type || "Standard Pass"}</h3>
+                                <p className="text-sm text-slate-500 font-medium mb-5">Developer The Explorer Summit '25</p>
+                             </div>
+                             
+                             <div className="space-y-3 pt-4 border-t border-slate-100 relative z-10">
+                                <div className="text-sm text-slate-600 flex items-center gap-3">
+                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                    <span className="font-medium">Entry to all 3-day sessions & labs</span>
+                                </div>
+                                <div className="text-sm text-slate-600 flex items-center gap-3">
+                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                    <span className="font-medium">{ticketDetails.ticket_type === 'VIP Pass' ? 'Priority Seating, Premium Swag & Lunch' : 'Standard Swag Kit, Lunch & Refreshments'}</span>
+                                </div>
+                                <div className="text-sm text-slate-600 flex items-center gap-3">
+                                    <div className="p-1 rounded-full bg-emerald-100 text-emerald-600"><CheckIcon size={12} /></div>
+                                    <span className="font-medium">Certificate of Participation</span>
+                                </div>
+                             </div>
                         </div>
-                      );
-                    })()}
+                    )}
                   </div>
                 ) : totalBookings >= 120 ? (
                    <button disabled className="flex-1 sm:flex-none rounded-full bg-slate-100 text-slate-400 font-medium px-6 py-3 cursor-not-allowed flex items-center justify-center gap-2 border border-slate-200">

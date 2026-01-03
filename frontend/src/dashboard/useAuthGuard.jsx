@@ -13,12 +13,13 @@ export function useAuthGuard(redirect = "/") {
 
         if (!session) {
           window.location.href = redirect;
+          return; // Stay loading while redirecting
         }
+        
+        setIsLoading(false);
       } catch (error) {
         console.error("Auth check failed:", error);
-        window.location.href = redirect;
-      } finally {
-        setIsLoading(false);
+        window.location.href = redirect; // Stay loading
       }
     }
     check();
