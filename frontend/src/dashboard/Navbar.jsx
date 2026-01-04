@@ -56,20 +56,20 @@ export default function Navbar({ breadcrumbs }) {
           {/* User Controls */}
           <div className="flex items-center gap-3 sm:gap-4">
             {/* Notification Bell (Desktop) */}
-            <button className="hidden sm:flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 transition-colors">
+            {/* <button className="hidden sm:flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 transition-colors">
               <Bell size={20} />
-            </button>
+            </button> */}
 
             {/* Divider */}
             <div className="hidden sm:block h-6 w-px bg-slate-200"></div>
 
             {/* Profile Info */}
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex flex-col text-right justify-center">
+              {/* <div className="hidden sm:flex flex-col text-right justify-center">
                 <span className="text-sm font-semibold text-slate-800 leading-tight">
                   {loadingProfile ? "Loading..." : profile.name || "Guest"}
                 </span>
-              </div>
+              </div> */}
               
               {/* Avatar */}
               <div className="relative group cursor-pointer">

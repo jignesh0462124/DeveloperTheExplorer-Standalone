@@ -136,7 +136,7 @@ export default function Bookslot() {
 
   // Prefill data if profile loads
   useEffect(() => {
-    if (profile?.name && !name) setName(profile.name);
+    // if (profile?.name && !name) setName(profile.name);
     if (profile?.email && !email) setEmail(profile.email);
   }, [profile]);
 
@@ -459,7 +459,7 @@ export default function Bookslot() {
                     onChange={(e) => setName(e.target.value)}
                     onBlur={() => handleBlur("name")}
                     className={inputCls("pl-10 " + (touched.name && errors.name ? "!border-red-500 !bg-red-50" : ""))}
-                    placeholder="e.g. John Doe"
+                    placeholder="Enter Your Name"
                     type="text"
                   />
                 </div>
@@ -474,7 +474,7 @@ export default function Bookslot() {
                     onChange={(e) => setEmail(e.target.value)}
                     onBlur={() => handleBlur("email")}
                     className={inputCls("pl-10 " + (touched.email && errors.email ? "!border-red-500 !bg-red-50" : ""))}
-                    placeholder="john@example.com"
+                    placeholder="email@example.com"
                   />
                 </div>
               </Field>
@@ -488,8 +488,8 @@ export default function Bookslot() {
                       className="h-12 appearance-none rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 pl-3 pr-8 text-slate-700 font-medium focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     >
                       <option>+91</option>
-                      <option>+1</option>
-                      <option>+44</option>
+                      {/* <option>+1</option>
+                      <option>+44</option> */}
                     </select>
                     <ChevronDown size={14} className="absolute right-2 top-4 text-slate-500 pointer-events-none" />
                   </div>
@@ -504,7 +504,7 @@ export default function Bookslot() {
                       }}
                       onBlur={() => handleBlur("phone")}
                       className={`block h-12 w-full rounded-r-lg border border-slate-300 px-3 pl-10 py-2 placeholder-slate-400 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm ${touched.phone && errors.phone ? "border-red-500 bg-red-50 z-20" : ""}`}
-                      placeholder="98765 43210"
+                      placeholder="99999 99999"
                     />
                   </div>
                 </div>
@@ -519,7 +519,7 @@ export default function Bookslot() {
                       onChange={(e) => setCollege(e.target.value)}
                       onBlur={() => handleBlur("college")}
                       className={inputCls("pl-10 " + (touched.college && errors.college ? "!border-red-500 !bg-red-50" : ""))}
-                      placeholder="e.g. IIT Delhi"
+                      placeholder="e.g. Organization/College"
                     />
                   </div>
                 </Field>
@@ -533,8 +533,6 @@ export default function Bookslot() {
                     >
                       <option>Male</option>
                       <option>Female</option>
-                      <option>Other</option>
-                      <option>Prefer not to say</option>
                     </select>
                     <ChevronDown size={16} className="pointer-events-none absolute right-3 top-3.5 text-slate-500" />
                   </div>
