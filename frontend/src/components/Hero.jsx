@@ -25,6 +25,18 @@ function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80 z-10" />
 
         {/* DESKTOP VIDEO */}
+        {/* LOADING IMAGE */}
+        <img
+          src="/images/Website.png"
+          alt="Hero Background"
+          className="
+            absolute top-1/2 left-1/2
+            w-auto min-w-[100vw] h-[160vh] sm:w-[120vw] sm:h-[120vh]
+            -translate-x-1/2 -translate-y-1/2
+            object-cover
+          "
+        />
+
         <video
           autoPlay
           loop
